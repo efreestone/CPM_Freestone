@@ -89,9 +89,9 @@ public class LoginAndSignupActivity extends Activity {
 					finish(); 
 				} else {
 					String failedMessage;
-					if (usernameEntered.equals("")) {
+					if (usernameEntered.equalsIgnoreCase("")) {
 						failedMessage = " please enter a username";
-					} else if (passwordEntered.equals("")) {
+					} else if (passwordEntered == "") {
 						failedMessage = " please enter a password";
 					} else {
 						failedMessage = " please try again";

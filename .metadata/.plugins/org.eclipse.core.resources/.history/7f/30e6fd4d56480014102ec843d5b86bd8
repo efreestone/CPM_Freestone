@@ -88,16 +88,7 @@ public class LoginAndSignupActivity extends Activity {
 					startActivity(loggedIntent);
 					finish(); 
 				} else {
-					String failedMessage;
-					if (usernameEntered.equals("")) {
-						failedMessage = " please enter a username";
-					} else if (passwordEntered.equals("")) {
-						failedMessage = " please enter a password";
-					} else {
-						failedMessage = " please try again";
-					}
-					
-					Toast.makeText(getApplicationContext(), "Login failed, " + failedMessage,
+					Toast.makeText(getApplicationContext(), "Login failed, please try again",
                             Toast.LENGTH_LONG).show();
 				}
 			}
@@ -105,37 +96,31 @@ public class LoginAndSignupActivity extends Activity {
 		
 	} //onLoginClicked close
 	
-	private void onSignupClicked() {
-		// Retrieve input username and password
+	private void onSignupClicked(){
+		//Retrieve input username and password
 		usernameEntered = usernameEditText.getText().toString();
 		passwordEntered = passwordEditText.getText().toString();
-
-		//Check if username or password are blank
-		if (usernameEntered.equals("") || passwordEntered.equals("")) {
-			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
-					Toast.LENGTH_LONG).show();
-		} else {
-			// Create new user and save to Parse with entered info
-			ParseUser newUser = new ParseUser();
-			newUser.setUsername(usernameEntered);
-			newUser.setPassword(passwordEntered);
-			newUser.signUpInBackground(new SignUpCallback() {
-
-				@Override
-				public void done(ParseException error) {
-					if (error == null) {
-						// Show a simple Toast message upon successful
-						// registration
-						Toast.makeText(getApplicationContext(), "Signup successful, please log in.",
-								Toast.LENGTH_LONG).show();
-					} else {
-						Toast.makeText(getApplicationContext(), "An error occured, please try again.",
-								Toast.LENGTH_LONG).show();
-					}
-				}
-			}); // signUpInBackground close
-		}
-
-	} // onSignupClicked
+		
+		//Create new user and save to Parse with entered info
+		ParseUser newUser = new ParseUser();
+		newUser.setUsername(usernameEntered);
+		newUser.setPassword(passwordEntered);
+		newUser.signUpInBackground(new SignUpCallback() {
+			
+			@Override
+			public void done(ParseException error) {
+				if (error == null) {
+                    // Show a simple Toast message upon successful registration
+                    Toast.makeText(getApplicationContext(), "Signup successful, please log in.",
+                            Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(getApplicationContext(), "An error occured, please try again.", 
+                    		Toast.LENGTH_LONG).show();
+                }
+				
+			}
+		}); //signUpInBackground close
+		
+	} //onSignupClicked
 	
 }
