@@ -1,15 +1,3 @@
-/*
- * @author	Elijah Freestone 
- *
- * Project	Project1Android
- * 
- * @class 	CPM term 1410
- * 
- * Package	com.elijahfreestone.project1android
- * 
- * Date		Sep 30, 2014
- */
-
 package com.elijahfreestone.project1android;
 
 import android.app.Activity;
@@ -40,9 +28,9 @@ public class NewItemActivity extends Activity {
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
 		saveButton = (Button) findViewById(R.id.saveButton);
 		
-		saveButton.setOnClickListener(new OnClickListener() { 
+		saveButton.setOnClickListener(new OnClickListener() {
 			
-			@Override 
+			@Override
 			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
@@ -50,7 +38,7 @@ public class NewItemActivity extends Activity {
 				Log.i(TAG, "Save clicked");
 				Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
 				
-			} 
+			}
 		});
 	} 
 

@@ -42,7 +42,7 @@ public class NewItemActivity extends Activity {
 		
 		saveButton.setOnClickListener(new OnClickListener() { 
 			
-			@Override 
+			@Override
 			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
