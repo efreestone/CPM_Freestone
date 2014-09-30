@@ -9,8 +9,16 @@
     tools:context="com.elijahfreestone.project1android.MainActivity" >
 
     <TextView
+        android:id="@+id/titleTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/hello_world" />
+    
+    <Button 
+        android:id="@+id/logOutButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/titleTextView"
+        android:text="Log Out" />
 
 </RelativeLayout>

@@ -13,17 +13,26 @@
 package com.elijahfreestone.project1android;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.parse.Parse;
+import com.parse.ParseACL;
+import com.parse.ParseAnonymousUtils;
+import com.parse.ParseUser;
 //import com.parse.ParseAnalytics;
 import com.parse.ParseObject;  
 
-
-
 public class MainActivity extends Activity {
+	String TAG = "MainActivity";
+	Button logOutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,11 +41,49 @@ public class MainActivity extends Activity {
         
         //Initialize Parse with credentials
         Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
+        //ParseUser.enableAutomaticUser();
+        ParseACL defaultACL = new ParseACL();
+        ParseACL.setDefaultACL(defaultACL, true);
         
-        //Test Parse
-        ParseObject testObject = new ParseObject("TestObject");
-        testObject.put("foo", "bar");
-        testObject.saveInBackground();
+        //Grab log out button and set on click
+        logOutButton = (Button) findViewById(R.id.logOutButton);
+        logOutButton.setOnClickListener(new OnClickListener() {
+			
+			@Override 
+			public void onClick(View v) {
+				//Log user out
+				ParseUser.logOut();
+				Log.i(TAG, "User logged out");
+				Intent logoutIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
+				startActivity(logoutIntent);
+				Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
+                        Toast.LENGTH_LONG).show();
+				finish();
+			}
+		});  
+        
+//        //Test Parse
+//        ParseObject testObject = new ParseObject("TestObject");
+//        testObject.put("foo", "bar");
+//        testObject.saveInBackground(); 
+        
+		//Check Parse for current user and auto login if one exists.
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		if (currentUser != null) {
+			// Send logged in users to Welcome.class
+			//Intent autoLogedIntent = new Intent(MainActivity.this, Welcome.class);
+			//startActivity(autoLogedIntent);
+			Toast.makeText(getApplicationContext(), "Welcome, " + currentUser.getUsername(),
+                    Toast.LENGTH_LONG).show();
+			Log.i(TAG, "User auto-logged in");
+			//finish(); 
+		} else {
+			// Send user to LoginSignupActivity.class
+			Intent loginIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
+			startActivity(loginIntent);
+			finish();  
+		}
+		
     } 
 
 
