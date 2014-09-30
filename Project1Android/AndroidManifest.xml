@@ -25,6 +25,7 @@
             </intent-filter>
         </activity>
         <activity android:name="LoginAndSignupActivity"></activity>
+        <activity android:name="NewItemActivity"></activity>
     </application>
 
 </manifest>

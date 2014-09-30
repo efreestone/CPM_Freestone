@@ -40,7 +40,7 @@ public class LoginAndSignupActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_login);
+		setContentView(R.layout.activity_login); 
 		
 		//Grab EditTexts and buttons
 		usernameEditText = (EditText) findViewById(R.id.usernameEditText);
@@ -88,14 +88,13 @@ public class LoginAndSignupActivity extends Activity {
 					startActivity(loggedIntent);
 					finish(); 
 				} else {
-					String failedMessage;
+					String failedMessage = " please try again";
 					if (usernameEntered.equals("")) {
 						failedMessage = " please enter a username";
-					} else if (passwordEntered.equals("")) {
-						failedMessage = " please enter a password";
-					} else {
-						failedMessage = " please try again";
 					}
+					if (passwordEntered.equals("")) {
+						failedMessage = " please enter a password";
+					} 
 					
 					Toast.makeText(getApplicationContext(), "Login failed, " + failedMessage,
                             Toast.LENGTH_LONG).show();

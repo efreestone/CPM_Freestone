@@ -8,7 +8,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="Username" />
+        android:text="@string/usernameTitleText" />
  
     <EditText
         android:id="@+id/usernameEditText"
@@ -23,7 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/usernameEditText"
         android:gravity="center"
-        android:text="Password" />
+        android:text="@string/passwordTitleText" />
  
     <EditText
         android:id="@+id/passwordEditText"
@@ -37,13 +37,13 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/passwordEditText"
-        android:text="Login" />
+        android:text="@string/loginButtonText" />
  
     <Button
         android:id="@+id/signupButton"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/loginButton"
-        android:text="Signup" />
+        android:text="@string/signupButtonText" />
  
 </RelativeLayout>

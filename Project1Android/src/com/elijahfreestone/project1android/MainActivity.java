@@ -25,10 +25,8 @@ import android.widget.Toast;
 
 import com.parse.Parse;
 import com.parse.ParseACL;
-import com.parse.ParseAnonymousUtils;
 import com.parse.ParseUser;
 //import com.parse.ParseAnalytics;
-import com.parse.ParseObject;  
 
 public class MainActivity extends Activity {
 	String TAG = "MainActivity";
@@ -41,9 +39,10 @@ public class MainActivity extends Activity {
         
         //Initialize Parse with credentials
         Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
-        //ParseUser.enableAutomaticUser();
-        ParseACL defaultACL = new ParseACL();
-        ParseACL.setDefaultACL(defaultACL, true);
+        //Set default Access Control List to read/write of current user when creating object
+        ParseACL.setDefaultACL(new ParseACL(), true);
+//        ParseACL defaultACL = new ParseACL();
+//        ParseACL.setDefaultACL(defaultACL, true);
         
         //Grab log out button and set on click
         logOutButton = (Button) findViewById(R.id.logOutButton);
@@ -60,7 +59,7 @@ public class MainActivity extends Activity {
                         Toast.LENGTH_LONG).show();
 				finish();
 			}
-		});  
+		}); //setOnClickListener close
         
 //        //Test Parse
 //        ParseObject testObject = new ParseObject("TestObject");
@@ -103,6 +102,12 @@ public class MainActivity extends Activity {
         if (id == R.id.action_settings) {
             return true;
         }
+        //Plus button clicked
+        if (id == R.id.newPlusButton) {
+        	Log.i(TAG, "Plus clicked");
+        	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
+        	startActivity(newItemIntent);
+        } 
         return super.onOptionsItemSelected(item);
     }
 }
