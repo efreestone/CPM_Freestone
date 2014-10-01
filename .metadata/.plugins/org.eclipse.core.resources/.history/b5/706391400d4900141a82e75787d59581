@@ -12,7 +12,6 @@
 
 package com.elijahfreestone.project1android;
 
-import com.parse.ParseACL;
 import com.parse.ParseObject;
 
 import android.app.Activity;
@@ -53,14 +52,13 @@ public class NewItemActivity extends Activity {
 				Log.i(TAG, "Save clicked");
 				Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
 				
-				//Save new item to Parse. Default ACL is set in MainActivity
 				ParseObject newItem = new ParseObject("newItem");
 				newItem.put("Name", nameEntered);
 				newItem.put("Number", numberEnteredInt);
 				newItem.saveInBackground();
 				
 			} 
-		}); //setOnClickListener close
-	} //onCreate close 
+		});
+	} 
 
 }

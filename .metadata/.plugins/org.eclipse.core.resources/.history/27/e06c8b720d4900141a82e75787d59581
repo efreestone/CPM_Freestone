@@ -43,6 +43,8 @@ public class NewItemActivity extends Activity {
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
 		saveButton = (Button) findViewById(R.id.saveButton);
 		
+		ParseACL.setDefaultACL(new ParseACL(), true);
+		
 		saveButton.setOnClickListener(new OnClickListener() { 
 			
 			@Override 
@@ -53,14 +55,13 @@ public class NewItemActivity extends Activity {
 				Log.i(TAG, "Save clicked");
 				Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
 				
-				//Save new item to Parse. Default ACL is set in MainActivity
 				ParseObject newItem = new ParseObject("newItem");
 				newItem.put("Name", nameEntered);
 				newItem.put("Number", numberEnteredInt);
 				newItem.saveInBackground();
 				
 			} 
-		}); //setOnClickListener close
-	} //onCreate close 
+		});
+	} 
 
 }

@@ -61,6 +61,6 @@ public class NewItemActivity extends Activity {
 				
 			} 
 		}); //setOnClickListener close
-	} //onCreate close 
+	} 
 
 }
