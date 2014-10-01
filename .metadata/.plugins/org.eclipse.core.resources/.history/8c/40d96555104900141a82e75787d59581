@@ -50,12 +50,10 @@ public class NewItemActivity extends Activity {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
 				
-				//Check that both fields contain data
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
 					Toast.makeText(getApplicationContext(), "Both fields are required to save",
 							Toast.LENGTH_LONG).show();
 				} else {
-					//Parse int from number string
 					numberEnteredInt = Integer.parseInt(numberEnteredString);
 					Log.i(TAG, "Save clicked");
 					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);

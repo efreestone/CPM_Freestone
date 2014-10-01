@@ -12,6 +12,9 @@
 
 package com.elijahfreestone.project1android;
 
+import com.parse.ParseACL;
+import com.parse.ParseObject;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
@@ -19,9 +22,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
-
-import com.parse.ParseObject;
 
 public class NewItemActivity extends Activity {
 	String TAG = "NewItemActivity";
@@ -30,7 +30,7 @@ public class NewItemActivity extends Activity {
 	Button saveButton;
 	String nameEntered;
 	String numberEnteredString;
-	int numberEnteredInt; 
+	int numberEnteredInt;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +49,15 @@ public class NewItemActivity extends Activity {
 			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
+				numberEnteredInt = Integer.parseInt(numberEnteredString);
+				Log.i(TAG, "Save clicked");
+				Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
 				
-				//Check that both fields contain data
-				if (nameEntered.equals("") || numberEnteredString.equals("")) {
-					Toast.makeText(getApplicationContext(), "Both fields are required to save",
-							Toast.LENGTH_LONG).show();
-				} else {
-					//Parse int from number string
-					numberEnteredInt = Integer.parseInt(numberEnteredString);
-					Log.i(TAG, "Save clicked");
-					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
-
-					// Save new item to Parse. Default ACL is set in MainActivity
-					ParseObject newItem = new ParseObject("newItem");
-					newItem.put("Name", nameEntered);
-					newItem.put("Number", numberEnteredInt);
-					newItem.saveInBackground();
-				}
+				//Save new item to Parse. Default ACL is set in MainActivity
+				ParseObject newItem = new ParseObject("newItem");
+				newItem.put("Name", nameEntered);
+				newItem.put("Number", numberEnteredInt);
+				newItem.saveInBackground();
 				
 			} 
 		}); //setOnClickListener close
