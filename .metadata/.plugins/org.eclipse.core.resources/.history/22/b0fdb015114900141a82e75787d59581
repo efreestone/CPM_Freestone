@@ -73,14 +73,14 @@ public class NewItemActivity extends Activity {
 							if (arg0 == null) {
 								Toast.makeText(getApplicationContext(), "Item Saved!",
 										Toast.LENGTH_LONG).show();
-								finish();
 							} else {
 								Toast.makeText(getApplicationContext(), "An error occured, please try again",
 										Toast.LENGTH_LONG).show();
 							}
 						}
 					}); //saveInBackground close
-				}
+				} 
+				
 			} 
 		}); //setOnClickListener close
 	} //onCreate close 

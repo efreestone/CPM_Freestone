@@ -21,9 +21,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.SaveCallback;
 
 public class NewItemActivity extends Activity {
 	String TAG = "NewItemActivity";
@@ -66,21 +64,9 @@ public class NewItemActivity extends Activity {
 					ParseObject newItem = new ParseObject("newItem");
 					newItem.put("Name", nameEntered);
 					newItem.put("Number", numberEnteredInt);
-					newItem.saveInBackground(new SaveCallback() {
-						
-						@Override
-						public void done(ParseException arg0) {
-							if (arg0 == null) {
-								Toast.makeText(getApplicationContext(), "Item Saved!",
-										Toast.LENGTH_LONG).show();
-								finish();
-							} else {
-								Toast.makeText(getApplicationContext(), "An error occured, please try again",
-										Toast.LENGTH_LONG).show();
-							}
-						}
-					}); //saveInBackground close
+					newItem.saveInBackground();
 				}
+				
 			} 
 		}); //setOnClickListener close
 	} //onCreate close 
