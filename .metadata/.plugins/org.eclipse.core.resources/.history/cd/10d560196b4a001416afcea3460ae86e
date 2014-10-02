@@ -157,7 +157,7 @@ public class MainActivity extends Activity {
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
     		parseArrayList.clear();
-    		//listAdapter.notifyDataSetInvalidated();
+    		listAdapter.notifyDataSetInvalidated();
 			queryParseForItems();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);

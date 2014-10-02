@@ -42,7 +42,6 @@ public class MainActivity extends Activity {
 	Button logOutButton; 
 	static ListView itemListView;
 	ArrayList<HashMap<String, String>> parseArrayList;
-	BaseAdapter listAdapter;
 
     @Override         
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,7 +99,7 @@ public class MainActivity extends Activity {
 						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
 					} 
 					//Log.i(TAG, parseArrayList.toString());
-					listAdapter = new SimpleAdapter(
+					BaseAdapter listAdapter = new SimpleAdapter(
 							MainActivity.this, parseArrayList,
 							R.layout.listview_row, new String[] { "itemName",
 									"itemNumber" }, new int[] { R.id.nameTextView,
@@ -156,8 +155,6 @@ public class MainActivity extends Activity {
     	Log.i(TAG, "On Activity Result");
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
-    		parseArrayList.clear();
-    		//listAdapter.notifyDataSetInvalidated();
 			queryParseForItems();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
