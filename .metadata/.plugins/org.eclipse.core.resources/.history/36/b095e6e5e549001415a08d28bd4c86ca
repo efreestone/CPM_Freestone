@@ -87,7 +87,7 @@ public class MainActivity extends Activity {
 					
 					for (ParseObject eachItem : newItemList) { 
 						
-						String itemName = eachItem.getString("Name"); 
+						String itemName = eachItem.getString("Name");
 						int itemNumber = eachItem.getInt("Number");
 						String itemNumberString = "" + itemNumber;
 						String itemID = eachItem.getObjectId().toString();
@@ -95,11 +95,12 @@ public class MainActivity extends Activity {
 						objectMap.put("itemName", itemName);
 						objectMap.put("itemNumber", itemNumberString);
 						objectMap.put("itemID", itemID); 
-					
-						parseArrayList.add(objectMap);   
+						
+						parseArrayList.add(objectMap);  
+						
 						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
 					} 
-					//Log.i(TAG, parseArrayList.toString());
+					Log.i(TAG, parseArrayList.toString());
 					SimpleAdapter listAdapter = new SimpleAdapter(
 							MainActivity.this, parseArrayList,
 							R.layout.listview_row, new String[] { "itemName",

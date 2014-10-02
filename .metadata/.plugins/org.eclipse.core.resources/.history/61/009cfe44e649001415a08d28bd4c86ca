@@ -17,9 +17,7 @@
     <ListView 
         android:id="@+id/itemListView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:divider="#8e8e8e"
-		android:dividerHeight="1sp" />
+        android:layout_height="match_parent" />
 
 
 </RelativeLayout>
