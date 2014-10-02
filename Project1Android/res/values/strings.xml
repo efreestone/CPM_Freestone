@@ -5,8 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="newPlusButton">New Client</string>
-    
     <string name="logoutButtonText">Log Out</string>
+    
     <string name="loginButtonText">Log In</string>
     <string name="signupButtonText">Sign Up</string>
 

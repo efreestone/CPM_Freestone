@@ -38,16 +38,16 @@ public class NewItemActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_new_item);  
-		
+		setContentView(R.layout.activity_new_item);   
+		 
 		//Grab edit texts and button
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
 		saveButton = (Button) findViewById(R.id.saveButton);
 		
-		saveButton.setOnClickListener(new OnClickListener() { 
+		saveButton.setOnClickListener(new OnClickListener() {  
 			
-			@Override 
+			@Override   
 			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();

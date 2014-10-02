@@ -12,30 +12,34 @@
 
 package com.elijahfreestone.project1android;
 
+import java.util.List;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.Toast;
 
+import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
 //import com.parse.ParseAnalytics;
 
 public class MainActivity extends Activity {
 	String TAG = "MainActivity";
-	Button logOutButton;
+	Button logOutButton; 
 
-    @Override
+    @Override         
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_main); 
         
         //Initialize Parse with credentials
         Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
@@ -44,31 +48,14 @@ public class MainActivity extends Activity {
 //        ParseACL defaultACL = new ParseACL();
 //        ParseACL.setDefaultACL(defaultACL, true);
         
-        //Grab log out button and set on click
-        logOutButton = (Button) findViewById(R.id.logOutButton);
-        logOutButton.setOnClickListener(new OnClickListener() {
-			
-			@Override 
-			public void onClick(View v) {
-				//Log user out
-				ParseUser.logOut();
-				Log.i(TAG, "User logged out");
-				Intent logoutIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
-				startActivity(logoutIntent);
-				Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
-                        Toast.LENGTH_LONG).show();
-				finish();
-			}
-		}); //setOnClickListener close
-        
-//        //Test Parse
+//        //Test Parse 
 //        ParseObject testObject = new ParseObject("TestObject");
 //        testObject.put("foo", "bar");
 //        testObject.saveInBackground(); 
         
 		//Check Parse for current user and auto login if one exists.
 		ParseUser currentUser = ParseUser.getCurrentUser();
-		if (currentUser != null) {
+		if (currentUser != null) { 
 			// Send logged in users to Welcome.class
 			//Intent autoLogedIntent = new Intent(MainActivity.this, Welcome.class);
 			//startActivity(autoLogedIntent);
@@ -81,10 +68,33 @@ public class MainActivity extends Activity {
 			Intent loginIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
 			startActivity(loginIntent);
 			finish();  
-		}
+		} //currentUser if/else close
 		
-    } 
+		
+		
+    } //onCreate close 
+    
+	void queryParseForItems() {
+		// Query Parse for items and parse into arraylist
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> newItemList, ParseException e) {
+				if (e == null) {
+					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
+					for (ParseObject eachItem : newItemList) {
+						String itemName = eachItem.getString("Name");
+						int itemNumber = eachItem.getInt("Number");
+						String itemID = eachItem.getObjectId().toString();
 
+						Log.i(TAG, "Name: " + itemName + ", Number: "
+								+ itemNumber + " ID: " + itemID); 
+					}
+				} else {
+					Log.e(TAG, "Error: " + e.getMessage().toString());
+				}
+			}
+		});
+	} //queryParseForItems close
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -108,6 +118,19 @@ public class MainActivity extends Activity {
         	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
         	startActivity(newItemIntent);
         } 
+        //Log out button
+        if (id == R.id.logoutButton) {
+        	//Log user out
+			ParseUser.logOut();
+			Log.i(TAG, "User logged out");
+			//Present user with login screen
+			Intent logoutIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
+			startActivity(logoutIntent);
+			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
+                    Toast.LENGTH_LONG).show();
+			//Remove Main activity from stack
+			finish();
+		}
         return super.onOptionsItemSelected(item);
-    }
+    } //onOptionsItemSelected close
 }
