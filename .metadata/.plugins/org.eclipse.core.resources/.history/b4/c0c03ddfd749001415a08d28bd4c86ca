@@ -14,7 +14,6 @@ package com.elijahfreestone.project1android;
 
 import java.util.List;
 
-import android.R.menu;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -71,7 +70,7 @@ public class MainActivity extends Activity {
 			finish();  
 		} //currentUser if/else close
 		
-		queryParseForItems();
+		
 		
     } //onCreate close 
     
@@ -82,14 +81,13 @@ public class MainActivity extends Activity {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
-					Log.i(TAG, newItemList.toString());
 					for (ParseObject eachItem : newItemList) {
-						
 						String itemName = eachItem.getString("Name");
 						int itemNumber = eachItem.getInt("Number");
-						String itemID = eachItem.getObjectId().toString();
+						//String itemID = eachItem.getObjectId().toString();
 
-						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID); 
+						Log.i(TAG, "Name: " + itemName + ", Number: "
+								+ itemNumber); 
 					}
 				} else {
 					Log.e(TAG, "Error: " + e.getMessage().toString());
@@ -106,19 +104,22 @@ public class MainActivity extends Activity {
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem menuItem) {
+    public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
-        switch (menuItem.getItemId()) {       	
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            return true;
+        }
         //Plus button clicked
-        case R.id.newPlusButton:
+        if (id == R.id.newPlusButton) {
         	Log.i(TAG, "Plus clicked");
         	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
         	startActivity(newItemIntent);
-        	break;
+        } 
         //Log out button
-        case R.id.logoutButton:
+        if (id == R.id.logoutButton) {
         	//Log user out
 			ParseUser.logOut();
 			Log.i(TAG, "User logged out");
@@ -129,10 +130,7 @@ public class MainActivity extends Activity {
                     Toast.LENGTH_LONG).show();
 			//Remove Main activity from stack
 			finish();
-			break;
-        default:
-			break;
 		}
-        return super.onOptionsItemSelected(menuItem);
+        return super.onOptionsItemSelected(item);
     } //onOptionsItemSelected close
 }

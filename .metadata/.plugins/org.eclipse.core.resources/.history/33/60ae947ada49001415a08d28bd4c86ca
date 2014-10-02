@@ -45,7 +45,7 @@ public class NewItemActivity extends Activity {
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
 		saveButton = (Button) findViewById(R.id.saveButton);
 		
-		saveButton.setOnClickListener(new OnClickListener() {   
+		saveButton.setOnClickListener(new OnClickListener() {  
 			
 			@Override   
 			public void onClick(View arg0) {

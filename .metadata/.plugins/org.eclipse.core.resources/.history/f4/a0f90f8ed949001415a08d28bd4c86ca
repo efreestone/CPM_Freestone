@@ -15,7 +15,7 @@
         android:text="@string/hello_world" />
     
     <ListView 
-        android:id="@+id/itemListView"
+        android:id="itemListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
