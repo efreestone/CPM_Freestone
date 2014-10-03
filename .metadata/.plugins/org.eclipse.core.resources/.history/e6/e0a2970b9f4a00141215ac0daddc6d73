@@ -185,7 +185,7 @@ public class MainActivity extends Activity {
 						objectMap.put("itemNumber", itemNumberString);
 						objectMap.put("itemID", itemID); 
 					
-						parseArrayList.add(objectMap);    
+						parseArrayList.add(objectMap);   
 						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
 					} 
 					//Log.i(TAG, parseArrayList.toString());
@@ -199,12 +199,10 @@ public class MainActivity extends Activity {
 					Log.e(TAG, "Error: " + e.getMessage().toString()); 
 				}
 				
-				//Add no contacts notice if there aren't any contacts for the user
-				TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
 				if (parseArrayList.size() == 0) {
-					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
-				} else {
-					noItemsNotice.setText("");
+					TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
+					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.")
+					
 				}
 			}
 		});

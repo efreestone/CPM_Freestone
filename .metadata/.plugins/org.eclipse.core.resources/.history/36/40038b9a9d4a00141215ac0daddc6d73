@@ -78,7 +78,7 @@ public class LoginAndSignupActivity extends Activity {
 	} //onCreate close
 	
 	/**
-	 * On login clicked verifies the user info on Parse before logging in.
+	 * On login clicked.
 	 */
 	private void onLoginClicked(){
 		//Retrieve input username and password
@@ -92,7 +92,8 @@ public class LoginAndSignupActivity extends Activity {
 			public void done(ParseUser user, ParseException error) {
 				if (user != null) {
 					Log.i(TAG, usernameEntered + "logged in");
-					//Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
+					Toast.makeText(getApplicationContext(), "Login Successful",
+                            Toast.LENGTH_LONG).show();
 					Intent loggedIntent = new Intent(LoginAndSignupActivity.this, MainActivity.class);
 					startActivity(loggedIntent);
 					finish(); 
@@ -114,7 +115,7 @@ public class LoginAndSignupActivity extends Activity {
 	} //onLoginClicked close
 	
 	/**
-	 * On signup clicked sends new login info to Parse.
+	 * On signup clicked.
 	 */
 	private void onSignupClicked() {
 		// Retrieve input username and password

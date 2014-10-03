@@ -199,12 +199,10 @@ public class MainActivity extends Activity {
 					Log.e(TAG, "Error: " + e.getMessage().toString()); 
 				}
 				
-				//Add no contacts notice if there aren't any contacts for the user
-				TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
 				if (parseArrayList.size() == 0) {
+					TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
 					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
-				} else {
-					noItemsNotice.setText("");
+					
 				}
 			}
 		});

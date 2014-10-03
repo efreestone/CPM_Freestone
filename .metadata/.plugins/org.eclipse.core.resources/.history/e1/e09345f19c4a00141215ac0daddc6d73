@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="20sp"
-        android:text="@string/newItemTitle" />
+        android:text="Add New Item" />
     
     <EditText 
         android:id="@+id/nameEditText"
@@ -24,14 +24,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:inputType="number"
-        android:hint="@string/numberHeader" />
+        android:hint="Number" />
     
     <Button 
         android:id="@+id/saveButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="@string/saveContactButton" />
+        android:text="Save Item" />
     
 
 </LinearLayout>

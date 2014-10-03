@@ -78,7 +78,7 @@ public class LoginAndSignupActivity extends Activity {
 	} //onCreate close
 	
 	/**
-	 * On login clicked verifies the user info on Parse before logging in.
+	 * On login clicked.
 	 */
 	private void onLoginClicked(){
 		//Retrieve input username and password

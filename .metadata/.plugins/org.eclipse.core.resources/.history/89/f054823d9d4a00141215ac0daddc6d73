@@ -21,8 +21,9 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Bundle; 
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -32,7 +33,6 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.parse.DeleteCallback;
@@ -185,7 +185,7 @@ public class MainActivity extends Activity {
 						objectMap.put("itemNumber", itemNumberString);
 						objectMap.put("itemID", itemID); 
 					
-						parseArrayList.add(objectMap);    
+						parseArrayList.add(objectMap);   
 						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
 					} 
 					//Log.i(TAG, parseArrayList.toString());
@@ -197,14 +197,6 @@ public class MainActivity extends Activity {
 					itemListView.setAdapter(listAdapter);
 				} else { 
 					Log.e(TAG, "Error: " + e.getMessage().toString()); 
-				}
-				
-				//Add no contacts notice if there aren't any contacts for the user
-				TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
-				if (parseArrayList.size() == 0) {
-					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
-				} else {
-					noItemsNotice.setText("");
 				}
 			}
 		});
@@ -236,7 +228,7 @@ public class MainActivity extends Activity {
         	startActivityForResult(newItemIntent, 0);
         	break;
         //Log out button
-        case R.id.logoutButton: 
+        case R.id.logoutButton:
         	//Log user out
 			ParseUser.logOut();
 			Log.i(TAG, "User logged out");

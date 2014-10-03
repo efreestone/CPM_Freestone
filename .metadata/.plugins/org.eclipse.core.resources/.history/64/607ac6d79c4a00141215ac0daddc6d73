@@ -65,7 +65,7 @@ public class NewItemActivity extends Activity {
 					Toast.makeText(getApplicationContext(), "Both fields are required to save",
 							Toast.LENGTH_LONG).show();
 				} else {
-					//Parse long from number string
+					//Parse int from number string
 					numberEnteredLong = Long.parseLong(numberEnteredString); 
 					Log.i(TAG, "Save clicked");
 					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
