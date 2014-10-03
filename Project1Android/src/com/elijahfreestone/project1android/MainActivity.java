@@ -21,11 +21,10 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.os.Bundle;
+import android.os.Bundle; 
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,7 +33,7 @@ import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
-import android.widget.Toast; 
+import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
@@ -44,8 +43,12 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+// TODO: Auto-generated Javadoc
 //import com.parse.ParseAnalytics;
 
+/**
+ * The Class MainActivity.
+ */
 public class MainActivity extends Activity {
 	String TAG = "MainActivity";
 	Button logOutButton; 
@@ -55,32 +58,37 @@ public class MainActivity extends Activity {
 	Object myActionMode;
 	int itemSelected = -1;
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreate(android.os.Bundle)
+     */
     @Override         
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main); 
         
         itemListView = (ListView) findViewById(R.id.itemListView);
+        View listHeader = getLayoutInflater().inflate(R.layout.listview_header, null);
+        itemListView.addHeaderView(listHeader);
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
-        //Initialize Parse with credentials
+        //Initialize Parse with credentials 
         Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
         //Set default Access Control List to read/write of current user when creating object
-        ParseACL.setDefaultACL(new ParseACL(), true);
+        ParseACL.setDefaultACL(new ParseACL(), true);   
         
 		//Check Parse for current user and auto login if one exists.
-		ParseUser currentUser = ParseUser.getCurrentUser();
+		ParseUser currentUser = ParseUser.getCurrentUser(); 
 		if (currentUser != null) { 
 			Toast.makeText(getApplicationContext(), "Welcome, " + currentUser.getUsername(),
-                    Toast.LENGTH_LONG).show();
-			Log.i(TAG, "User auto-logged in");
+                    Toast.LENGTH_LONG).show(); 
+			Log.i(TAG, "User auto-logged in"); 
 		} else {
 			// Send user to LoginSignupActivity.class
 			Intent loginIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
 			startActivity(loginIntent);
 			finish();  
-		} //currentUser if/else close
+		} //currentUser if/else close 
 		
 		queryParseForItems();
 		
@@ -97,8 +105,11 @@ public class MainActivity extends Activity {
 		
     } //onCreate close 
     
+    //Delete item from list once confirmed with alert dialog 
     void deleteItem(int positionSelected) {
-    	final int deleteItemPosition = positionSelected;
+    	//itemListView.setEnabled(false);
+    	//Pass position to Final var -1 to account for 0 based
+    	final int deleteItemPosition = positionSelected - 1;
     	//Create dialog to confirm delete
     	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.this);
     	deleteDialog.setTitle("Delete Item?");
@@ -107,8 +118,9 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				//Remove item from listview
+				//Query parse for item
 				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
+				//Remove item from listview
 				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
 
 					@Override
@@ -124,7 +136,8 @@ public class MainActivity extends Activity {
 										//Clear item arraylist and repop listview
 										parseArrayList.clear();
 										queryParseForItems();
-										
+										listAdapter.notifyDataSetChanged();
+										//itemListView.setEnabled(true);
 									} else {
 										Toast.makeText(getBaseContext(),"An error occured, please try again.", Toast.LENGTH_LONG).show();
 									}
@@ -140,7 +153,6 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				// TODO Auto-generated method stub
 				
 			}
 		}); 
@@ -149,6 +161,9 @@ public class MainActivity extends Activity {
     	
     }
     
+	/**
+	 * Query parse for items and display.
+	 */
 	void queryParseForItems() {
 		//final ArrayList<Map<String, String>> parseArrayList = new ArrayList<Map<String, String>>();
 		// Query Parse for items and parse into arraylist
@@ -187,6 +202,9 @@ public class MainActivity extends Activity {
 		});
 	} //queryParseForItems close
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+     */
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -194,6 +212,9 @@ public class MainActivity extends Activity {
         return true; 
     }
 
+    /* (non-Javadoc)
+     * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
@@ -219,25 +240,22 @@ public class MainActivity extends Activity {
 			//Remove Main activity from stack
 			finish();
 			break;
+		//Refresh button
+		case R.id.refreshButton:
+			Log.i(TAG, "Refresh hit");
+			//Clear arraylist and query Parse again
+			parseArrayList.clear();
+			queryParseForItems();
+			break;
         default:  
 			break;
 		}
         return super.onOptionsItemSelected(menuItem);
     } //onOptionsItemSelected close
     
-	//Called when a a contextual menu item is selected
-	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.showMenuItem:
-			
-			//Action executed, close the CAB
-			mode.finish();
-			return true;
-		default:
-			return false;
-		}
-	} //onActionItemClicked close
-    
+    /* (non-Javadoc)
+     * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent newItemBackIntent) {
     	Log.i(TAG, "On Activity Result");
@@ -246,6 +264,7 @@ public class MainActivity extends Activity {
     		parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
 			queryParseForItems();
+			listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
     }

@@ -27,6 +27,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class LoginAndSignupActivity handles user login and signup.
+ */
 public class LoginAndSignupActivity extends Activity {
 	String TAG = "LoginAndSignupActivity";
 	EditText usernameEditText;
@@ -36,6 +40,9 @@ public class LoginAndSignupActivity extends Activity {
 	Button loginButton;
 	Button signupButton;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -70,6 +77,9 @@ public class LoginAndSignupActivity extends Activity {
 		
 	} //onCreate close
 	
+	/**
+	 * On login clicked.
+	 */
 	private void onLoginClicked(){
 		//Retrieve input username and password
 		usernameEntered = usernameEditText.getText().toString();
@@ -104,6 +114,9 @@ public class LoginAndSignupActivity extends Activity {
 		
 	} //onLoginClicked close
 	
+	/**
+	 * On signup clicked.
+	 */
 	private void onSignupClicked() {
 		// Retrieve input username and password
 		usernameEntered = usernameEditText.getText().toString();

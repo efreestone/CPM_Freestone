@@ -4,7 +4,7 @@
     
     <item 
         android:id="@+id/logoutButton"
-        android:orderInCategory="10"
+        android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/logoutButtonText"/>
     <item
@@ -12,11 +12,10 @@
         android:icon="@drawable/ic_action_new"
         android:showAsAction="ifRoom"
         android:title="@string/newPlusButton"/>
-    
     <item 
-        android:id="@+id/editButton" 
-        android:orderInCategory="100"
+        android:id="@+id/refreshButton"
+        android:orderInCategory="10"
         android:showAsAction="never"
-        android:title="Edit"/>
+        android:title="@string/refreshButton"/>
 
 </menu>

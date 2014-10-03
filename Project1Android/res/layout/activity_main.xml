@@ -7,12 +7,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.elijahfreestone.project1android.MainActivity" >
-
-    <TextView
-        android:id="@+id/titleTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
     
     <ListView 
         android:id="@+id/itemListView"
@@ -21,5 +15,4 @@
         android:divider="#8e8e8e"
 		android:dividerHeight="1sp" />
 
-
-</RelativeLayout>
+</RelativeLayout> 
