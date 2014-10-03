@@ -1,7 +1,0 @@
-package com.elijahfreestone.project1android;
-
-import android.app.Activity;
-
-public class NewItemActivity extends Activity {
-
-}

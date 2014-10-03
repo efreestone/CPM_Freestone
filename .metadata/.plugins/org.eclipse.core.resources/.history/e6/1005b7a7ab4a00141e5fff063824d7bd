@@ -233,14 +233,15 @@ public class MainActivity extends Activity {
         	break;
         //Log out button
         case R.id.logoutButton: 
-        	//Log user out and present login screen
+        	//Log user out
 			ParseUser.logOut();
 			Log.i(TAG, "User logged out");
+			//Present user with login screen
 			Intent logoutIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
 			startActivity(logoutIntent);
 			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
                     Toast.LENGTH_LONG).show();
-			//Remove Main activity from stack to stop "Back button login"
+			//Remove Main activity from stack
 			finish(); 
 			break;
 		//Refresh button

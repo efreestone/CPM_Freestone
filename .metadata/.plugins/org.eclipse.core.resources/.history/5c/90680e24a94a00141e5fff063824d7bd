@@ -107,6 +107,7 @@ public class MainActivity extends Activity {
     
     //Delete item from list once confirmed with alert dialog 
     void deleteItem(int positionSelected) {
+    	//itemListView.setEnabled(false);
     	//Pass position to Final var -1 to account for 0 based
     	final int deleteItemPosition = positionSelected - 1;
     	//Create dialog to confirm delete
@@ -145,6 +146,7 @@ public class MainActivity extends Activity {
 						}
 					}
 				}); //findInBackground close
+				
 			}
 		});
     	deleteDialog.setNegativeButton("NO", new OnClickListener() {
@@ -162,6 +164,7 @@ public class MainActivity extends Activity {
 	 * Query parse for items and display.
 	 */
 	void queryParseForItems() {
+		//final ArrayList<Map<String, String>> parseArrayList = new ArrayList<Map<String, String>>();
 		// Query Parse for items and parse into arraylist
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -169,7 +172,7 @@ public class MainActivity extends Activity {
 				if (e == null) {
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
 					//Log.i(TAG, newItemList.toString());
-					//Split list into seperate Parse Objects
+					
 					for (ParseObject eachItem : newItemList) { 
 						
 						String itemName = eachItem.getString("Name"); 
@@ -233,14 +236,15 @@ public class MainActivity extends Activity {
         	break;
         //Log out button
         case R.id.logoutButton: 
-        	//Log user out and present login screen
+        	//Log user out
 			ParseUser.logOut();
 			Log.i(TAG, "User logged out");
+			//Present user with login screen
 			Intent logoutIntent = new Intent(MainActivity.this, LoginAndSignupActivity.class);
 			startActivity(logoutIntent);
 			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
                     Toast.LENGTH_LONG).show();
-			//Remove Main activity from stack to stop "Back button login"
+			//Remove Main activity from stack
 			finish(); 
 			break;
 		//Refresh button
@@ -270,5 +274,5 @@ public class MainActivity extends Activity {
 			listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
-    } //onActivityResult close
+    }
 }
