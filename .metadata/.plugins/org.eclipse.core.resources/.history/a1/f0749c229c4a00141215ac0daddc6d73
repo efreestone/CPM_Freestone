@@ -37,7 +37,7 @@ public class NewItemActivity extends Activity {
 	Button saveButton;
 	String nameEntered;
 	String numberEnteredString;
-	long numberEnteredLong; 
+	long numberEnteredlong; 
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -66,14 +66,14 @@ public class NewItemActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				} else {
 					//Parse int from number string
-					numberEnteredLong = Long.parseLong(numberEnteredString); 
+					numberEnteredInt = Integer.parseInt(numberEnteredString);
 					Log.i(TAG, "Save clicked");
-					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
+					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
 
 					// Save new item to Parse. Default ACL is set in MainActivity
 					ParseObject newItem = new ParseObject("newItem");
 					newItem.put("Name", nameEntered);
-					newItem.put("Number", numberEnteredLong);
+					newItem.put("Number", numberEnteredInt);
 					newItem.saveInBackground(new SaveCallback() {
 						
 						@Override

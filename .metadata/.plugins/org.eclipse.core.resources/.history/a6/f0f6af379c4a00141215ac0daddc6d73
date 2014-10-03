@@ -177,7 +177,7 @@ public class MainActivity extends Activity {
 					for (ParseObject eachItem : newItemList) { 
 						
 						String itemName = eachItem.getString("Name"); 
-						long itemNumber = eachItem.getLong("Number");
+						int itemNumber = eachItem.getInt("Number");
 						String itemNumberString = "" + itemNumber;
 						String itemID = eachItem.getObjectId().toString();
 						HashMap<String, String> objectMap = new HashMap<String, String>();

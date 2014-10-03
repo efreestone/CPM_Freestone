@@ -66,7 +66,7 @@ public class NewItemActivity extends Activity {
 							Toast.LENGTH_LONG).show();
 				} else {
 					//Parse int from number string
-					numberEnteredLong = Long.parseLong(numberEnteredString); 
+					numberEnteredLong = Long.parseLong(numberEnteredString);
 					Log.i(TAG, "Save clicked");
 					Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
 

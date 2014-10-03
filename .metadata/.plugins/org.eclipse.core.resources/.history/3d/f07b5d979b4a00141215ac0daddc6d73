@@ -38,7 +38,7 @@ public class LoginAndSignupActivity extends Activity {
 	String usernameEntered;
 	String passwordEntered;
 	Button loginButton;
-	Button signupButton; 
+	Button signupButton;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
