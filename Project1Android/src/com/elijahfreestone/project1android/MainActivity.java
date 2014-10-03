@@ -17,17 +17,26 @@ import java.util.HashMap;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast; 
 
+import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -43,6 +52,8 @@ public class MainActivity extends Activity {
 	static ListView itemListView;
 	ArrayList<HashMap<String, String>> parseArrayList;
 	BaseAdapter listAdapter;
+	Object myActionMode;
+	int itemSelected = -1;
 
     @Override         
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,7 +84,70 @@ public class MainActivity extends Activity {
 		
 		queryParseForItems();
 		
+		//Set long click lsitener for listview
+		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+		      public boolean onItemLongClick(AdapterView<?> parent, View view,
+		          int position, long id) {
+				deleteItem(position);
+		        return true;
+		      }
+		}); //setOnItemLongClickListener close
+		
     } //onCreate close 
+    
+    void deleteItem(int positionSelected) {
+    	final int deleteItemPosition = positionSelected;
+    	//Create dialog to confirm delete
+    	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.this);
+    	deleteDialog.setTitle("Delete Item?");
+    	deleteDialog.setMessage("Are you sure you want to delete this item?");
+    	deleteDialog.setPositiveButton("YES", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Remove item from listview
+				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
+				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
+
+					@Override
+					public void done(List<ParseObject> itemsList, ParseException e) {
+						if (e == null) {
+							//Delete item from parse
+							itemsList.get(deleteItemPosition).deleteInBackground(new DeleteCallback() {
+
+								@Override
+								public void done(ParseException arg0) {
+									if (arg0 == null) {
+										Toast.makeText(getBaseContext(),"Item Successfully Deleted!", Toast.LENGTH_LONG).show();
+										//Clear item arraylist and repop listview
+										parseArrayList.clear();
+										queryParseForItems();
+										
+									} else {
+										Toast.makeText(getBaseContext(),"An error occured, please try again.", Toast.LENGTH_LONG).show();
+									}
+								}
+							}); //deleteInBackground close
+						}
+					}
+				}); //findInBackground close
+				
+			}
+		});
+    	deleteDialog.setNegativeButton("NO", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				// TODO Auto-generated method stub
+				
+			}
+		}); 
+    	
+    	deleteDialog.show();
+    	
+    }
     
 	void queryParseForItems() {
 		//final ArrayList<Map<String, String>> parseArrayList = new ArrayList<Map<String, String>>();
@@ -117,7 +191,7 @@ public class MainActivity extends Activity {
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        return true; 
     }
 
     @Override
@@ -145,11 +219,24 @@ public class MainActivity extends Activity {
 			//Remove Main activity from stack
 			finish();
 			break;
-        default:
+        default:  
 			break;
 		}
         return super.onOptionsItemSelected(menuItem);
     } //onOptionsItemSelected close
+    
+	//Called when a a contextual menu item is selected
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.showMenuItem:
+			
+			//Action executed, close the CAB
+			mode.finish();
+			return true;
+		default:
+			return false;
+		}
+	} //onActionItemClicked close
     
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent newItemBackIntent) {
