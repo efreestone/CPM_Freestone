@@ -16,6 +16,8 @@
 
 @interface ViewController : UIViewController
 
+-(IBAction)onLogOut:(id)sender;
+
 
 @end
 
