@@ -15,6 +15,14 @@
 		B8342EE919DF26C0000660B8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8342EE719DF26C0000660B8 /* LaunchScreen.xib */; };
 		B8342EF519DF26C0000660B8 /* Project2iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8342EF419DF26C0000660B8 /* Project2iOSTests.m */; };
 		B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */; };
+		B87EDEF819E4EFE50027E242 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF019E4EFE50027E242 /* Icon-76.png */; };
+		B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */; };
+		B87EDEFA19E4EFE50027E242 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF219E4EFE50027E242 /* Icon.png */; };
+		B87EDEFB19E4EFE50027E242 /* Icon@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF319E4EFE50027E242 /* Icon@2x.png */; };
+		B87EDEFC19E4EFE50027E242 /* LoginFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF419E4EFE50027E242 /* LoginFieldBG.png */; };
+		B87EDEFD19E4EFE50027E242 /* signin-button-highlighted.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF519E4EFE50027E242 /* signin-button-highlighted.png */; };
+		B87EDEFE19E4EFE50027E242 /* signin-button.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF619E4EFE50027E242 /* signin-button.png */; };
+		B87EDEFF19E4EFE50027E242 /* SignUpFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF719E4EFE50027E242 /* SignUpFieldBG.png */; };
 		B8A17EC319E37E7C005C8E19 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC219E37E7C005C8E19 /* Social.framework */; };
 		B8A17EC519E37EBB005C8E19 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC419E37EBB005C8E19 /* Accounts.framework */; };
 		B8A17EC919E38079005C8E19 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC619E38079005C8E19 /* Bolts.framework */; };
@@ -58,6 +66,14 @@
 		B8342EF419DF26C0000660B8 /* Project2iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Project2iOSTests.m; sourceTree = "<group>"; };
 		B87EDEEC19E4E8EB0027E242 /* CustomPFLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPFLoginViewController.h; sourceTree = "<group>"; };
 		B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPFLoginViewController.m; sourceTree = "<group>"; };
+		B87EDEF019E4EFE50027E242 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
+		B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76@2x.png"; sourceTree = "<group>"; };
+		B87EDEF219E4EFE50027E242 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		B87EDEF319E4EFE50027E242 /* Icon@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon@2x.png"; sourceTree = "<group>"; };
+		B87EDEF419E4EFE50027E242 /* LoginFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginFieldBG.png; sourceTree = "<group>"; };
+		B87EDEF519E4EFE50027E242 /* signin-button-highlighted.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signin-button-highlighted.png"; sourceTree = "<group>"; };
+		B87EDEF619E4EFE50027E242 /* signin-button.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "signin-button.png"; sourceTree = "<group>"; };
+		B87EDEF719E4EFE50027E242 /* SignUpFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SignUpFieldBG.png; sourceTree = "<group>"; };
 		B8A17EC219E37E7C005C8E19 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		B8A17EC419E37EBB005C8E19 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		B8A17EC619E38079005C8E19 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -130,6 +146,7 @@
 		B8342ED719DF26C0000660B8 /* Project2iOS */ = {
 			isa = PBXGroup;
 			children = (
+				B87EDEEF19E4EFE50027E242 /* images */,
 				B8342EDC19DF26C0000660B8 /* AppDelegate.h */,
 				B8342EDD19DF26C0000660B8 /* AppDelegate.m */,
 				B8342EDF19DF26C0000660B8 /* ViewController.h */,
@@ -168,6 +185,21 @@
 				B8342EF319DF26C0000660B8 /* Info.plist */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		B87EDEEF19E4EFE50027E242 /* images */ = {
+			isa = PBXGroup;
+			children = (
+				B87EDEF019E4EFE50027E242 /* Icon-76.png */,
+				B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */,
+				B87EDEF219E4EFE50027E242 /* Icon.png */,
+				B87EDEF319E4EFE50027E242 /* Icon@2x.png */,
+				B87EDEF419E4EFE50027E242 /* LoginFieldBG.png */,
+				B87EDEF519E4EFE50027E242 /* signin-button-highlighted.png */,
+				B87EDEF619E4EFE50027E242 /* signin-button.png */,
+				B87EDEF719E4EFE50027E242 /* SignUpFieldBG.png */,
+			);
+			path = images;
 			sourceTree = "<group>";
 		};
 		B8B140ED19E0B355008BB2D2 /* Frameworks */ = {
@@ -272,8 +304,16 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B87EDEFA19E4EFE50027E242 /* Icon.png in Resources */,
+				B87EDEFC19E4EFE50027E242 /* LoginFieldBG.png in Resources */,
 				B8342EE419DF26C0000660B8 /* Main.storyboard in Resources */,
+				B87EDEFB19E4EFE50027E242 /* Icon@2x.png in Resources */,
+				B87EDEFD19E4EFE50027E242 /* signin-button-highlighted.png in Resources */,
+				B87EDEFE19E4EFE50027E242 /* signin-button.png in Resources */,
+				B87EDEF819E4EFE50027E242 /* Icon-76.png in Resources */,
 				B8342EE919DF26C0000660B8 /* LaunchScreen.xib in Resources */,
+				B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */,
+				B87EDEFF19E4EFE50027E242 /* SignUpFieldBG.png in Resources */,
 				B8342EE619DF26C0000660B8 /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -39,8 +39,8 @@
     [self.logInView setLogo:nil];
     
     // Add login field background
-//    fieldsBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginFieldBG.png"]];
-//    [self.logInView insertSubview:fieldsBackground atIndex:1];
+    fieldsBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginFieldBG.png"]];
+    [self.logInView insertSubview:fieldsBackground atIndex:1];
     
     // Remove text shadow
     CALayer *layer = self.logInView.usernameField.layer;
