@@ -26,7 +26,7 @@
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aVH-1r-HJ6">
                                 <rect key="frame" x="0.0" y="20" width="320" height="44"/>
                                 <items>
-                                    <barButtonItem title="Log Out" id="Jqr-1P-lfw">
+                                    <barButtonItem title="Sign Out" id="Jqr-1P-lfw">
                                         <connections>
                                             <action selector="onLogOut:" destination="BYZ-38-t0r" id="8qJ-uf-P6i"/>
                                         </connections>

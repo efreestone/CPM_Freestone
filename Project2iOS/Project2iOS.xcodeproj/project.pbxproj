@@ -14,6 +14,7 @@
 		B8342EE619DF26C0000660B8 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8342EE519DF26C0000660B8 /* Images.xcassets */; };
 		B8342EE919DF26C0000660B8 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = B8342EE719DF26C0000660B8 /* LaunchScreen.xib */; };
 		B8342EF519DF26C0000660B8 /* Project2iOSTests.m in Sources */ = {isa = PBXBuildFile; fileRef = B8342EF419DF26C0000660B8 /* Project2iOSTests.m */; };
+		B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */; };
 		B8A17EC319E37E7C005C8E19 /* Social.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC219E37E7C005C8E19 /* Social.framework */; };
 		B8A17EC519E37EBB005C8E19 /* Accounts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC419E37EBB005C8E19 /* Accounts.framework */; };
 		B8A17EC919E38079005C8E19 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8A17EC619E38079005C8E19 /* Bolts.framework */; };
@@ -55,6 +56,8 @@
 		B8342EEE19DF26C0000660B8 /* Project2iOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Project2iOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8342EF319DF26C0000660B8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8342EF419DF26C0000660B8 /* Project2iOSTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Project2iOSTests.m; sourceTree = "<group>"; };
+		B87EDEEC19E4E8EB0027E242 /* CustomPFLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPFLoginViewController.h; sourceTree = "<group>"; };
+		B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPFLoginViewController.m; sourceTree = "<group>"; };
 		B8A17EC219E37E7C005C8E19 /* Social.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Social.framework; path = System/Library/Frameworks/Social.framework; sourceTree = SDKROOT; };
 		B8A17EC419E37EBB005C8E19 /* Accounts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accounts.framework; path = System/Library/Frameworks/Accounts.framework; sourceTree = SDKROOT; };
 		B8A17EC619E38079005C8E19 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
@@ -135,6 +138,8 @@
 				B8342EE519DF26C0000660B8 /* Images.xcassets */,
 				B8342EE719DF26C0000660B8 /* LaunchScreen.xib */,
 				B8342ED819DF26C0000660B8 /* Supporting Files */,
+				B87EDEEC19E4E8EB0027E242 /* CustomPFLoginViewController.h */,
+				B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */,
 			);
 			path = Project2iOS;
 			sourceTree = "<group>";
@@ -288,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B8342EE119DF26C0000660B8 /* ViewController.m in Sources */,
+				B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */,
 				B8342EDE19DF26C0000660B8 /* AppDelegate.m in Sources */,
 				B8342EDB19DF26C0000660B8 /* main.m in Sources */,
 			);
