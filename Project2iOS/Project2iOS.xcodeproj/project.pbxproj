@@ -38,6 +38,7 @@
 		B8B140E819E0B2EA008BB2D2 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B140E719E0B2EA008BB2D2 /* Security.framework */; };
 		B8B140EA19E0B2F4008BB2D2 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B140E919E0B2F4008BB2D2 /* StoreKit.framework */; };
 		B8B140EC19E0B301008BB2D2 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B8B140EB19E0B301008BB2D2 /* SystemConfiguration.framework */; };
+		B8B8445A19E5E9180073740C /* loginBackground-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B8B8445919E5E9180073740C /* loginBackground-568h@2x.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -89,6 +90,7 @@
 		B8B140E719E0B2EA008BB2D2 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		B8B140E919E0B2F4008BB2D2 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		B8B140EB19E0B301008BB2D2 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		B8B8445919E5E9180073740C /* loginBackground-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBackground-568h@2x.png"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -190,6 +192,7 @@
 		B87EDEEF19E4EFE50027E242 /* images */ = {
 			isa = PBXGroup;
 			children = (
+				B8B8445919E5E9180073740C /* loginBackground-568h@2x.png */,
 				B87EDEF019E4EFE50027E242 /* Icon-76.png */,
 				B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */,
 				B87EDEF219E4EFE50027E242 /* Icon.png */,
@@ -313,6 +316,7 @@
 				B87EDEF819E4EFE50027E242 /* Icon-76.png in Resources */,
 				B8342EE919DF26C0000660B8 /* LaunchScreen.xib in Resources */,
 				B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */,
+				B8B8445A19E5E9180073740C /* loginBackground-568h@2x.png in Resources */,
 				B87EDEFF19E4EFE50027E242 /* SignUpFieldBG.png in Resources */,
 				B8342EE619DF26C0000660B8 /* Images.xcassets in Resources */,
 			);
@@ -458,6 +462,7 @@
 		B8342EF919DF26C0000660B8 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -473,6 +478,7 @@
 		B8342EFA19DF26C0000660B8 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

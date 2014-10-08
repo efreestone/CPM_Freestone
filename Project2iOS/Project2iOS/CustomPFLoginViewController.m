@@ -34,9 +34,14 @@
 //        [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground~iPad.png"]]];
 //        [self.logInView setLogo:nil];
 //    }
-    [self.logInView setBackgroundColor:[UIColor whiteColor]];
     
-    [self.logInView setLogo:nil];
+    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
+    
+    //[self.logInView setBackgroundColor:[UIColor whiteColor]];
+    
+    //[self.logInView.dismissButton isHidden:[true]];
+    
+    //[self.logInView setLogo:nil];
     
     // Add login field background
     fieldsBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"LoginFieldBG.png"]];
@@ -44,7 +49,7 @@
     
     // Remove text shadow
     CALayer *layer = self.logInView.usernameField.layer;
-    layer.shadowOpacity = 0.0f;
+    layer.shadowOpacity = 0.0f; 
     layer = self.logInView.passwordField.layer;
     layer.shadowOpacity = 0.0f;
     CALayer *labelLayer = self.logInView.signUpLabel.layer;
