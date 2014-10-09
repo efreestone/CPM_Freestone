@@ -14,6 +14,7 @@
 #import "CustomTableViewController.h"
 #import "CustomPFLoginViewController.h"
 #import "CustomPFSignUpViewController.h"
+#import "AddNewItemViewController.h"
 
 @interface CustomTableViewController ()
 
@@ -86,6 +87,9 @@
 
 -(IBAction)addNewItem:(id)sender {
     NSLog(@"plus clicked");
+    AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
+    
+    [self.navigationController pushViewController:addNewViewController animated:true];
 }
 
 #pragma mark - PFQueryTableViewController
@@ -133,12 +137,15 @@
 //    return self;
 //}
 
-//
+//Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    if (cell == nil && [self.objects count] > 0) {
+        NSLog(@"Count = > 0");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+    } else {
+        NSLog(@"Count = 0");
     }
     // Configure the cell
     cell.textLabel.text = [NSString stringWithFormat:@"Name: %@", [object objectForKey:@"Name"]];
@@ -157,6 +164,12 @@
     //NSLog(@"Query = %ld", (long)query.countObjects);
     [newItemQuery orderByAscending:@"createdAt"];
     return newItemQuery;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    // Return the number of rows in the section.
+    return [self.objects count];
 }
 
 //Built in function to check editing style (-=delete, +=add)

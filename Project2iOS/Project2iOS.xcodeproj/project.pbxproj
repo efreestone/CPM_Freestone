@@ -18,6 +18,8 @@
 		B837172F19E71BFD0073DED8 /* loginBackground-568h.png in Resources */ = {isa = PBXBuildFile; fileRef = B837172E19E71BFD0073DED8 /* loginBackground-568h.png */; };
 		B837173219E71C060073DED8 /* loginBackground~iPad.png in Resources */ = {isa = PBXBuildFile; fileRef = B837173019E71C060073DED8 /* loginBackground~iPad.png */; };
 		B837173319E71C060073DED8 /* loginBackground~iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B837173119E71C060073DED8 /* loginBackground~iPad@2x.png */; };
+		B837173719E7243E0073DED8 /* AddNewItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B837173519E7243E0073DED8 /* AddNewItemViewController.m */; };
+		B837173819E7243E0073DED8 /* AddNewItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B837173619E7243E0073DED8 /* AddNewItemViewController.xib */; };
 		B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */; };
 		B87EDEF819E4EFE50027E242 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF019E4EFE50027E242 /* Icon-76.png */; };
 		B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */; };
@@ -72,6 +74,9 @@
 		B837172E19E71BFD0073DED8 /* loginBackground-568h.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBackground-568h.png"; sourceTree = "<group>"; };
 		B837173019E71C060073DED8 /* loginBackground~iPad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBackground~iPad.png"; sourceTree = "<group>"; };
 		B837173119E71C060073DED8 /* loginBackground~iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBackground~iPad@2x.png"; sourceTree = "<group>"; };
+		B837173419E7243E0073DED8 /* AddNewItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewItemViewController.h; sourceTree = "<group>"; };
+		B837173519E7243E0073DED8 /* AddNewItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewItemViewController.m; sourceTree = "<group>"; };
+		B837173619E7243E0073DED8 /* AddNewItemViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNewItemViewController.xib; sourceTree = "<group>"; };
 		B87EDEEC19E4E8EB0027E242 /* CustomPFLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPFLoginViewController.h; sourceTree = "<group>"; };
 		B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPFLoginViewController.m; sourceTree = "<group>"; };
 		B87EDEF019E4EFE50027E242 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
@@ -166,6 +171,9 @@
 				B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */,
 				B837172B19E7149B0073DED8 /* CustomPFSignUpViewController.h */,
 				B837172C19E7149B0073DED8 /* CustomPFSignUpViewController.m */,
+				B837173419E7243E0073DED8 /* AddNewItemViewController.h */,
+				B837173519E7243E0073DED8 /* AddNewItemViewController.m */,
+				B837173619E7243E0073DED8 /* AddNewItemViewController.xib */,
 			);
 			path = Project2iOS;
 			sourceTree = "<group>";
@@ -319,6 +327,7 @@
 				B87EDEFC19E4EFE50027E242 /* LoginFieldBG.png in Resources */,
 				B8342EE419DF26C0000660B8 /* Main.storyboard in Resources */,
 				B87EDEFB19E4EFE50027E242 /* Icon@2x.png in Resources */,
+				B837173819E7243E0073DED8 /* AddNewItemViewController.xib in Resources */,
 				B837173319E71C060073DED8 /* loginBackground~iPad@2x.png in Resources */,
 				B837173219E71C060073DED8 /* loginBackground~iPad.png in Resources */,
 				B837172F19E71BFD0073DED8 /* loginBackground-568h.png in Resources */,
@@ -345,6 +354,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B837173719E7243E0073DED8 /* AddNewItemViewController.m in Sources */,
 				B837172D19E7149B0073DED8 /* CustomPFSignUpViewController.m in Sources */,
 				B8342EE119DF26C0000660B8 /* CustomTableViewController.m in Sources */,
 				B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */,
