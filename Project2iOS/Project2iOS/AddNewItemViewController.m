@@ -20,6 +20,13 @@
 @implementation AddNewItemViewController
 
 - (void)viewDidLoad {
+    //Create and add done button
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                                                               target:self
+                                                                               action:@selector(saveNewItem:)];
+    
+    self.navigationItem.rightBarButtonItem = doneButton;
+
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -27,6 +34,12 @@
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//Save new item to Parse and dismiss view
+-(IBAction)saveNewItem:(id)sender {
+    NSLog(@"Done button clicke");
+    [self.navigationController popViewControllerAnimated:true];
 }
 
 /*

@@ -85,10 +85,10 @@
     [self clear];
 }
 
+//Push add item view controller. Hooked/triggered by plus button
 -(IBAction)addNewItem:(id)sender {
     NSLog(@"plus clicked");
     AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
-    
     [self.navigationController pushViewController:addNewViewController animated:true];
 }
 
