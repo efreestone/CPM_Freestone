@@ -1,0 +1,40 @@
+package com.elijahfreestone.project1android;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class NewItemActivity extends Activity {
+	String TAG = "NewItemActivity";
+	EditText nameEditText;
+	EditText numberEditText;
+	Button saveButton;
+	String nameEntered;
+	String numberEnteredString;
+	int numberEntered;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_new_item);  
+		
+		//Grab edit texts and button
+		nameEditText = (EditText) findViewById(R.id.nameEditText);
+		numberEditText = (EditText) findViewById(R.id.numberEditText);
+		saveButton = (Button) findViewById(R.id.saveButton);
+		
+		saveButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View arg0) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+	} 
+
+}

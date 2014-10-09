@@ -1,0 +1,67 @@
+/*
+ * @author	Elijah Freestone 
+ *
+ * Project	Project1Android
+ * 
+ * @class 	CPM term 1410
+ * 
+ * Package	com.elijahfreestone.project1android
+ * 
+ * Date		Sep 30, 2014
+ */
+
+package com.elijahfreestone.project1android;
+
+import com.parse.ParseACL;
+import com.parse.ParseObject;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class NewItemActivity extends Activity {
+	String TAG = "NewItemActivity";
+	EditText nameEditText;
+	EditText numberEditText;
+	Button saveButton;
+	String nameEntered;
+	String numberEnteredString;
+	int numberEnteredInt;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_new_item);  
+		
+		//Grab edit texts and button
+		nameEditText = (EditText) findViewById(R.id.nameEditText);
+		numberEditText = (EditText) findViewById(R.id.numberEditText);
+		saveButton = (Button) findViewById(R.id.saveButton);
+		
+		ParseACL.setDefaultACL(new ParseACL(), true);
+		
+		saveButton.setOnClickListener(new OnClickListener() { 
+			
+			@Override 
+			public void onClick(View arg0) {
+				nameEntered = nameEditText.getText().toString();
+				numberEnteredString = numberEditText.getText().toString();
+				numberEnteredInt = Integer.parseInt(numberEnteredString);
+				Log.i(TAG, "Save clicked");
+				Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredInt);
+				
+				ParseObject newItem = new ParseObject("newItem");
+				newItem.put("Name", nameEntered);
+				newItem.put("Number", numberEnteredInt);
+				newItem.saveInBackground();
+				
+			} 
+		});
+	} 
+
+}
