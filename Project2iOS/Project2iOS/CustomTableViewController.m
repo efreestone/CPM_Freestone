@@ -13,6 +13,7 @@
 
 #import "CustomTableViewController.h"
 #import "CustomPFLoginViewController.h"
+#import "CustomPFSignUpViewController.h"
 
 @interface CustomTableViewController ()
 
@@ -60,7 +61,7 @@
         //Instantiate view controllers for login and signup
         CustomPFLoginViewController *loginViewController = [[CustomPFLoginViewController alloc] init];
         [loginViewController setDelegate:self];
-        PFSignUpViewController *signUpViewController = [[PFSignUpViewController alloc] init];
+        CustomPFSignUpViewController *signUpViewController = [[CustomPFSignUpViewController alloc] init];
         [signUpViewController setDelegate:self];
         
         //Link sign up to be displayed from login
@@ -190,6 +191,7 @@
 // Sent to the delegate when the log in attempt fails.
 - (void)logInViewController:(PFLogInViewController *)logInController didFailToLogInWithError:(NSError *)error {
     NSLog(@"Failed to log in...");
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Login Failed! Please check your username and/or password and try again", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
 }
 
 // Sent to the delegate when the log in screen is dismissed.
@@ -212,7 +214,7 @@
     }
     // Display an alert if a field wasn't completed
     if (!informationComplete) {
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"Make sure you fill out all of the information!", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     return informationComplete;
 }

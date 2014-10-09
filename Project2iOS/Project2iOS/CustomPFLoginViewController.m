@@ -25,17 +25,17 @@
 
 - (void)viewDidLoad
 {
-//    //Check device type and set background accordingly
-//    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
-//        [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
-//        //NSLog(@"is iPhone");
-//        [self.logInView setLogo:nil];
-//    } else {
-//        [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground~iPad.png"]]];
-//        [self.logInView setLogo:nil];
-//    }
+    //Check device type and set background accordingly
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
+        //NSLog(@"is iPhone");
+        [self.logInView setLogo:nil];
+    } else {
+        [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground~iPad.png"]]];
+        [self.logInView setLogo:nil];
+    }
     
-    [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
+    //[self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
     
     //[self.logInView setBackgroundColor:[UIColor whiteColor]];
     
