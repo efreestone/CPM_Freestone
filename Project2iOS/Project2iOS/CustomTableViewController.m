@@ -14,9 +14,7 @@
 #import "CustomTableViewController.h"
 #import "CustomPFLoginViewController.h"
 
-@interface CustomTableViewController () {
-    BOOL clearTable;
-}
+@interface CustomTableViewController ()
 
 @end
 
@@ -72,8 +70,7 @@
         [self presentViewController:loginViewController animated:YES completion:NULL];
     } else {
         NSLog(@"User auto-logged in");
-//        clearTable = NO;
-//        [self queryForTable];
+        //Reload objects from parse
         [self loadObjects];
     } 
 }
@@ -82,17 +79,17 @@
 -(IBAction)onLogOut:(id)sender {
     [PFUser logOut];
     [self isUserLoggedIn];
-    //[self.tableView reloadData];
-    // clear table
+    //Clear tableview of all objects
     [self clear];
-//    clearTable = YES;
-//    [self.tableView reloadData];
-//    clearTable = NO;
+}
+
+-(IBAction)addNewItem:(id)sender {
+    NSLog(@"plus clicked");
 }
 
 #pragma mark - PFQueryTableViewController
 
-//
+//Init tableview and set params
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
@@ -106,22 +103,36 @@
         self.title = @"My Contacts";
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
-        // Whether the built-in pagination is enabled
-        //self.paginationEnabled = YES;
-        // The number of objects to show per page
-        //self.objectsPerPage = 5;
+//        //Whether the built-in pagination is enabled
+//        self.paginationEnabled = YES;
+//        //The number of objects to show per page
+//        self.objectsPerPage = 5;
     }
     return self;
 }
 
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-//    if (clearTable) {
-//        return 0;
-//    } else {
-//        return 1;
+//- (id)initWithCoder:(NSCoder *)aCoder
+//{
+//    self = [super initWithCoder:aCoder];
+//    if (self) {
+//        NSLog(@"Self!!");
+//        // The className to query on
+//        //self.parseClassName = @"newItem";
+//        self.parseClassName = @"newItem";
+//        
+//        // The key of the PFObject to display in the label of the default cell style
+//        self.textKey = @"text";
+//        
+//        // Whether the built-in pull-to-refresh is enabled
+//        self.pullToRefreshEnabled = YES;
+//        
+//        // Whether the built-in pagination is enabled
+//        self.paginationEnabled = NO;
 //    }
+//    return self;
 //}
 
+//
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
@@ -136,16 +147,15 @@
 
 //Override query to display notice if no items found for the user
 - (PFQuery *)queryForTable {
-    PFQuery *query = [PFQuery queryWithClassName:self.parseClassName];
+    PFQuery *newItemQuery = [PFQuery queryWithClassName:self.parseClassName];
     
-    // If no objects are loaded in memory, we look to the cache first to fill the table
-    // and then subsequently do a query against the network.
+    //Set cache policy to network only
     if ([self.objects count] == 0) {
-        query.cachePolicy = kPFCachePolicyCacheElseNetwork;
+        newItemQuery.cachePolicy = kPFCachePolicyNetworkOnly;
     }
-    NSLog(@"Query = %ld", (long)query.countObjects);
-    [query orderByAscending:@"createdAt"];
-    return query;
+    //NSLog(@"Query = %ld", (long)query.countObjects);
+    [newItemQuery orderByAscending:@"createdAt"];
+    return newItemQuery;
 }
 
 #pragma mark - PFLogInViewControllerDelegate
@@ -156,7 +166,7 @@
     if (username && password && username.length && password.length) {
         return YES; // Begin login process
     }
-    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"Make sure you fill out all of the information!", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     return NO; // Interrupt login process
 }
 
