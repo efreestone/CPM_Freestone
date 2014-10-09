@@ -15,4 +15,7 @@
 
 @interface AddNewItemViewController : UIViewController
 
+@property (strong, nonatomic) IBOutlet UITextField *nameTextField;
+@property (strong, nonatomic) IBOutlet UITextField *numberTextField;
+
 @end

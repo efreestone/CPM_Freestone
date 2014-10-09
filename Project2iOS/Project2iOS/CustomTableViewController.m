@@ -142,10 +142,10 @@
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil && [self.objects count] > 0) {
-        NSLog(@"Count = > 0");
+        //NSLog(@"Count = > 0");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
     } else {
-        NSLog(@"Count = 0");
+        //NSLog(@"Count = 0");
     }
     // Configure the cell
     cell.textLabel.text = [NSString stringWithFormat:@"Name: %@", [object objectForKey:@"Name"]];

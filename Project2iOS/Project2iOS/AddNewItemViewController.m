@@ -17,7 +17,12 @@
 
 @end
 
-@implementation AddNewItemViewController
+@implementation AddNewItemViewController {
+    NSString *nameEntered;
+    NSString *numberEntered;
+}
+
+@synthesize nameTextField, numberTextField;
 
 - (void)viewDidLoad {
     //Create and add done button
@@ -38,8 +43,32 @@
 
 //Save new item to Parse and dismiss view
 -(IBAction)saveNewItem:(id)sender {
-    NSLog(@"Done button clicke");
-    [self.navigationController popViewControllerAnimated:true];
+    //NSLog(@"Done button clicke");
+    nameEntered = nameTextField.text;
+    numberEntered = numberTextField.text;
+    
+    if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
+//        NSLog(@"Name: %@", nameEntered);
+//        NSLog(@"Number: %@", numberEntered);
+        NSInteger numberEnteredInt = [numberEntered integerValue];
+        
+        PFObject *newItem = [PFObject objectWithClassName:@"newItem"];
+        newItem[@"Name"] = nameEntered;
+        newItem[@"Number"] = [NSNumber numberWithInteger:numberEnteredInt];
+        [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (succeeded) {
+                NSLog(@"New item saved.");
+                [self.navigationController popViewControllerAnimated:true];
+            } else {
+                NSLog(@"%@", error);
+                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+            }
+        }];
+    } else {
+        NSLog(@"Fields blank");
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+    }
+    
 }
 
 /*
