@@ -158,6 +158,18 @@
     return newItemQuery;
 }
 
+//Built in function to check editing style (-=delete, +=add)
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        //Grab object to delete and delete in background
+        PFObject *objectToDelete = [self.objects objectAtIndex:indexPath.row];
+        [objectToDelete deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            //Reload objects for user
+            [self loadObjects];
+        }];
+    }
+}
+
 #pragma mark - PFLogInViewControllerDelegate
 
 // Sent to the delegate to determine whether the log in request should be submitted to the server.
