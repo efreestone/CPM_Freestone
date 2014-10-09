@@ -16,7 +16,9 @@
 #import "CustomPFSignUpViewController.h"
 #import "AddNewItemViewController.h"
 
-@interface CustomTableViewController ()
+@interface CustomTableViewController () {
+    UILabel *noticeLabel;
+}
 
 @end
 
@@ -27,6 +29,19 @@
 //    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
 //    testObject[@"foo"] = @"bar";
 //    [testObject saveInBackground];
+    
+    //[self.view setBackgroundColor:[UIColor blackColor]];
+    
+    float viewWidth = self.view.frame.size.width;
+    //Create notice label to display if no items exist for the user.
+    noticeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, viewWidth, 50.0f)];
+    noticeLabel.text = @"No contacts to display. Please select the plus button to add a contact.";
+    noticeLabel.textAlignment = NSTextAlignmentCenter;
+    noticeLabel.numberOfLines = 2;
+    //noticeLabel.backgroundColor = [UIColor greenColor];
+    noticeLabel.hidden = true;
+    [self.view addSubview:noticeLabel];
+    
     
     //Create and add sign out button
     UIBarButtonItem *signOutButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out"
@@ -41,6 +56,13 @@
                                 action:@selector(addNewItem:)];
     
     self.navigationItem.rightBarButtonItem = addButton;
+    
+    //Set default ACL to be read/write of current user only
+    PFACL *defaultACL = [PFACL ACL];
+    [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
+    //Override to remove extra seperator lines after the last cell
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -139,37 +161,69 @@
 
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
+    //NSLog(@"cellForRow");
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil && [self.objects count] > 0) {
+    if (cell == nil) {
         //NSLog(@"Count = > 0");
         cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
-    } else {
-        //NSLog(@"Count = 0");
+    }
+    
+    //NSLog(@"COUNT = %lu", (unsigned long)self.objects.count);
+    
+    if (self.objects.count == 0) {
+        NSLog(@"Object Count = 0");
     }
     // Configure the cell
     cell.textLabel.text = [NSString stringWithFormat:@"Name: %@", [object objectForKey:@"Name"]];
     cell.detailTextLabel.text = [NSString stringWithFormat:@"Phone Number: %@", [object objectForKey:@"Number"]];
+    
+    //Override to remove extra seperator lines after the last cell
+    //[self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
+    
     return cell;
 }
 
 //Override query to display notice if no items found for the user
 - (PFQuery *)queryForTable {
     PFQuery *newItemQuery = [PFQuery queryWithClassName:self.parseClassName];
+    //int objectCount = 0;
+    //[newItemQuery countObjects];
     
     //Set cache policy to network only
     if ([self.objects count] == 0) {
         newItemQuery.cachePolicy = kPFCachePolicyNetworkOnly;
+        NSLog(@"count after cache = 0");
+//        if (objectCount == 0) {
+//            NSLog(@"count = 0");
+//        } else {
+//            NSLog(@"count = %ld", (long)objectCount);
+//        }
+        //[self.view addSubview:noticeLabel];
+        
     }
-    //NSLog(@"Query = %ld", (long)query.countObjects);
+    //NSLog(@"Query = %ld", (long)newItemQuery.countObjects);
+    //NSLog(@"COUNT = %lu", (unsigned long)self.objects.count);
     [newItemQuery orderByAscending:@"createdAt"];
     return newItemQuery;
+}
+
+-(void)objectsDidLoad:(NSError *)error {
+    if (self.objects.count == 0) {
+        NSLog(@"Count 0 in objectsDidLoad");
+        noticeLabel.hidden = false;
+        //[self->noticeLabel setCenter:_view.center];
+    } else {
+        noticeLabel.hidden = true;
+    }
+    [super objectsDidLoad:error];
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
-    return [self.objects count];
+    return self.objects.count;
+    
 }
 
 //Built in function to check editing style (-=delete, +=add)
