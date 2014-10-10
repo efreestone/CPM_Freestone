@@ -32,8 +32,6 @@
         [self.signUpView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground~iPad.png"]]];
         [self.signUpView setLogo:nil];
     }
-//    [self.signUpView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
-//    [self.signUpView setLogo:nil];
     
     // Add login field background
     fieldsBackground = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"SignUpFieldBG.png"]];

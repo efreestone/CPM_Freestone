@@ -27,8 +27,8 @@
 - (void)viewDidLoad {
     //Create and add done button
     UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                               target:self
-                                                                               action:@selector(saveNewItem:)];
+                                    target:self
+                                    action:@selector(saveNewItem:)];
     
     self.navigationItem.rightBarButtonItem = doneButton;
 
@@ -58,14 +58,17 @@
         [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"New item saved.");
+                //Dismiss add item view
                 [self.navigationController popViewControllerAnimated:true];
             } else {
                 NSLog(@"%@", error);
+                //Error alert
                 [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
             }
         }];
     } else {
         NSLog(@"Fields blank");
+        //Alert the user of missing fields
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     
