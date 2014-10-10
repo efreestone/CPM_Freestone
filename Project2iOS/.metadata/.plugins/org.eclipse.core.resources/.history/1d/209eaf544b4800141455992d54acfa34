@@ -1,0 +1,29 @@
+/*
+ * @author	Elijah Freestone 
+ *
+ * Project	Project1Android
+ * 
+ * @class 	CPM term 1410
+ * 
+ * Package	com.elijahfreestone.project1android
+ * 
+ * Date		Sep 29, 2014
+ */
+
+package com.elijahfreestone.project1android;
+
+import android.app.Activity;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class LoginAndSignupActivity extends Activity {
+	EditText usernameEditText;
+	EditText passwordEditText;
+	String usernameEntered;
+	String passwordEntered;
+	Button loginButton;
+	Button signupButton;
+	
+		
+
+}
