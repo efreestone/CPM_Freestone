@@ -20,6 +20,8 @@
 		B837173319E71C060073DED8 /* loginBackground~iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B837173119E71C060073DED8 /* loginBackground~iPad@2x.png */; };
 		B837173719E7243E0073DED8 /* AddNewItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B837173519E7243E0073DED8 /* AddNewItemViewController.m */; };
 		B837173819E7243E0073DED8 /* AddNewItemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B837173619E7243E0073DED8 /* AddNewItemViewController.xib */; };
+		B837173C19E760860073DED8 /* CustomTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = B837173A19E760860073DED8 /* CustomTableViewCell.m */; };
+		B837173D19E760860073DED8 /* CustomTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B837173B19E760860073DED8 /* CustomTableViewCell.xib */; };
 		B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */; };
 		B87EDEF819E4EFE50027E242 /* Icon-76.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF019E4EFE50027E242 /* Icon-76.png */; };
 		B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B87EDEF119E4EFE50027E242 /* Icon-76@2x.png */; };
@@ -77,6 +79,9 @@
 		B837173419E7243E0073DED8 /* AddNewItemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddNewItemViewController.h; sourceTree = "<group>"; };
 		B837173519E7243E0073DED8 /* AddNewItemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddNewItemViewController.m; sourceTree = "<group>"; };
 		B837173619E7243E0073DED8 /* AddNewItemViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddNewItemViewController.xib; sourceTree = "<group>"; };
+		B837173919E760860073DED8 /* CustomTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomTableViewCell.h; sourceTree = "<group>"; };
+		B837173A19E760860073DED8 /* CustomTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomTableViewCell.m; sourceTree = "<group>"; };
+		B837173B19E760860073DED8 /* CustomTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CustomTableViewCell.xib; sourceTree = "<group>"; };
 		B87EDEEC19E4E8EB0027E242 /* CustomPFLoginViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CustomPFLoginViewController.h; sourceTree = "<group>"; };
 		B87EDEED19E4E8EB0027E242 /* CustomPFLoginViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CustomPFLoginViewController.m; sourceTree = "<group>"; };
 		B87EDEF019E4EFE50027E242 /* Icon-76.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Icon-76.png"; sourceTree = "<group>"; };
@@ -174,6 +179,9 @@
 				B837173419E7243E0073DED8 /* AddNewItemViewController.h */,
 				B837173519E7243E0073DED8 /* AddNewItemViewController.m */,
 				B837173619E7243E0073DED8 /* AddNewItemViewController.xib */,
+				B837173919E760860073DED8 /* CustomTableViewCell.h */,
+				B837173A19E760860073DED8 /* CustomTableViewCell.m */,
+				B837173B19E760860073DED8 /* CustomTableViewCell.xib */,
 			);
 			path = Project2iOS;
 			sourceTree = "<group>";
@@ -335,6 +343,7 @@
 				B8342EE919DF26C0000660B8 /* LaunchScreen.xib in Resources */,
 				B87EDEF919E4EFE50027E242 /* Icon-76@2x.png in Resources */,
 				B8B8445A19E5E9180073740C /* loginBackground-568h@2x.png in Resources */,
+				B837173D19E760860073DED8 /* CustomTableViewCell.xib in Resources */,
 				B87EDEFF19E4EFE50027E242 /* SignUpFieldBG.png in Resources */,
 				B8342EE619DF26C0000660B8 /* Images.xcassets in Resources */,
 			);
@@ -360,6 +369,7 @@
 				B87EDEEE19E4E8EB0027E242 /* CustomPFLoginViewController.m in Sources */,
 				B8342EDE19DF26C0000660B8 /* AppDelegate.m in Sources */,
 				B8342EDB19DF26C0000660B8 /* main.m in Sources */,
+				B837173C19E760860073DED8 /* CustomTableViewCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -15,6 +15,7 @@
 #import "CustomPFLoginViewController.h"
 #import "CustomPFSignUpViewController.h"
 #import "AddNewItemViewController.h"
+#import "CustomTableViewCell.h"
 
 @interface CustomTableViewController () {
     UILabel *noticeLabel;
@@ -31,6 +32,11 @@
 //    [testObject saveInBackground];
     
     //[self.view setBackgroundColor:[UIColor blackColor]];
+
+    //[self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    [self.tableView registerNib:[UINib nibWithNibName:@"CustomTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Cell"];
+    self.tableView.estimatedRowHeight = 89;
+    self.tableView.rowHeight = 44;
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
@@ -42,10 +48,11 @@
     noticeLabel.hidden = true;
     [self.view addSubview:noticeLabel];
     
-    float viewMiddle = viewWidth/2;
+    float viewMiddle = (viewWidth/2) + 4.0f;
+    //Create header for table view
     UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, 25.0f)];
     tableHeader.backgroundColor = [UIColor lightGrayColor];
-    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 0.0f, viewMiddle, 25.0f)];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 0.0f, viewMiddle, 25.0f)];
     nameLabel.text = @"Name";
     //nameLabel.textColor = [UIColor whiteColor];
     UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewMiddle, 0.0f, viewMiddle, 25.0f)];
@@ -56,7 +63,7 @@
     //self.tableView.tableHeaderView = tableHeader;
     [self.tableView setTableHeaderView:tableHeader];
     
-    //Override to remove extra seperator lines after the last cell
+    //Override to remove extra seperator lines after the last cell, no lines appear if no objects exist
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
     
     //Create and add sign out button
@@ -175,11 +182,13 @@
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     //NSLog(@"cellForRow");
-    static NSString *CellIdentifier = @"Cell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    if (cell == nil) {
+    static NSString *cellId = @"Cell";
+    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    //CustomTableViewCell *customCell = [[[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil] objectAtIndex:0];
+    CustomTableViewCell *customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
+    if (customCell == nil) {
         //NSLog(@"Count = > 0");
-        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        customCell = [[CustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
     //NSLog(@"COUNT = %lu", (unsigned long)self.objects.count);
@@ -188,13 +197,13 @@
         NSLog(@"Object Count = 0");
     }
     // Configure the cell
-    cell.textLabel.text = [NSString stringWithFormat:@"Name: %@", [object objectForKey:@"Name"]];
-    cell.detailTextLabel.text = [NSString stringWithFormat:@"Phone Number: %@", [object objectForKey:@"Number"]];
+    customCell.nameCellLabel.text = [NSString stringWithFormat:@"    %@", [object objectForKey:@"Name"]];
+    customCell.numberCellLabel.text = [NSString stringWithFormat:@"%@", [object objectForKey:@"Number"]];
     
     //Override to remove extra seperator lines after the last cell
     //[self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
     
-    return cell;
+    return customCell;
 }
 
 //Override query to set cache policy an change sort
