@@ -34,7 +34,7 @@
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
-    noticeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 10.0f, viewWidth, 50.0f)];
+    noticeLabel = [[UILabel alloc] initWithFrame:CGRectMake(0.0f, 30.0f, viewWidth, 50.0f)];
     noticeLabel.text = @"No contacts to display. Please select the plus button to add a contact.";
     noticeLabel.textAlignment = NSTextAlignmentCenter;
     noticeLabel.numberOfLines = 2;
@@ -42,13 +42,29 @@
     noticeLabel.hidden = true;
     [self.view addSubview:noticeLabel];
     
+    float viewMiddle = viewWidth/2;
+    UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, 25.0f)];
+    tableHeader.backgroundColor = [UIColor lightGrayColor];
+    UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(15.0f, 0.0f, viewMiddle, 25.0f)];
+    nameLabel.text = @"Name";
+    //nameLabel.textColor = [UIColor whiteColor];
+    UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewMiddle, 0.0f, viewMiddle, 25.0f)];
+    numberLabel.text = @"Number";
+    //numberLabel.textColor = [UIColor whiteColor];
+    [tableHeader addSubview:nameLabel];
+    [tableHeader addSubview:numberLabel];
+    //self.tableView.tableHeaderView = tableHeader;
+    [self.tableView setTableHeaderView:tableHeader];
+    
+    //Override to remove extra seperator lines after the last cell
+    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
     
     //Create and add sign out button
-    UIBarButtonItem *signOutButton = [[UIBarButtonItem alloc] initWithTitle:@"Sign Out"
+    UIBarButtonItem *logOutButton = [[UIBarButtonItem alloc] initWithTitle:@"Log Out"
                                     style:UIBarButtonItemStyleBordered
                                     target:self
                                     action:@selector(onLogOut:)];
-    self.navigationItem.leftBarButtonItem = signOutButton;
+    self.navigationItem.leftBarButtonItem = logOutButton;
     
     //Create and add new item plus button
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
@@ -60,9 +76,6 @@
     //Set default ACL to be read/write of current user only
     PFACL *defaultACL = [PFACL ACL];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
-    
-    //Override to remove extra seperator lines after the last cell
-    [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -184,7 +197,7 @@
     return cell;
 }
 
-//Override query to display notice if no items found for the user
+//Override query to set cache policy an change sort
 - (PFQuery *)queryForTable {
     PFQuery *newItemQuery = [PFQuery queryWithClassName:self.parseClassName];
     //int objectCount = 0;
@@ -193,27 +206,20 @@
     //Set cache policy to network only
     if ([self.objects count] == 0) {
         newItemQuery.cachePolicy = kPFCachePolicyNetworkOnly;
-        NSLog(@"count after cache = 0");
-//        if (objectCount == 0) {
-//            NSLog(@"count = 0");
-//        } else {
-//            NSLog(@"count = %ld", (long)objectCount);
-//        }
-        //[self.view addSubview:noticeLabel];
-        
     }
-    //NSLog(@"Query = %ld", (long)newItemQuery.countObjects);
-    //NSLog(@"COUNT = %lu", (unsigned long)self.objects.count);
+    //Set sort
     [newItemQuery orderByAscending:@"createdAt"];
     return newItemQuery;
 }
 
+//Override did load to hide/display notice label
 -(void)objectsDidLoad:(NSError *)error {
     if (self.objects.count == 0) {
-        NSLog(@"Count 0 in objectsDidLoad");
+        //NSLog(@"Count 0 in objectsDidLoad");
+        //No objects for user, show notice label
         noticeLabel.hidden = false;
-        //[self->noticeLabel setCenter:_view.center];
     } else {
+        //Hide label if an object exists for the user
         noticeLabel.hidden = true;
     }
     [super objectsDidLoad:error];
