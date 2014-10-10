@@ -26,17 +26,10 @@
 @implementation CustomTableViewController
  
 - (void)viewDidLoad {
-//    //Test parse
-//    PFObject *testObject = [PFObject objectWithClassName:@"TestObject"];
-//    testObject[@"foo"] = @"bar";
-//    [testObject saveInBackground];
-    
-    //[self.view setBackgroundColor:[UIColor blackColor]];
-
-    //[self.tableView registerClass:[CustomTableViewCell class] forCellReuseIdentifier:@"Cell"];
+    //Register custom cell nib
     [self.tableView registerNib:[UINib nibWithNibName:@"CustomTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Cell"];
-    self.tableView.estimatedRowHeight = 89;
-    self.tableView.rowHeight = 44;
+    //self.tableView.estimatedRowHeight = 89;
+    self.tableView.rowHeight = 45;
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
@@ -48,19 +41,17 @@
     noticeLabel.hidden = true;
     [self.view addSubview:noticeLabel];
     
+    //Grab middle measurement and adjust to align better with custom cell
     float viewMiddle = (viewWidth/2) + 4.0f;
     //Create header for table view
     UIView *tableHeader = [[UIView alloc] initWithFrame:CGRectMake(0.0f, 0.0f, viewWidth, 25.0f)];
     tableHeader.backgroundColor = [UIColor lightGrayColor];
     UILabel *nameLabel = [[UILabel alloc] initWithFrame:CGRectMake(16.0f, 0.0f, viewMiddle, 25.0f)];
     nameLabel.text = @"Name";
-    //nameLabel.textColor = [UIColor whiteColor];
     UILabel *numberLabel = [[UILabel alloc] initWithFrame:CGRectMake(viewMiddle, 0.0f, viewMiddle, 25.0f)];
-    numberLabel.text = @"Number";
-    //numberLabel.textColor = [UIColor whiteColor];
+    numberLabel.text = @"Phone Number";
     [tableHeader addSubview:nameLabel];
     [tableHeader addSubview:numberLabel];
-    //self.tableView.tableHeaderView = tableHeader;
     [self.tableView setTableHeaderView:tableHeader];
     
     //Override to remove extra seperator lines after the last cell, no lines appear if no objects exist
@@ -158,40 +149,15 @@
     return self;
 }
 
-//- (id)initWithCoder:(NSCoder *)aCoder
-//{
-//    self = [super initWithCoder:aCoder];
-//    if (self) {
-//        NSLog(@"Self!!");
-//        // The className to query on
-//        //self.parseClassName = @"newItem";
-//        self.parseClassName = @"newItem";
-//        
-//        // The key of the PFObject to display in the label of the default cell style
-//        self.textKey = @"text";
-//        
-//        // Whether the built-in pull-to-refresh is enabled
-//        self.pullToRefreshEnabled = YES;
-//        
-//        // Whether the built-in pagination is enabled
-//        self.paginationEnabled = NO;
-//    }
-//    return self;
-//}
-
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     //NSLog(@"cellForRow");
     static NSString *cellId = @"Cell";
-    //UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
-    //CustomTableViewCell *customCell = [[[NSBundle mainBundle] loadNibNamed:@"CustomTableViewCell" owner:self options:nil] objectAtIndex:0];
     CustomTableViewCell *customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
     if (customCell == nil) {
         //NSLog(@"Count = > 0");
         customCell = [[CustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
-    
-    //NSLog(@"COUNT = %lu", (unsigned long)self.objects.count);
     
     if (self.objects.count == 0) {
         NSLog(@"Object Count = 0");
@@ -200,17 +166,12 @@
     customCell.nameCellLabel.text = [NSString stringWithFormat:@"    %@", [object objectForKey:@"Name"]];
     customCell.numberCellLabel.text = [NSString stringWithFormat:@"%@", [object objectForKey:@"Number"]];
     
-    //Override to remove extra seperator lines after the last cell
-    //[self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
-    
     return customCell;
 }
 
 //Override query to set cache policy an change sort
 - (PFQuery *)queryForTable {
     PFQuery *newItemQuery = [PFQuery queryWithClassName:self.parseClassName];
-    //int objectCount = 0;
-    //[newItemQuery countObjects];
     
     //Set cache policy to network only
     if ([self.objects count] == 0) {

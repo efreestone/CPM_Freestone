@@ -32,7 +32,7 @@
                 <outlet property="nameCellLabel" destination="MGD-Gu-2FV" id="t8e-z0-YQX"/>
                 <outlet property="numberCellLabel" destination="UUJ-eI-1le" id="7Jo-Jt-ora"/>
             </connections>
-            <point key="canvasLocation" x="565" y="410.5"/>
+            <point key="canvasLocation" x="565" y="410"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
