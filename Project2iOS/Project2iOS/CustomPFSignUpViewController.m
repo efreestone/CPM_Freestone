@@ -20,6 +20,7 @@
 
 @implementation CustomPFSignUpViewController
 
+//Synthesize for getters/setters
 @synthesize fieldsBackground;
 
 - (void)viewDidLoad {

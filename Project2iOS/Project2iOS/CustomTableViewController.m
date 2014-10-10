@@ -141,10 +141,6 @@
         self.title = @"My Contacts";
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
-//        //Whether the built-in pagination is enabled
-//        self.paginationEnabled = YES;
-//        //The number of objects to show per page
-//        self.objectsPerPage = 5;
     }
     return self;
 }
@@ -155,7 +151,7 @@
     static NSString *cellId = @"Cell";
     CustomTableViewCell *customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
     if (customCell == nil) {
-        //NSLog(@"Count = > 0");
+        //Allocate custom cell
         customCell = [[CustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     
@@ -185,7 +181,6 @@
 //Override did load to hide/display notice label
 -(void)objectsDidLoad:(NSError *)error {
     if (self.objects.count == 0) {
-        //NSLog(@"Count 0 in objectsDidLoad");
         //No objects for user, show notice label
         noticeLabel.hidden = false;
     } else {

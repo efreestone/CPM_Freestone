@@ -22,6 +22,7 @@
     NSString *numberEntered;
 }
 
+//Synthesize for getters/setters
 @synthesize nameTextField, numberTextField;
 
 - (void)viewDidLoad {
@@ -48,8 +49,7 @@
     numberEntered = numberTextField.text;
     
     if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
-//        NSLog(@"Name: %@", nameEntered);
-//        NSLog(@"Number: %@", numberEntered);
+        //Cast number string to integer
         NSInteger numberEnteredInt = [numberEntered integerValue];
         
         PFObject *newItem = [PFObject objectWithClassName:@"newItem"];
