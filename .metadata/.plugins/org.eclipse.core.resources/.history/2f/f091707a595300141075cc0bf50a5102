@@ -137,5 +137,11 @@ public class DataManager {
 		});  
     	deleteDialog.show();
     } //deleteItem close
+    
+    void createEditIntent(int itemPosition) {
+    	ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
+    	
+    }
+	
 
 }

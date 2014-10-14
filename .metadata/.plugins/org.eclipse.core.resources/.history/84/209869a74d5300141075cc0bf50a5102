@@ -5,12 +5,13 @@
         android:id="@+id/deleteItem"
         android:title="@string/deleteTitle"
         android:icon="@drawable/ic_action_discard"
-        android:showAsAction="ifRoom"
-         />
+        android:showAsAction="ifRoom" />
+    
     <item 
         android:id="@+id/editItem"
         android:title="@string/editTitle"
         android:icon="@drawable/ic_action_edit"
         android:showAsAction="ifRoom" />
-   
+    
+
 </menu>

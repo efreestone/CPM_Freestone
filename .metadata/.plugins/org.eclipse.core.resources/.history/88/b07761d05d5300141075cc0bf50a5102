@@ -114,7 +114,7 @@ public class NewItemActivity extends Activity {
 						}); // saveInBackground close
 					} else {
 						Log.i(TAG, "itemName = " + itemName);
-						ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
+						ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("Post");
 						editQuery.getInBackground(itemID, new GetCallback<ParseObject>() {
 							
 							@Override
@@ -127,7 +127,7 @@ public class NewItemActivity extends Activity {
 										@Override
 										public void done(ParseException arg0) {
 											if (arg0 == null) {
-												Toast.makeText(getApplicationContext(), "Edited Item Saved!", 
+												Toast.makeText(getApplicationContext(), "Item Saved!", 
 														Toast.LENGTH_LONG).show();
 												Intent newItemBackIntent = new Intent();
 												newItemBackIntent.putExtra("newItem",

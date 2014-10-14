@@ -352,11 +352,11 @@ public class MainActivity extends Activity {
         public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
             switch (item.getItemId()) {
 			case R.id.editItem:
-				int newSelectedObject = selectedObject - 1;
-				Log.i(TAG, "Edit: " + parseArrayList.get(newSelectedObject));
-				String editNameString = parseArrayList.get(newSelectedObject).get("itemName");
-				String editNumberString = parseArrayList.get(newSelectedObject).get("itemNumber");
-				String editItemID = parseArrayList.get(newSelectedObject).get("itemID");
+				selectedObject = selectedObject - 1;
+				Log.i(TAG, "Edit: " + parseArrayList.get(selectedObject));
+				String editNameString = parseArrayList.get(selectedObject).get("itemName");
+				String editNumberString = parseArrayList.get(selectedObject).get("itemNumber");
+				String editItemID = parseArrayList.get(selectedObject).get("itemID");
 				
 				Intent editIntent = new Intent(MainActivity.this, NewItemActivity.class);
 				editIntent.putExtra("itemName", editNameString);

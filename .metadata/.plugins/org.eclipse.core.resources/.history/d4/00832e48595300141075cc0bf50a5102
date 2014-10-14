@@ -23,7 +23,7 @@ public class DataManager {
 	static String TAG = "DataManager";
 	Context myContext = MainActivity.myContext;
 	static BaseAdapter listAdapter;
-	static String parseClassName = "newItem";
+	String parseClassName = "newItem";
 	//static ArrayList<HashMap<String, String>> parseArrayList;
 	
 	/**
@@ -36,7 +36,7 @@ public class DataManager {
 		//parseArrayList = MainActivity.parseArrayList;
 		
 		// Query Parse for items and parse into arraylist
-		ParseQuery<ParseObject> query = ParseQuery.getQuery(parseClassName);
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
@@ -97,7 +97,7 @@ public class DataManager {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				//Query parse for item
-				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery(parseClassName);
+				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
 				//Remove item from listview
 				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
 
@@ -137,5 +137,11 @@ public class DataManager {
 		});  
     	deleteDialog.show();
     } //deleteItem close
+    
+    void createEditIntent(int itemPosition) {
+    	ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
+    	
+    }
+	
 
 }

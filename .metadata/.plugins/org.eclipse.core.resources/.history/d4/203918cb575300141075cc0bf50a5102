@@ -22,10 +22,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
-import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
 // TODO: Auto-generated Javadoc
@@ -41,7 +39,6 @@ public class NewItemActivity extends Activity {
 	String numberEnteredString;
 	long numberEnteredLong; 
 	String itemName = "none";
-	String itemID;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -60,14 +57,11 @@ public class NewItemActivity extends Activity {
 		
 		Intent editIntent = this.getIntent();
 		if (editIntent.getExtras() != null) {
-			Log.i(TAG, "editIntent good");
-			itemName = editIntent.getStringExtra("itemName");
+			itemName = editIntent.getStringExtra("Name");
 			nameEditText.setText(itemName);
 			
-			String itemNumber = editIntent.getStringExtra("itemNumber");
+			String itemNumber = editIntent.getStringExtra("Number");
 			numberEditText.setText(itemNumber);
-			
-			itemID = editIntent.getStringExtra("itemID");
 		}
 		
 		saveButton.setOnClickListener(new OnClickListener() {   
@@ -82,15 +76,14 @@ public class NewItemActivity extends Activity {
 					Toast.makeText(getApplicationContext(), "Both fields are required to save",
 							Toast.LENGTH_LONG).show();
 				} else {
-					//Grab long from number string
-					numberEnteredLong = Long.parseLong(numberEnteredString);
-					//Check what itemName equals. None means no edit intent was sent 
-					//and it's a new item being saved
 					if (itemName.equalsIgnoreCase("none")) {
+						// Parse long from number string
+						numberEnteredLong = Long.parseLong(numberEnteredString);
 						Log.i(TAG, "Save clicked");
 						Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
 
-						// Save new item to Parse. Default ACL is set in MainActivity
+						// Save new item to Parse. Default ACL is set in
+						// MainActivity
 						ParseObject newItem = new ParseObject("newItem");
 						newItem.put("Name", nameEntered);
 						newItem.put("Number", numberEnteredLong);
@@ -112,37 +105,6 @@ public class NewItemActivity extends Activity {
 								}
 							}
 						}); // saveInBackground close
-					} else {
-						Log.i(TAG, "itemName = " + itemName);
-						ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
-						editQuery.getInBackground(itemID, new GetCallback<ParseObject>() {
-							
-							@Override
-							public void done(ParseObject editObject, ParseException e) {
-								if (e == null) {
-									editObject.put("Name", nameEntered);
-									editObject.put("Number", numberEnteredLong);
-									editObject.saveInBackground(new SaveCallback() {
-										
-										@Override
-										public void done(ParseException arg0) {
-											if (arg0 == null) {
-												Toast.makeText(getApplicationContext(), "Edited Item Saved!", 
-														Toast.LENGTH_LONG).show();
-												Intent newItemBackIntent = new Intent();
-												newItemBackIntent.putExtra("newItem",
-														nameEntered);
-												setResult(RESULT_OK, newItemBackIntent);
-												finish();
-											} else {
-												Toast.makeText(getApplicationContext(), "An error occured, please try again",
-														Toast.LENGTH_LONG).show();
-											}
-										}
-									}); //saveInBackground close
-								}
-							}
-						}); //editQuery close
 					}
 				}
 			} 
