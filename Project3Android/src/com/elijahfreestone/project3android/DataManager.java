@@ -1,0 +1,140 @@
+package com.elijahfreestone.project3android;
+
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+
+public class DataManager {
+	static String TAG = "DataManager";
+	Context myContext = MainActivity.myContext;
+	static BaseAdapter listAdapter;
+	//static ArrayList<HashMap<String, String>> parseArrayList;
+	
+	/**
+	 * Query parse for items and display.
+	 */
+	static void queryParseForItems() {
+		//Show progress wheel
+		((Activity)MainActivity.myContext).setProgressBarIndeterminateVisibility(true);
+		
+		//parseArrayList = MainActivity.parseArrayList;
+		
+		// Query Parse for items and parse into arraylist
+		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> newItemList, ParseException e) {
+				if (e == null) {
+					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
+					//Log.i(TAG, newItemList.toString());
+					//Split list into seperate Parse Objects
+					for (ParseObject eachItem : newItemList) { 
+						
+						String itemName = eachItem.getString("Name"); 
+						long itemNumber = eachItem.getLong("Number");
+						String itemNumberString = "" + itemNumber;
+						String itemID = eachItem.getObjectId().toString();
+						HashMap<String, String> objectMap = new HashMap<String, String>();
+						objectMap.put("itemName", itemName);
+						objectMap.put("itemNumber", itemNumberString);
+						objectMap.put("itemID", itemID); 
+					
+						MainActivity.parseArrayList.add(objectMap);    
+						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
+					} 
+					//Log.i(TAG, parseArrayList.toString());
+					listAdapter = new SimpleAdapter(
+							MainActivity.myContext, MainActivity.parseArrayList,
+							R.layout.listview_row, new String[] { "itemName",
+									"itemNumber" }, new int[] { R.id.nameTextView,
+									R.id.numberTextView });
+					MainActivity.itemListView.setAdapter(listAdapter);
+				} else { 
+					Log.e(TAG, "Error: " + e.getMessage().toString()); 
+				}
+				
+				//Add no contacts notice if there aren't any contacts for the user
+				
+				if (MainActivity.parseArrayList.size() == 0) {
+					MainActivity.noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
+				} else {
+					MainActivity.noItemsNotice.setText("");
+				}
+				
+				//Hide progress wheel
+				((Activity)MainActivity.myContext).setProgressBarIndeterminateVisibility(false);
+			}
+		}); 
+	} //queryParseForItems close
+	
+	/**
+	 * Delete item from list once confirmed with alert dialog.
+	 */
+    static void deleteItem(int positionSelected) {
+    	//Pass position to Final var -1 to account for 0 based
+    	final int deleteItemPosition = positionSelected - 1;
+    	//Create dialog to confirm delete
+    	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.myContext);
+    	deleteDialog.setTitle("Delete Item?");
+    	deleteDialog.setMessage("Are you sure you want to delete this item?");
+    	deleteDialog.setPositiveButton("YES", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Query parse for item
+				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
+				//Remove item from listview
+				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
+
+					@Override
+					public void done(List<ParseObject> itemsList, ParseException e) {
+						if (e == null) {
+							//Delete item from parse
+							itemsList.get(deleteItemPosition).deleteInBackground(new DeleteCallback() {
+
+								@Override
+								public void done(ParseException arg0) {
+									if (arg0 == null) {
+										Toast.makeText(MainActivity.myContext,"Item Successfully Deleted!", Toast.LENGTH_LONG).show();
+										//Clear item arraylist and repop listview
+										MainActivity.parseArrayList.clear();
+										queryParseForItems();
+										listAdapter.notifyDataSetChanged();
+										//itemListView.setEnabled(true);
+									} else {
+										Toast.makeText(MainActivity.myContext,"An error occured, please try again.", Toast.LENGTH_LONG).show();
+									}
+								}
+							}); //deleteInBackground close
+						}
+					}
+				}); //findInBackground close
+			}
+		});
+    	//Cancel button
+    	deleteDialog.setNegativeButton("NO", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Log.i(TAG, "Delete Canceled");
+			}
+		});  
+    	deleteDialog.show();
+    } //deleteItem close
+	
+
+}

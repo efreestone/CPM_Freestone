@@ -44,9 +44,10 @@ public class NewItemActivity extends Activity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_item);   
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		 
 		//Grab edit texts and button
 		nameEditText = (EditText) findViewById(R.id.nameEditText);

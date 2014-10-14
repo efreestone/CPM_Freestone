@@ -37,4 +37,5 @@
 <fullyQualifiedTypeName name="com.elijahfreestone.project1android.R.id"/>
 <fullyQualifiedTypeName name="android.widget.TextView"/>
 <fullyQualifiedTypeName name="android.view.ViewGroup"/>
+<fullyQualifiedTypeName name="android.view.Window"/>
 </qualifiedTypeNameHistroy>

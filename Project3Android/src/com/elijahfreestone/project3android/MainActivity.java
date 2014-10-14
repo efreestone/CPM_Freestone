@@ -14,10 +14,11 @@ package com.elijahfreestone.project3android;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List; 
+import java.util.List;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
@@ -26,16 +27,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.parse.DeleteCallback;
 import com.parse.FindCallback;
 import com.parse.Parse;
 import com.parse.ParseACL;
@@ -49,20 +49,31 @@ import com.parse.ParseUser;
  */
 public class MainActivity extends Activity {
 	String TAG = "MainActivity";
+	static Context myContext;
 	Button logOutButton; 
+	static TextView noItemsNotice;
 	static ListView itemListView;
-	ArrayList<HashMap<String, String>> parseArrayList;
-	BaseAdapter listAdapter;
+	static ArrayList<HashMap<String, String>> parseArrayList;
+	static BaseAdapter listAdapter;
 	Object myActionMode;
 	int itemSelected = -1;
+	
+	String editNameString = "test";
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
      */
-    @Override         
+    @Override          
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main); 
+        
+        myContext = this;
+        
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        
+        setContentView(R.layout.activity_main);  
+        
+        noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
         
         itemListView = (ListView) findViewById(R.id.itemListView);
         View listHeader = getLayoutInflater().inflate(R.layout.listview_header, null);
@@ -90,7 +101,7 @@ public class MainActivity extends Activity {
 		} //currentUser if/else close 
 		
 		//Query Parse to get items list for user and display
-		queryParseForItems();
+		DataManager.queryParseForItems();
 		
 		//Set long click lsitener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -98,113 +109,160 @@ public class MainActivity extends Activity {
 			@Override
 		      public boolean onItemLongClick(AdapterView<?> parent, View view,
 		          int position, long id) {
-				deleteItem(position);
+				
+				//deleteItem(position);
+				DataManager.deleteItem(position);
 		        return true;
 		      }
 		}); //setOnItemLongClickListener close
 		
     } //onCreate close 
     
-    //Delete item from list once confirmed with alert dialog 
-    void deleteItem(int positionSelected) {
-    	//Pass position to Final var -1 to account for 0 based
-    	final int deleteItemPosition = positionSelected - 1;
-    	//Create dialog to confirm delete
-    	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.this);
-    	deleteDialog.setTitle("Delete Item?");
-    	deleteDialog.setMessage("Are you sure you want to delete this item?");
-    	deleteDialog.setPositiveButton("YES", new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				//Query parse for item
-				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
-				//Remove item from listview
-				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
-
-					@Override
-					public void done(List<ParseObject> itemsList, ParseException e) {
-						if (e == null) {
-							//Delete item from parse
-							itemsList.get(deleteItemPosition).deleteInBackground(new DeleteCallback() {
-
-								@Override
-								public void done(ParseException arg0) {
-									if (arg0 == null) {
-										Toast.makeText(getBaseContext(),"Item Successfully Deleted!", Toast.LENGTH_LONG).show();
-										//Clear item arraylist and repop listview
-										parseArrayList.clear();
-										queryParseForItems();
-										listAdapter.notifyDataSetChanged();
-										//itemListView.setEnabled(true);
-									} else {
-										Toast.makeText(getBaseContext(),"An error occured, please try again.", Toast.LENGTH_LONG).show();
-									}
-								}
-							}); //deleteInBackground close
-						}
-					}
-				}); //findInBackground close
-			}
-		});
-    	deleteDialog.setNegativeButton("NO", new OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Log.i(TAG, "Delete Canceled");
-			}
-		}); 
-    	
-    	deleteDialog.show();
-    } //deleteItem close
+//    //Delete item from list once confirmed with alert dialog 
+//    void deleteItem(int positionSelected) {
+//    	//Pass position to Final var -1 to account for 0 based
+//    	final int deleteItemPosition = positionSelected - 1;
+//    	//Create dialog to confirm delete
+//    	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.this);
+//    	deleteDialog.setTitle("Delete Item?");
+//    	deleteDialog.setMessage("Are you sure you want to delete this item?");
+//    	deleteDialog.setPositiveButton("YES", new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				//Query parse for item
+//				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery("newItem");
+//				//Remove item from listview
+//				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
+//
+//					@Override
+//					public void done(List<ParseObject> itemsList, ParseException e) {
+//						if (e == null) {
+//							//Delete item from parse
+//							itemsList.get(deleteItemPosition).deleteInBackground(new DeleteCallback() {
+//
+//								@Override
+//								public void done(ParseException arg0) {
+//									if (arg0 == null) {
+//										Toast.makeText(getBaseContext(),"Item Successfully Deleted!", Toast.LENGTH_LONG).show();
+//										//Clear item arraylist and repop listview
+//										parseArrayList.clear();
+//										queryParseForItems();
+//										listAdapter.notifyDataSetChanged();
+//										//itemListView.setEnabled(true);
+//									} else {
+//										Toast.makeText(getBaseContext(),"An error occured, please try again.", Toast.LENGTH_LONG).show();
+//									}
+//								}
+//							}); //deleteInBackground close
+//						}
+//					}
+//				}); //findInBackground close
+//			}
+//		});
+//    	deleteDialog.setNegativeButton("NO", new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				Log.i(TAG, "Delete Canceled");
+//			}
+//		});  
+//    	deleteDialog.setNeutralButton("EDIT", new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(DialogInterface dialog, int which) {
+//				Log.i(TAG, "Edit clicked");
+//				editItem(deleteItemPosition);
+//			}
+//		});
+//    	
+//    	deleteDialog.show();
+//    } //deleteItem close
     
-	/**
-	 * Query parse for items and display.
-	 */
-	void queryParseForItems() {
-		// Query Parse for items and parse into arraylist
-		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
-		query.findInBackground(new FindCallback<ParseObject>() {
-			public void done(List<ParseObject> newItemList, ParseException e) {
-				if (e == null) {
-					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
-					//Log.i(TAG, newItemList.toString());
-					//Split list into seperate Parse Objects
-					for (ParseObject eachItem : newItemList) { 
-						
-						String itemName = eachItem.getString("Name"); 
-						long itemNumber = eachItem.getLong("Number");
-						String itemNumberString = "" + itemNumber;
-						String itemID = eachItem.getObjectId().toString();
-						HashMap<String, String> objectMap = new HashMap<String, String>();
-						objectMap.put("itemName", itemName);
-						objectMap.put("itemNumber", itemNumberString);
-						objectMap.put("itemID", itemID); 
-					
-						parseArrayList.add(objectMap);    
-						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
-					} 
-					//Log.i(TAG, parseArrayList.toString());
-					listAdapter = new SimpleAdapter(
-							MainActivity.this, parseArrayList,
-							R.layout.listview_row, new String[] { "itemName",
-									"itemNumber" }, new int[] { R.id.nameTextView,
-									R.id.numberTextView });
-					itemListView.setAdapter(listAdapter);
-				} else { 
-					Log.e(TAG, "Error: " + e.getMessage().toString()); 
-				}
+    void editItem(int editPositionSelected) {
+    	//Pass position to Final var -1 to account for 0 based
+    	final int editItemPosition = editPositionSelected;
+    	
+    	//
+    	final AlertDialog.Builder editDialog = new AlertDialog.Builder(MainActivity.this);
+    	editDialog.setTitle("Edit");
+    	ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
+    	editQuery.findInBackground(new FindCallback<ParseObject>() {
+			
+			@Override
+			public void done(List<ParseObject> itemsList, ParseException e) {
+				// TODO Auto-generated method stub
+//				itemsList.get(editItemPosition);
+				editNameString = itemsList.get(editItemPosition).getString("Name");
 				
-				//Add no contacts notice if there aren't any contacts for the user
-				TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
-				if (parseArrayList.size() == 0) {
-					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
-				} else {
-					noItemsNotice.setText("");
-				}
+				editDialog.setMessage("Edit " + editNameString);
+		    	
+		    	editDialog.setPositiveButton("OK", new OnClickListener() {
+					
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+		    	editDialog.show();
 			}
 		});
-	} //queryParseForItems close
+    } 
+    
+//	/**
+//	 * Query parse for items and display.
+//	 */
+//	void queryParseForItems() {
+//		//Show progress wheel
+//		setProgressBarIndeterminateVisibility(true);
+//		
+//		// Query Parse for items and parse into arraylist
+//		ParseQuery<ParseObject> query = ParseQuery.getQuery("newItem");
+//		query.findInBackground(new FindCallback<ParseObject>() {
+//			public void done(List<ParseObject> newItemList, ParseException e) {
+//				if (e == null) {
+//					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
+//					//Log.i(TAG, newItemList.toString());
+//					//Split list into seperate Parse Objects
+//					for (ParseObject eachItem : newItemList) { 
+//						
+//						String itemName = eachItem.getString("Name"); 
+//						long itemNumber = eachItem.getLong("Number");
+//						String itemNumberString = "" + itemNumber;
+//						String itemID = eachItem.getObjectId().toString();
+//						HashMap<String, String> objectMap = new HashMap<String, String>();
+//						objectMap.put("itemName", itemName);
+//						objectMap.put("itemNumber", itemNumberString);
+//						objectMap.put("itemID", itemID); 
+//					
+//						parseArrayList.add(objectMap);    
+//						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
+//					} 
+//					//Log.i(TAG, parseArrayList.toString());
+//					listAdapter = new SimpleAdapter(
+//							MainActivity.this, parseArrayList,
+//							R.layout.listview_row, new String[] { "itemName",
+//									"itemNumber" }, new int[] { R.id.nameTextView,
+//									R.id.numberTextView });
+//					itemListView.setAdapter(listAdapter);
+//				} else { 
+//					Log.e(TAG, "Error: " + e.getMessage().toString()); 
+//				}
+//				
+//				//Add no contacts notice if there aren't any contacts for the user
+//				TextView noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
+//				if (parseArrayList.size() == 0) {
+//					noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
+//				} else {
+//					noItemsNotice.setText("");
+//				}
+//				
+//				//Hide progress wheel
+//				setProgressBarIndeterminateVisibility(false);
+//			}
+//		});
+//	} //queryParseForItems close
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
@@ -248,7 +306,7 @@ public class MainActivity extends Activity {
 			Log.i(TAG, "Refresh hit");
 			//Clear arraylist and query Parse again
 			parseArrayList.clear();
-			queryParseForItems();
+			DataManager.queryParseForItems();
 			break;
         default:  
 			break;
@@ -259,15 +317,15 @@ public class MainActivity extends Activity {
     /* (non-Javadoc)
      * @see android.app.Activity#onActivityResult(int, int, android.content.Intent)
      */
-    @Override
+    @Override 
     protected void onActivityResult(int requestCode, int resultCode, Intent newItemBackIntent) {
     	Log.i(TAG, "On Activity Result");
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
     		parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
-			queryParseForItems();
-			listAdapter.notifyDataSetChanged();
+			DataManager.queryParseForItems();
+			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
     } //onActivityResult close
