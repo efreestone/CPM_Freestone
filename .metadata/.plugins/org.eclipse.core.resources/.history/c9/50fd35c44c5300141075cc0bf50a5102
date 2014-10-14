@@ -109,27 +109,31 @@ public class MainActivity extends Activity {
 		//Query Parse to get items list for user and display
 		DataManager.queryParseForItems();
 		
-		//Set long click listener for listview
+		//Set long click lsitener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 		      public boolean onItemLongClick(AdapterView<?> parent, View view,
 		          int position, long id) {
-				//Pass view and position to be used elsewhere
 				viewSelected = view;
-				selectedObject = position;
 				//Return if action mode is null for whatever reason
 				if (myActionMode != null) {
 					Log.i(TAG, "Action mode null!");
 		            return false;
 		        }
+				
+				selectedObject = position;
+				//deleteItem(position);
+				//DataManager.deleteItem(position);
 				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
 				viewSelected.setSelected(true);
-				//Manually set selected color for list item. Is cleared in CAB destroy
-				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light));
+				//viewSelected.setBackgroundColor(Color.CYAN);
+				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light);
+				
+				//test.setBackgroundResource(context.getResources().getColor(android.R.color.holo_green_light);
 				
 		        return true;
-		      } 
+		      }
 		}); //setOnItemLongClickListener close
 		
     } //onCreate close 

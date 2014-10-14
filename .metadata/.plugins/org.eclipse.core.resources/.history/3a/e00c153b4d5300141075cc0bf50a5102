@@ -115,7 +115,6 @@ public class MainActivity extends Activity {
 			@Override
 		      public boolean onItemLongClick(AdapterView<?> parent, View view,
 		          int position, long id) {
-				//Pass view and position to be used elsewhere
 				viewSelected = view;
 				selectedObject = position;
 				//Return if action mode is null for whatever reason
@@ -125,11 +124,12 @@ public class MainActivity extends Activity {
 		        }
 				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
 				viewSelected.setSelected(true);
+				//viewSelected.setBackgroundColor(Color.CYAN);
 				//Manually set selected color for list item. Is cleared in CAB destroy
 				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light));
 				
 		        return true;
-		      } 
+		      }
 		}); //setOnItemLongClickListener close
 		
     } //onCreate close 

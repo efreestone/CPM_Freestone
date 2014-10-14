@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
@@ -59,7 +58,6 @@ public class MainActivity extends Activity {
 	static BaseAdapter listAdapter;
 	static ActionMode myActionMode;
 	int selectedObject = -1;
-	View viewSelected;
 	
 	String editNameString = "test";
 
@@ -109,27 +107,19 @@ public class MainActivity extends Activity {
 		//Query Parse to get items list for user and display
 		DataManager.queryParseForItems();
 		
-		//Set long click listener for listview
+		//Set long click lsitener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 		      public boolean onItemLongClick(AdapterView<?> parent, View view,
 		          int position, long id) {
-				//Pass view and position to be used elsewhere
-				viewSelected = view;
-				selectedObject = position;
-				//Return if action mode is null for whatever reason
-				if (myActionMode != null) {
-					Log.i(TAG, "Action mode null!");
-		            return false;
-		        }
-				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
-				viewSelected.setSelected(true);
-				//Manually set selected color for list item. Is cleared in CAB destroy
-				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light));
 				
+				selectedObject = position;
+				//deleteItem(position);
+				//DataManager.deleteItem(position);
+				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
 		        return true;
-		      } 
+		      }
 		}); //setOnItemLongClickListener close
 		
     } //onCreate close 
@@ -376,7 +366,6 @@ public class MainActivity extends Activity {
             // TODO Auto-generated method stub
         	myActionMode = null;
         	selectedObject = -1;
-        	viewSelected.setBackgroundColor(Color.TRANSPARENT);
         	//Log.i(TAG, "selectedObject = " + selectedObject);
         }
   
