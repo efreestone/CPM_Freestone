@@ -7,8 +7,6 @@
     <string name="newPlusButton">New Client</string>
     <string name="refreshButton">Refresh</string>
     <string name="logoutButtonText">Log Out</string>
-    <string name="deleteTitle">Delete</string>
-    <string name="editTitle">Edit</string>
     
     <string name="loginButtonText">Log In</string>
     <string name="signupButtonText">Sign Up</string>

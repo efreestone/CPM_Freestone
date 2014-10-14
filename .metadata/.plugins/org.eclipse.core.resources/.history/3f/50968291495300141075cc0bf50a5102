@@ -78,10 +78,9 @@ public class MainActivity extends Activity {
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
         //Grab listview and create header
         itemListView = (ListView) findViewById(R.id.itemListView);
+        itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         View listHeader = getLayoutInflater().inflate(R.layout.listview_header, null);
         itemListView.addHeaderView(listHeader);
-        
-        itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
@@ -366,7 +365,6 @@ public class MainActivity extends Activity {
             // TODO Auto-generated method stub
         	myActionMode = null;
         	selectedObject = -1;
-        	//Log.i(TAG, "selectedObject = " + selectedObject);
         }
   
         @Override

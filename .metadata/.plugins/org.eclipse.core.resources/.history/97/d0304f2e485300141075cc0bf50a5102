@@ -56,7 +56,7 @@ public class MainActivity extends Activity {
 	static ListView itemListView;
 	static ArrayList<HashMap<String, String>> parseArrayList;
 	static BaseAdapter listAdapter;
-	static ActionMode myActionMode;
+	ActionMode myActionMode;
 	int selectedObject = -1;
 	
 	String editNameString = "test";
@@ -80,8 +80,6 @@ public class MainActivity extends Activity {
         itemListView = (ListView) findViewById(R.id.itemListView);
         View listHeader = getLayoutInflater().inflate(R.layout.listview_header, null);
         itemListView.addHeaderView(listHeader);
-        
-        itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
@@ -366,7 +364,6 @@ public class MainActivity extends Activity {
             // TODO Auto-generated method stub
         	myActionMode = null;
         	selectedObject = -1;
-        	//Log.i(TAG, "selectedObject = " + selectedObject);
         }
   
         @Override

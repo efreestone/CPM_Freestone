@@ -115,7 +115,6 @@ public class DataManager {
 										queryParseForItems();
 										listAdapter.notifyDataSetChanged();
 										//itemListView.setEnabled(true);
-										MainActivity.myActionMode.finish(); 
 									} else {
 										Toast.makeText(MainActivity.myContext,"An error occurred, please try again.", Toast.LENGTH_LONG).show();
 									}

@@ -41,7 +41,7 @@ public class DataManager {
 				if (e == null) {
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
 					//Log.i(TAG, newItemList.toString());
-					//Split list into separate Parse Objects
+					//Split list into seperate Parse Objects
 					for (ParseObject eachItem : newItemList) { 
 						
 						String itemName = eachItem.getString("Name"); 
@@ -115,9 +115,8 @@ public class DataManager {
 										queryParseForItems();
 										listAdapter.notifyDataSetChanged();
 										//itemListView.setEnabled(true);
-										MainActivity.myActionMode.finish(); 
 									} else {
-										Toast.makeText(MainActivity.myContext,"An error occurred, please try again.", Toast.LENGTH_LONG).show();
+										Toast.makeText(MainActivity.myContext,"An error occured, please try again.", Toast.LENGTH_LONG).show();
 									}
 								}
 							}); //deleteInBackground close
