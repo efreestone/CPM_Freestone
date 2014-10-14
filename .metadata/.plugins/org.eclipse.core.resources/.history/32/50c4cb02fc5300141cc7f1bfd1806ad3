@@ -34,7 +34,6 @@ import com.parse.ParseQuery;
 // TODO: Auto-generated Javadoc
 /**
  * The Class DataManager contains most Parse object related code.
- * Creating and editing items is handled in NewItemActivity
  */
 public class DataManager {
 	static String TAG = "DataManager";

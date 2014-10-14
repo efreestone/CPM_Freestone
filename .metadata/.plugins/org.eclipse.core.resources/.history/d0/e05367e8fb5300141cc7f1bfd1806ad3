@@ -31,11 +31,6 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class DataManager contains most Parse object related code.
- * Creating and editing items is handled in NewItemActivity
- */
 public class DataManager {
 	static String TAG = "DataManager";
 	Context myContext = MainActivity.myContext;
@@ -101,8 +96,6 @@ public class DataManager {
 	
 	/**
 	 * Delete item from list once confirmed with alert dialog.
-	 *
-	 * @param positionSelected the position selected
 	 */
     static void deleteItem(int positionSelected) {
     	//Pass position to Final var -1 to account for 0 based
