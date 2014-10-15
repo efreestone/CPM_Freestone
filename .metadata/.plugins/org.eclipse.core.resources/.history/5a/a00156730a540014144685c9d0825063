@@ -27,7 +27,7 @@ public class ConnectionManager {
 	 * 
 	 * @param myContext the my context
 	 * @return the boolean
-	 */ 
+	 */
 	public static Boolean connectionStatus(Context myContext) {
 		Boolean connectionBool = false;
 		ConnectivityManager connectionManager = (ConnectivityManager) myContext

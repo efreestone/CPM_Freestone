@@ -22,5 +22,5 @@
     <string name="saveContactButton">Save Contact</string>
     
     <string name="noConnectionTitle">No Connection!</string>
-    <string name="noConnectionAlert">No network connection. Only contacts saved on your device will be available to view.</string>
+    <string name="noConnectionAlert">No network connection is available. Only contacts on your device will be available.</string>
 </resources>

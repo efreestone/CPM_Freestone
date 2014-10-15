@@ -173,7 +173,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
     	//Check network
     	if (!ConnectionManager.connectionStatus(myContext)) {
-			noConnectionAlert(alertMessage);
+			noConnectionAlert();
 		} else {
 			//Start polling. Timer rechecks network before query call
 			createPollingTimer();
@@ -203,13 +203,8 @@ public class MainActivity extends Activity {
         //Plus button clicked
         case R.id.newPlusButton:
         	Log.i(TAG, "Plus clicked");
-        	//Recheck network
-        	if (ConnectionManager.connectionStatus(myContext)) {
-        		Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
-            	startActivityForResult(newItemIntent, 0);
-			} else {
-				noConnectionAlert(editDeleteMessage);
-			}
+        	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
+        	startActivityForResult(newItemIntent, 0);
         	break;
         //Log out button
         case R.id.logoutButton: 

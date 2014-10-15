@@ -61,8 +61,6 @@ public class MainActivity extends Activity {
 	String editNameString = "test";
 	Boolean networkConnection;
 	TimerTask timerTask;
-	String alertMessage;
-	String editDeleteMessage;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -77,9 +75,6 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         
         setContentView(R.layout.activity_main);  
-        
-        alertMessage = "No network connection. Only contacts saved on your device will be available to view.";
-        editDeleteMessage = "Contacts can not be added, edited, or deleted without a network connection.";
          
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
@@ -132,7 +127,7 @@ public class MainActivity extends Activity {
 					//Manually set selected color for list item. Is cleared in CAB destroy
 					viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
 				} else {
-					noConnectionAlert(editDeleteMessage);
+					noConnectionAlert();
 				}
 				
 		        return true;
@@ -173,7 +168,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
     	//Check network
     	if (!ConnectionManager.connectionStatus(myContext)) {
-			noConnectionAlert(alertMessage);
+			noConnectionAlert();
 		} else {
 			//Start polling. Timer rechecks network before query call
 			createPollingTimer();
@@ -203,13 +198,8 @@ public class MainActivity extends Activity {
         //Plus button clicked
         case R.id.newPlusButton:
         	Log.i(TAG, "Plus clicked");
-        	//Recheck network
-        	if (ConnectionManager.connectionStatus(myContext)) {
-        		Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
-            	startActivityForResult(newItemIntent, 0);
-			} else {
-				noConnectionAlert(editDeleteMessage);
-			}
+        	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
+        	startActivityForResult(newItemIntent, 0);
         	break;
         //Log out button
         case R.id.logoutButton: 
@@ -325,14 +315,14 @@ public class MainActivity extends Activity {
 	/*
 	 * Custom method to show no connection alert
 	 */
-	public static void noConnectionAlert(String alertMessage) {
+	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
 		AlertDialog alertDialog = new AlertDialog.Builder(
 				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog.setMessage(alertMessage);
+		alertDialog.setMessage(myContext.getString(R.string.noConnectionAlert));
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();

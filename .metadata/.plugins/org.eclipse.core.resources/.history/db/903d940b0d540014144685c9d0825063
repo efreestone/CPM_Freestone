@@ -60,9 +60,6 @@ public class MainActivity extends Activity {
 	View viewSelected;
 	String editNameString = "test";
 	Boolean networkConnection;
-	TimerTask timerTask;
-	String alertMessage;
-	String editDeleteMessage;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -78,8 +75,11 @@ public class MainActivity extends Activity {
         
         setContentView(R.layout.activity_main);  
         
-        alertMessage = "No network connection. Only contacts saved on your device will be available to view.";
-        editDeleteMessage = "Contacts can not be added, edited, or deleted without a network connection.";
+//        //Check network
+//        networkConnection = ConnectionManager.connectionStatus(myContext);
+//        if (!ConnectionManager.connectionStatus(myContext)) {
+//        	noConnectionAlert();
+//		} 
          
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
@@ -110,6 +110,9 @@ public class MainActivity extends Activity {
 			//Remove main activity until user is authenticated
 			finish();  
 		} //currentUser if/else close 
+
+
+		
 		
 		//Set long click listener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -125,15 +128,10 @@ public class MainActivity extends Activity {
 					Log.i(TAG, "Action mode null!");
 		            return false;
 		        }
-				
-				if (ConnectionManager.connectionStatus(myContext)) {
-					myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
-					//viewSelected.setSelected(true);
-					//Manually set selected color for list item. Is cleared in CAB destroy
-					viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
-				} else {
-					noConnectionAlert(editDeleteMessage);
-				}
+				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
+				//viewSelected.setSelected(true);
+				//Manually set selected color for list item. Is cleared in CAB destroy
+				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
 				
 		        return true;
 		      } 
@@ -146,12 +144,12 @@ public class MainActivity extends Activity {
 		// Create timer to poll Parse every 20 sec
 		final Handler myHandler = new Handler();
 		Timer pollTimer = new Timer();
-		timerTask = new TimerTask() {
+		TimerTask timerTask = new TimerTask() {
 			@Override
 			public void run() {
 				myHandler.post(new Runnable() {
 					public void run() {
-						//Recheck network connection and stop query if false
+						//Recheck network connection and stop query if non exists
 						if (ConnectionManager.connectionStatus(myContext)) {
 							// Query Parse to get items list for user and display
 							parseArrayList.clear();
@@ -173,7 +171,7 @@ public class MainActivity extends Activity {
     protected void onResume() {
     	//Check network
     	if (!ConnectionManager.connectionStatus(myContext)) {
-			noConnectionAlert(alertMessage);
+			noConnectionAlert();
 		} else {
 			//Start polling. Timer rechecks network before query call
 			createPollingTimer();
@@ -203,13 +201,8 @@ public class MainActivity extends Activity {
         //Plus button clicked
         case R.id.newPlusButton:
         	Log.i(TAG, "Plus clicked");
-        	//Recheck network
-        	if (ConnectionManager.connectionStatus(myContext)) {
-        		Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
-            	startActivityForResult(newItemIntent, 0);
-			} else {
-				noConnectionAlert(editDeleteMessage);
-			}
+        	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
+        	startActivityForResult(newItemIntent, 0);
         	break;
         //Log out button
         case R.id.logoutButton: 
@@ -220,9 +213,8 @@ public class MainActivity extends Activity {
 			startActivity(logoutIntent);
 			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
                     Toast.LENGTH_LONG).show();
-			timerTask.cancel();
 			//Remove Main activity from stack to stop "Back button login"
-			finish();  
+			finish(); 
 			break;
 		//Refresh button
 		case R.id.refreshButton:
@@ -325,14 +317,14 @@ public class MainActivity extends Activity {
 	/*
 	 * Custom method to show no connection alert
 	 */
-	public static void noConnectionAlert(String alertMessage) {
+	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
 		AlertDialog alertDialog = new AlertDialog.Builder(
 				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog.setMessage(alertMessage);
+		alertDialog.setMessage(myContext.getString(R.string.noConnectionAlert));
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();

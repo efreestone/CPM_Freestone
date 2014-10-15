@@ -60,9 +60,6 @@ public class MainActivity extends Activity {
 	View viewSelected;
 	String editNameString = "test";
 	Boolean networkConnection;
-	TimerTask timerTask;
-	String alertMessage;
-	String editDeleteMessage;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -78,9 +75,12 @@ public class MainActivity extends Activity {
         
         setContentView(R.layout.activity_main);  
         
-        alertMessage = "No network connection. Only contacts saved on your device will be available to view.";
-        editDeleteMessage = "Contacts can not be added, edited, or deleted without a network connection.";
-         
+        //Check network
+        networkConnection = ConnectionManager.connectionStatus(myContext);
+        if (!networkConnection) {
+        	noConnectionAlert();
+		} 
+        
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
         //Grab listview and create header
@@ -110,6 +110,31 @@ public class MainActivity extends Activity {
 			//Remove main activity until user is authenticated
 			finish();  
 		} //currentUser if/else close 
+
+		// Create timer to poll Parse every 20 sec
+		final Handler myHandler = new Handler();
+		Timer pollTimer = new Timer();
+		TimerTask timerTask = new TimerTask() {
+			@Override
+			public void run() {
+				myHandler.post(new Runnable() {
+					public void run() {
+						//Check network connection and stop query if non
+						if (ConnectionManager.connectionStatus(myContext)) {
+							// Query Parse to get items list for user and display
+							parseArrayList.clear();
+							DataManager.queryParseForItems();
+							Log.i(TAG, "timer query");
+						} else {
+							Log.i(TAG, "No connection!!");
+						}
+					}
+				});
+			}
+		};
+		// execute every 20 sec
+		pollTimer.schedule(timerTask, 0, 20000);
+		
 		
 		//Set long click listener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -125,15 +150,10 @@ public class MainActivity extends Activity {
 					Log.i(TAG, "Action mode null!");
 		            return false;
 		        }
-				
-				if (ConnectionManager.connectionStatus(myContext)) {
-					myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
-					//viewSelected.setSelected(true);
-					//Manually set selected color for list item. Is cleared in CAB destroy
-					viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
-				} else {
-					noConnectionAlert(editDeleteMessage);
-				}
+				myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
+				//viewSelected.setSelected(true);
+				//Manually set selected color for list item. Is cleared in CAB destroy
+				viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
 				
 		        return true;
 		      } 
@@ -141,45 +161,14 @@ public class MainActivity extends Activity {
 		
     } //onCreate close 
     
-    //Create and start timer to polling Parse, called in onResume
-	void createPollingTimer() {
-		// Create timer to poll Parse every 20 sec
-		final Handler myHandler = new Handler();
-		Timer pollTimer = new Timer();
-		timerTask = new TimerTask() {
-			@Override
-			public void run() {
-				myHandler.post(new Runnable() {
-					public void run() {
-						//Recheck network connection and stop query if false
-						if (ConnectionManager.connectionStatus(myContext)) {
-							// Query Parse to get items list for user and display
-							parseArrayList.clear();
-							DataManager.queryParseForItems();
-							Log.i(TAG, "timer query");
-						} else {
-							Log.i(TAG, "No connection!!");
-						}
-					}
-				});
-			}
-		};
-		//execute every 20 sec
-		pollTimer.schedule(timerTask, 0, 20000);
-	} //createPollingTimer close
-    
-	//Use onResume to check network and start poll timer if exists
     @Override
     protected void onResume() {
     	//Check network
-    	if (!ConnectionManager.connectionStatus(myContext)) {
-			noConnectionAlert(alertMessage);
-		} else {
-			//Start polling. Timer rechecks network before query call
-			createPollingTimer();
+    	if (!networkConnection) {
+			noConnectionAlert();
 		}
     	super.onResume();
-    } //onResume close
+    }
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
@@ -203,13 +192,8 @@ public class MainActivity extends Activity {
         //Plus button clicked
         case R.id.newPlusButton:
         	Log.i(TAG, "Plus clicked");
-        	//Recheck network
-        	if (ConnectionManager.connectionStatus(myContext)) {
-        		Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
-            	startActivityForResult(newItemIntent, 0);
-			} else {
-				noConnectionAlert(editDeleteMessage);
-			}
+        	Intent newItemIntent = new Intent(MainActivity.this, NewItemActivity.class);
+        	startActivityForResult(newItemIntent, 0);
         	break;
         //Log out button
         case R.id.logoutButton: 
@@ -220,9 +204,8 @@ public class MainActivity extends Activity {
 			startActivity(logoutIntent);
 			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
                     Toast.LENGTH_LONG).show();
-			timerTask.cancel();
 			//Remove Main activity from stack to stop "Back button login"
-			finish();  
+			finish(); 
 			break;
 		//Refresh button
 		case R.id.refreshButton:
@@ -325,14 +308,14 @@ public class MainActivity extends Activity {
 	/*
 	 * Custom method to show no connection alert
 	 */
-	public static void noConnectionAlert(String alertMessage) {
+	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
 		AlertDialog alertDialog = new AlertDialog.Builder(
 				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog.setMessage(alertMessage);
+		alertDialog.setMessage(myContext.getString(R.string.noConnectionAlert));
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();
