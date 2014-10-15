@@ -175,7 +175,10 @@ public class MainActivity extends Activity {
 			DataManager.queryLocalDatastore();
 		} else {
 			//Start polling. Timer rechecks network before query call
-			createPollingTimer();
+			if (timerTask == null) {
+				Log.i(TAG, "timerTask null");
+				createPollingTimer();
+			}
 		}
     	super.onResume();
     } //onResume close

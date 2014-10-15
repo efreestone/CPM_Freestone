@@ -18,6 +18,7 @@
     
     <string name="nameHeader">Name</string>
     <string name="numberHeader">Phone Number</string>
+    <string name="numberHint">10 Digit Phone Number</string>
     <string name="newItemTitle">Add New Contact</string>
     <string name="saveContactButton">Save Contact</string>
     

@@ -15,6 +15,7 @@ package com.elijahfreestone.project3android;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -51,14 +52,17 @@ public class NewItemActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_new_item);   
 		
-		getActionBar().setDisplayHomeAsUpEnabled(true);
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
 		 
 		//Grab edit texts and button
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
-		saveButton = (Button) findViewById(R.id.saveButton);
+		//Format phone number as it is being entered
+		numberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher("US"));
 		
-		Intent editIntent = this.getIntent();
+		saveButton = (Button) findViewById(R.id.saveButton); 
+		
+		Intent editIntent = this.getIntent(); 
 		if (editIntent.getExtras() != null) {
 			Log.i(TAG, "editIntent good");
 			itemName = editIntent.getStringExtra("itemName");
@@ -76,14 +80,27 @@ public class NewItemActivity extends Activity {
 			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
+				//Remove formatting () & - from number before parseLong
+				String numberNoFormat = numberEnteredString.replaceAll("[^0-9]", "");
+				
+				Boolean inputsFilled;
+				if (numberEnteredString.length() != 14) {
+					inputsFilled = false;
+				} else {
+					inputsFilled = true;
+				}
+				
 				
 				//Check that both fields contain data
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
 					Toast.makeText(getApplicationContext(), "Both fields are required to save",
-							Toast.LENGTH_LONG).show();
+							Toast.LENGTH_LONG).show(); 
+				} else if (numberEnteredString.length() != 13) {
+					Toast.makeText(getApplicationContext(), "Phone number must be 10 digits",
+							Toast.LENGTH_LONG).show(); 
 				} else {
 					//Grab long from number string
-					numberEnteredLong = Long.parseLong(numberEnteredString);
+					numberEnteredLong = Long.parseLong(numberNoFormat);
 					//Check what itemName equals. None means no edit intent was sent 
 					//and it's a new item being saved
 					if (itemName.equalsIgnoreCase("none")) {
@@ -125,14 +142,14 @@ public class NewItemActivity extends Activity {
 									editObject.saveInBackground(new SaveCallback() {
 										
 										@Override
-										public void done(ParseException arg0) {
+										public void done(ParseException arg0) { 
 											if (arg0 == null) {
 												Toast.makeText(getApplicationContext(), "Edited Item Saved!", 
 														Toast.LENGTH_LONG).show();
 												Intent newItemBackIntent = new Intent();
 												newItemBackIntent.putExtra("newItem",
 														nameEntered);
-												setResult(RESULT_OK, newItemBackIntent);
+												setResult(RESULT_OK, newItemBackIntent); 
 												finish();
 											} else {
 												Toast.makeText(getApplicationContext(), "An error occured, please try again",

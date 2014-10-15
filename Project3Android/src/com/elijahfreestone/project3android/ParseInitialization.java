@@ -33,6 +33,6 @@ public class ParseInitialization extends Application {
 		Parse.enableLocalDatastore(this);
         //Initialize Parse with credentials 
         Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
-	}
+	} 
 
 }

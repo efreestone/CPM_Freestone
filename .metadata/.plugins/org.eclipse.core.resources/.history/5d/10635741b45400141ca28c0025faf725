@@ -1,0 +1,164 @@
+/*
+ * @author	Elijah Freestone 
+ *
+ * Project	Project3Android
+ * 
+ * @class 	CPM term 1410
+ * 
+ * Package	com.elijahfreestone.project3android
+ * 
+ * Date		Oct 11, 2014
+ */
+
+package com.elijahfreestone.project3android;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class NewItemActivity handles the new items activity and saving items to Parse.
+ */
+public class NewItemActivity extends Activity {
+	String TAG = "NewItemActivity";
+	EditText nameEditText;
+	EditText numberEditText;
+	Button saveButton;
+	String nameEntered;
+	String numberEnteredString;
+	long numberEnteredLong; 
+	String itemName = "none";
+	String itemID;
+	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */ 
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_new_item);   
+		
+		getActionBar().setDisplayHomeAsUpEnabled(true); 
+		 
+		//Grab edit texts and button
+		nameEditText = (EditText) findViewById(R.id.nameEditText);
+		numberEditText = (EditText) findViewById(R.id.numberEditText);
+		//Format phone number as it is being entered
+		numberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+		
+		saveButton = (Button) findViewById(R.id.saveButton); 
+		
+		Intent editIntent = this.getIntent(); 
+		if (editIntent.getExtras() != null) {
+			Log.i(TAG, "editIntent good");
+			itemName = editIntent.getStringExtra("itemName");
+			nameEditText.setText(itemName);
+			
+			String itemNumber = editIntent.getStringExtra("itemNumber");
+			numberEditText.setText(itemNumber);
+			
+			itemID = editIntent.getStringExtra("itemID");
+		}
+		
+		saveButton.setOnClickListener(new OnClickListener() {   
+			
+			@Override   
+			public void onClick(View arg0) {
+				nameEntered = nameEditText.getText().toString();
+				numberEnteredString = numberEditText.getText().toString();
+				String numberNoFormat = numberEnteredString.replaceAll("[^0-9]", "");
+				
+				Boolean inputsFilled;
+				if (numberEnteredString.length() != 14) {
+					inputsFilled = false;
+				} else {
+					inputsFilled = true;
+				}
+				
+				
+				//Check that both fields contain data
+				if (inputsFilled && nameEntered.equals("") || numberEnteredString.equals("")) {
+					Toast.makeText(getApplicationContext(), "Both fields are required to save",
+							Toast.LENGTH_LONG).show(); 
+				} else {
+					//Grab long from number string
+					numberEnteredLong = Long.parseLong(numberNoFormat);
+					//Check what itemName equals. None means no edit intent was sent 
+					//and it's a new item being saved
+					if (itemName.equalsIgnoreCase("none")) {
+						Log.i(TAG, "Save clicked");
+						Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
+
+						// Save new item to Parse. Default ACL is set in MainActivity
+						ParseObject newItem = new ParseObject("newItem");
+						newItem.put("Name", nameEntered);
+						newItem.put("Number", numberEnteredLong);
+						newItem.saveInBackground(new SaveCallback() {
+
+							@Override
+							public void done(ParseException arg0) {
+								if (arg0 == null) {
+									Toast.makeText(getApplicationContext(), "Item Saved!", 
+											Toast.LENGTH_LONG).show();
+									Intent newItemBackIntent = new Intent();
+									newItemBackIntent.putExtra("newItem",
+											nameEntered);
+									setResult(RESULT_OK, newItemBackIntent);
+									finish();
+								} else {
+									Toast.makeText(getApplicationContext(), "An error occured, please try again",
+											Toast.LENGTH_LONG).show();
+								}
+							}
+						}); // saveInBackground close
+					} else {
+						Log.i(TAG, "itemName = " + itemName);
+						ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
+						editQuery.getInBackground(itemID, new GetCallback<ParseObject>() {
+							
+							@Override
+							public void done(ParseObject editObject, ParseException e) {
+								if (e == null) {
+									editObject.put("Name", nameEntered);
+									editObject.put("Number", numberEnteredLong);
+									editObject.saveInBackground(new SaveCallback() {
+										
+										@Override
+										public void done(ParseException arg0) {
+											if (arg0 == null) {
+												Toast.makeText(getApplicationContext(), "Edited Item Saved!", 
+														Toast.LENGTH_LONG).show();
+												Intent newItemBackIntent = new Intent();
+												newItemBackIntent.putExtra("newItem",
+														nameEntered);
+												setResult(RESULT_OK, newItemBackIntent);
+												finish();
+											} else {
+												Toast.makeText(getApplicationContext(), "An error occured, please try again",
+														Toast.LENGTH_LONG).show();
+											}
+										}
+									}); //saveInBackground close
+								}
+							}
+						}); //editQuery close
+					}
+				}
+			} 
+		}); //setOnClickListener close
+	} //onCreate close 
+}

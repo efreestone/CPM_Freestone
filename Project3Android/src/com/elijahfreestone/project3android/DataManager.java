@@ -62,11 +62,11 @@ public class DataManager {
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
 					//Log.i(TAG, newItemList.toString());
 					//Split list into separate Parse Objects
-					for (ParseObject eachItem : newItemList) { 
+					for (ParseObject eachItem : newItemList) {  
 						
-						String itemName = eachItem.getString("Name"); 
+						String itemName = eachItem.getString("Name");  
 						long itemNumber = eachItem.getLong("Number");
-						String itemNumberString = "" + itemNumber;
+						String itemNumberString = "" + itemNumber; 
 						String itemID = eachItem.getObjectId().toString();
 						HashMap<String, String> objectMap = new HashMap<String, String>();
 						objectMap.put("itemName", itemName);
