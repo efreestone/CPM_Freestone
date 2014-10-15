@@ -12,7 +12,6 @@
 
     <application
         android:allowBackup="true"
-        android:name="com.elijahfreestone.project3android.ParseInitialization"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >

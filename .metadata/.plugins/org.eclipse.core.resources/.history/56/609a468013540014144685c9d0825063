@@ -88,6 +88,7 @@ public class DataManager {
 				}
 				
 				//Add no contacts notice if there aren't any contacts for the user
+				
 				if (MainActivity.parseArrayList.size() == 0) {
 					MainActivity.noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
 				} else {
@@ -157,49 +158,5 @@ public class DataManager {
 		});  
     	deleteDialog.show();
     } //deleteItem close
-    
-    static void queryLocalDatastore() {
-    	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
-    	localQuery.fromLocalDatastore();
-    	localQuery.findInBackground(new FindCallback<ParseObject>() {
-
-			@Override
-			public void done(List<ParseObject> localItemsList, ParseException e) {
-				if (e == null) {
-					for (ParseObject eachItem : localItemsList) { 
-						
-						String itemName = eachItem.getString("Name"); 
-						long itemNumber = eachItem.getLong("Number");
-						String itemNumberString = "" + itemNumber;
-						String itemID = eachItem.getObjectId().toString();
-						HashMap<String, String> objectMap = new HashMap<String, String>();
-						objectMap.put("itemName", itemName);
-						objectMap.put("itemNumber", itemNumberString);
-						objectMap.put("itemID", itemID); 
-					
-						MainActivity.parseArrayList.add(objectMap);    
-						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
-					} 
-					//Log.i(TAG, parseArrayList.toString());
-					listAdapter = new SimpleAdapter(
-							MainActivity.myContext, MainActivity.parseArrayList,
-							R.layout.listview_row, new String[] { "itemName",
-									"itemNumber" }, new int[] { R.id.nameTextView,
-									R.id.numberTextView });
-					MainActivity.itemListView.setAdapter(listAdapter);
-				} else { 
-					Log.e(TAG, "Error: " + e.getMessage().toString()); 
-				} //if/else close	
-				
-				// Add no contacts notice if there aren't any contacts for the user on the device
-				if (MainActivity.parseArrayList.size() == 0) {
-					MainActivity.noItemsNotice
-							.setText("No contacts saved and no network connection. Please check your network connection and try again");
-				} else {  
-					MainActivity.noItemsNotice.setText("");
-				}
-			}
-		});
-    } //queryLocalDatastore close
 
 }

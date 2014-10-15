@@ -158,7 +158,7 @@ public class DataManager {
     	deleteDialog.show();
     } //deleteItem close
     
-    static void queryLocalDatastore() {
+    void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();
     	localQuery.findInBackground(new FindCallback<ParseObject>() {
@@ -195,7 +195,7 @@ public class DataManager {
 				if (MainActivity.parseArrayList.size() == 0) {
 					MainActivity.noItemsNotice
 							.setText("No contacts saved and no network connection. Please check your network connection and try again");
-				} else {  
+				} else { 
 					MainActivity.noItemsNotice.setText("");
 				}
 			}

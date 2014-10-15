@@ -40,6 +40,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
@@ -85,13 +86,15 @@ public class MainActivity extends Activity {
         //Grab listview and create header
         itemListView = (ListView) findViewById(R.id.itemListView);
         View listHeader = getLayoutInflater().inflate(R.layout.listview_header, null);
-        itemListView.addHeaderView(listHeader); 
+        itemListView.addHeaderView(listHeader);
         
-        itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); 
+        itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
-        
-        //Parse initialized in ParseInitialization
+        Parse.enableLocalDatastore(this);
+        //Initialize Parse with credentials 
+        Parse.initialize(this, "SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S", "TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4");
+        //Set default Access Control List to read/write of current user when creating object
         ParseACL.setDefaultACL(new ParseACL(), true);   
         
 		//Check Parse for current user and auto login if one exists.
@@ -171,7 +174,7 @@ public class MainActivity extends Activity {
     	//Check network
     	if (!ConnectionManager.connectionStatus(myContext)) {
 			noConnectionAlert(alertMessage);
-			parseArrayList.clear();
+			parseArrayList.clear();x
 			DataManager.queryLocalDatastore();
 		} else {
 			//Start polling. Timer rechecks network before query call
@@ -188,12 +191,12 @@ public class MainActivity extends Activity {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true; 
-    } 
+    }
 
     /* (non-Javadoc)
      * @see android.app.Activity#onOptionsItemSelected(android.view.MenuItem)
      */
-    @Override 
+    @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -219,22 +222,16 @@ public class MainActivity extends Activity {
 			startActivity(logoutIntent);
 			Toast.makeText(getApplicationContext(), "You have been successfully logged out.",
                     Toast.LENGTH_LONG).show();
-			if (timerTask != null) {
-				timerTask.cancel();
-			}
+			timerTask.cancel();
 			//Remove Main activity from stack to stop "Back button login"
 			finish();  
-			break; 
+			break;
 		//Refresh button
 		case R.id.refreshButton:
 			Log.i(TAG, "Refresh hit");
-			if (ConnectionManager.connectionStatus(myContext)) {
-				//Clear arraylist and query Parse again
-				parseArrayList.clear();
-				DataManager.queryParseForItems();
-			} else {
-				noConnectionAlert(editDeleteMessage);
-			}
+			//Clear arraylist and query Parse again
+			parseArrayList.clear();
+			DataManager.queryParseForItems();
 			break;
         default:  
 			break;
