@@ -16,16 +16,8 @@ import com.parse.Parse;
 
 import android.app.Application;
 
-/**
- * The Class ParseInitialization only handles Parse init.
- * This was done to stop crash related to enableLocalDatastore being
- * called within a class that extends an Activity.
- */
 public class ParseInitialization extends Application {
 
-	/* (non-Javadoc)
-	 * @see android.app.Application#onCreate()
-	 */
 	@Override
 	public void onCreate() {
 		super.onCreate();
