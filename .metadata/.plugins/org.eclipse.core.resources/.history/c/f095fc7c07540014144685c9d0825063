@@ -19,9 +19,7 @@ import java.util.TimerTask;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,6 +42,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
  */
@@ -59,7 +58,6 @@ public class MainActivity extends Activity {
 	int selectedObject = -1;
 	View viewSelected;
 	String editNameString = "test";
-	Boolean networkConnection;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -74,12 +72,6 @@ public class MainActivity extends Activity {
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         
         setContentView(R.layout.activity_main);  
-        
-        //Check network
-        networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
-        	noConnectionAlert();
-		}
         
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
@@ -110,8 +102,12 @@ public class MainActivity extends Activity {
 			//Remove main activity until user is authenticated
 			finish();  
 		} //currentUser if/else close 
-
-		// Create timer to poll Parse every 20 sec
+		
+		//Query Parse to get items list for user and display
+		//parseArrayList.clear();
+		//DataManager.queryParseForItems();
+		
+		//Create timer to poll Parse every 20 sec
 		final Handler myHandler = new Handler();
 		Timer pollTimer = new Timer();
 		TimerTask timerTask = new TimerTask() {
@@ -119,22 +115,16 @@ public class MainActivity extends Activity {
 			public void run() {
 				myHandler.post(new Runnable() {
 					public void run() {
-						//Check network connection and stop query if non
-						if (ConnectionManager.connectionStatus(myContext)) {
-							// Query Parse to get items list for user and display
-							parseArrayList.clear();
-							DataManager.queryParseForItems();
-							Log.i(TAG, "timer query");
-						} else {
-							Log.i(TAG, "No connection!!");
-						}
+						//Query Parse to get items list for user and display
+						parseArrayList.clear();
+						DataManager.queryParseForItems();
+						Log.i(TAG, "timer query");
 					}
 				});
-			}
+			}  
 		};
-		// execute every 20 sec
-		pollTimer.schedule(timerTask, 0, 20000);
-		
+		//execute every 20 sec
+		pollTimer.schedule(timerTask, 0, 20000); 
 		
 		//Set long click listener for listview
 		itemListView.setOnItemLongClickListener(new OnItemLongClickListener() {
@@ -294,22 +284,6 @@ public class MainActivity extends Activity {
             mode.setTitle("Edit/Delete");
             return false;
         }
-    } //ActionBarCallBack close
-    
-	/*
-	 * Custom method to show no connection alert
-	 */
-	public static void noConnectionAlert() {
-		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(
-				MainActivity.myContext).create();
-		alertDialog.setTitle(R.string.noConnectionTitle);
-		// Set alert message. setMessage only has a charSequence
-		// version so getString must be used.
-		alertDialog.setMessage(myContext.getString(R.string.noConnectionAlert));
-		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-				(DialogInterface.OnClickListener) null);
-		alertDialog.show();
-	} //noConnectionAlert close
+    }
     
 }

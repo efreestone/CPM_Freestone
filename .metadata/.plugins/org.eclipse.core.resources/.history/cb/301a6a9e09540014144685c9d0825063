@@ -44,6 +44,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
  */
@@ -77,9 +78,6 @@ public class MainActivity extends Activity {
         
         //Check network
         networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
-        	noConnectionAlert();
-		}
         
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);

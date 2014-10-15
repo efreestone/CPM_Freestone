@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         
         //Check network
         networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
+        if (!ConnectionManager.connectionStatus(myContext)) {
         	noConnectionAlert();
 		}
         

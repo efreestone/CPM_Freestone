@@ -17,11 +17,10 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -44,6 +43,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
  */
@@ -77,9 +77,6 @@ public class MainActivity extends Activity {
         
         //Check network
         networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
-        	noConnectionAlert();
-		}
         
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);
@@ -294,22 +291,6 @@ public class MainActivity extends Activity {
             mode.setTitle("Edit/Delete");
             return false;
         }
-    } //ActionBarCallBack close
-    
-	/*
-	 * Custom method to show no connection alert
-	 */
-	public static void noConnectionAlert() {
-		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(
-				MainActivity.myContext).create();
-		alertDialog.setTitle(R.string.noConnectionTitle);
-		// Set alert message. setMessage only has a charSequence
-		// version so getString must be used.
-		alertDialog.setMessage(myContext.getString(R.string.noConnectionAlert));
-		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-				(DialogInterface.OnClickListener) null);
-		alertDialog.show();
-	} //noConnectionAlert close
+    }
     
 }

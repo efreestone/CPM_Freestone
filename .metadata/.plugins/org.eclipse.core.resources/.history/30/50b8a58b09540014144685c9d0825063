@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.R.bool;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -44,6 +45,7 @@ import com.parse.Parse;
 import com.parse.ParseACL;
 import com.parse.ParseUser;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
  */
@@ -77,9 +79,6 @@ public class MainActivity extends Activity {
         
         //Check network
         networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
-        	noConnectionAlert();
-		}
         
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);

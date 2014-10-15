@@ -77,9 +77,6 @@ public class MainActivity extends Activity {
         
         //Check network
         networkConnection = ConnectionManager.connectionStatus(myContext);
-        if (!networkConnection) {
-        	noConnectionAlert();
-		}
         
         //Create no item title
         noItemsNotice = (TextView) findViewById(R.id.noItemsNotice);

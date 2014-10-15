@@ -20,7 +20,4 @@
     <string name="numberHeader">Phone Number</string>
     <string name="newItemTitle">Add New Contact</string>
     <string name="saveContactButton">Save Contact</string>
-    
-    <string name="noConnectionTitle">No Connection!</string>
-    <string name="noConnectionAlert">No network connection is available. Only contacts on your device will be available.</string>
 </resources>
