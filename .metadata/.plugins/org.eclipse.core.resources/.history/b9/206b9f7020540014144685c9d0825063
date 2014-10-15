@@ -250,9 +250,9 @@ public class MainActivity extends Activity {
     	Log.i(TAG, "On Activity Result");
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
-    		//parseArrayList.clear();
+    		parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
-			//DataManager.queryParseForItems();
+			DataManager.queryParseForItems();
 			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);

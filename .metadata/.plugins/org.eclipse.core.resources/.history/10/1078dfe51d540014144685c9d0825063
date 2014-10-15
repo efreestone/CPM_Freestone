@@ -57,6 +57,7 @@ public class DataManager {
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
+					ParseObject.unpinAllInBackground(newItemList);
 					//Pin/cache all objects for offline
 					ParseObject.pinAllInBackground(newItemList);
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
@@ -161,7 +162,6 @@ public class DataManager {
     static void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();
-    	localQuery.orderByAscending("createdAt");
     	localQuery.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override

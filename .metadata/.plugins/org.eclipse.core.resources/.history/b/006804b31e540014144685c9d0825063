@@ -161,7 +161,6 @@ public class DataManager {
     static void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();
-    	localQuery.orderByAscending("createdAt");
     	localQuery.findInBackground(new FindCallback<ParseObject>() {
 
 			@Override
