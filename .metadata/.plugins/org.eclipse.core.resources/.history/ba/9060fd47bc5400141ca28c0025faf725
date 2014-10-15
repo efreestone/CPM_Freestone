@@ -256,12 +256,6 @@ public class MainActivity extends Activity {
     		//parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
 			//DataManager.queryParseForItems();
-    		if (timerTask != null) {
-    			timerTask.cancel();
-			}
-			//Null out timerTask. This retriggers polling timer and refreshes list in onResume
-			//Simply calling queryParseForItems here causes list duplication until the next poll
-			timerTask = null;
 			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);

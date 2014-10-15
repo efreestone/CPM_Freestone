@@ -58,7 +58,7 @@ public class NewItemActivity extends Activity {
 		nameEditText = (EditText) findViewById(R.id.nameEditText);
 		numberEditText = (EditText) findViewById(R.id.numberEditText);
 		//Format phone number as it is being entered
-		numberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+		numberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher("US"));
 		
 		saveButton = (Button) findViewById(R.id.saveButton); 
 		
@@ -95,9 +95,8 @@ public class NewItemActivity extends Activity {
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
 					Toast.makeText(getApplicationContext(), "Both fields are required to save",
 							Toast.LENGTH_LONG).show(); 
-				//Make sure formatted number is 13 long "(xxx)xxx-xxxx" and doesn't start with o or 1
-				} else if (numberEnteredString.length() != 13 && numberEnteredString.charAt(1) > 1) {
-					Toast.makeText(getApplicationContext(), "Phone number must be 10 digits, first number can not be 0 or 1",
+				} else if (numberEnteredString.length() != 13) {
+					Toast.makeText(getApplicationContext(), "Phone number must be 10 digits",
 							Toast.LENGTH_LONG).show(); 
 				} else {
 					//Grab long from number string
