@@ -111,22 +111,22 @@ public class NewItemActivity extends Activity {
 						Log.i(TAG, "Save clicked");
 						Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
 						
-						ParseObject lastSynced = new ParseObject("lastSynced");
-//						SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy"); 
-//						Date dateObj = curFormater.format(new Date());
-						Date current = new Date();
-						lastSynced.put("lastSyncDate", current);
-						lastSynced.saveInBackground(new SaveCallback() {
-							
-							@Override
-							public void done(ParseException arg0) {
-								if (arg0 == null) {
-									Log.i(TAG, "Date saved");
-								} else {
-									Log.i(TAG, "Error");
-								}
-							}
-						});
+//						ParseObject lastSynced = new ParseObject("lastSynced");
+////						SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy"); 
+////						Date dateObj = curFormater.format(new Date());
+//						Date current = new Date();
+//						lastSynced.put("lastSyncDate", current);
+//						lastSynced.saveInBackground(new SaveCallback() {
+//							
+//							@Override
+//							public void done(ParseException arg0) {
+//								if (arg0 == null) {
+//									Log.i(TAG, "Date saved");
+//								} else {
+//									Log.i(TAG, "Error");
+//								}
+//							}
+//						});
 
 						// Save new item to Parse. Default ACL is set in MainActivity
 						ParseObject newItem = new ParseObject("newItem");

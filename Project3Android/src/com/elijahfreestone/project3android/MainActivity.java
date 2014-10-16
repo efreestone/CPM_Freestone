@@ -24,9 +24,12 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
@@ -68,6 +71,10 @@ public class MainActivity extends Activity {
 	TimerTask timerTask;
 	String alertMessage;
 	String editDeleteMessage;
+	static SharedPreferences sharedPreferences;
+	Date syncDateFromParse;
+	long syncDateInMillis;
+	Date sharedPrefsSyncDate;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -78,6 +85,15 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         
         myContext = this;
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(myContext);
+        syncDateInMillis = sharedPreferences.getLong("lastSyncMillis", 0);
+        if (syncDateInMillis == 0) {
+        	Date defaultDate = new Date();
+        	Editor editor = sharedPreferences.edit();
+        	editor.putLong("lastSyncMillis", defaultDate.getTime());
+        	editor.commit();
+		}
+        //Log.i(TAG, "Shared Prefs Date: " + syncDateInMillis);
         //Request progress wheel
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         
@@ -96,6 +112,9 @@ public class MainActivity extends Activity {
         itemListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE); 
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
+        
+        parseArrayList.clear();
+		DataManager.queryParseForItems();
         
         //Parse initialized in ParseInitialization
         ParseACL.setDefaultACL(new ParseACL(), true);   
@@ -145,33 +164,54 @@ public class MainActivity extends Activity {
     } //onCreate close 
     
     void lastSyncDate() {
+    	//Grab date in millis from shared prefs and convert to date object
+    	syncDateInMillis = sharedPreferences.getLong("lastSyncMillis", 0);
+    	sharedPrefsSyncDate = new Date(syncDateInMillis);
+    	//Log.i(TAG, "Shared Prefs Date: " + sharedPrefsSyncDate);
     	ParseQuery<ParseObject> syncQuery = ParseQuery.getQuery("lastSynced");
     	syncQuery.getFirstInBackground(new GetCallback<ParseObject>() {
 			
 			@Override
 			public void done(ParseObject syncObject, ParseException err) {
 				if (err == null) {
-					Date syncDate = syncObject.getDate("lastSyncDate");
-					Log.i(TAG, "Date: " + syncDate);
-					Date current = new Date();
-					syncObject.put("lastSyncDate", current);
-					//syncObject.put("lastSyncDate", syncDate);
-					syncObject.saveInBackground(new SaveCallback() {
+					syncDateFromParse = syncObject.getDate("lastSyncDate");
+					//Log.i(TAG, "Date: " + syncDate);
+					if (syncDateFromParse == null) {
+						Log.i(TAG, "syncObject null");
+					} else { 
+						Log.i(TAG, "syncObject = " + syncDateFromParse);
+					}  
+				} else { //Either lastSynced doesn't exist or some sort of error
+					Log.i(TAG, "lastSynced doesn't exist.");
+					//Create lastSynced object for the user, set to current date/time
+					ParseObject firstSync = new ParseObject("lastSynced");
+					Date currentDate = new Date();
+					syncDateFromParse = currentDate;
+					firstSync.put("lastSyncDate", currentDate);
+					firstSync.saveInBackground(new SaveCallback() {
 						
 						@Override
 						public void done(ParseException arg0) {
 							if (arg0 == null) {
-								Log.i(TAG, "Date saved");
+								Log.i(TAG, "First sync Date saved");
 							} else {
-								Log.i(TAG, "Error");
+								Log.i(TAG, "Error " + arg0.toString());
 							}
-							
 						}
-					});
-				} 
-			}
-		});
-    }
+					}); //saveInBackground close
+				}
+				
+				if (syncDateFromParse.equals(sharedPrefsSyncDate)) {
+		    		Log.i(TAG, "Dates are the same");
+				} else {
+					Log.i(TAG, "Dates are different");
+					parseArrayList.clear();
+					DataManager.queryParseForItems();
+				}
+			} //done close
+			
+		}); //getFirstInBackground close 
+    } //lastSyncDate close
     
     //Create and start timer to polling Parse, called in onResume
 	void createPollingTimer() {
@@ -186,8 +226,8 @@ public class MainActivity extends Activity {
 						//Recheck network connection and stop query if false
 						if (ConnectionManager.connectionStatus(myContext)) {
 							// Query Parse to get items list for user and display
-							parseArrayList.clear();
-							DataManager.queryParseForItems();
+							//parseArrayList.clear();
+							//DataManager.queryParseForItems();
 							lastSyncDate(); 
 							Log.i(TAG, "timer query");
 						} else {
@@ -289,9 +329,9 @@ public class MainActivity extends Activity {
     	Log.i(TAG, "On Activity Result");
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
-    		//parseArrayList.clear();
+    		parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
-			//DataManager.queryParseForItems();
+			DataManager.queryParseForItems();
     		if (timerTask != null) {
     			timerTask.cancel();
 			}

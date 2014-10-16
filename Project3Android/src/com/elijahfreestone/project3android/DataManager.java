@@ -12,6 +12,7 @@
 
 package com.elijahfreestone.project3android;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -20,6 +21,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences.Editor;
 import android.util.Log;
 import android.widget.BaseAdapter;
 import android.widget.SimpleAdapter;
@@ -27,9 +29,11 @@ import android.widget.Toast;
 
 import com.parse.DeleteCallback;
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -57,6 +61,7 @@ public class DataManager {
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
+					updateSyncDates();
 					//Pin/cache all objects for offline
 					ParseObject.pinAllInBackground(newItemList);
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
@@ -68,6 +73,7 @@ public class DataManager {
 						long itemNumber = eachItem.getLong("Number");
 						String itemNumberString = "" + itemNumber; 
 						String formattedNumber;
+						//Manually format phone number to get (xxx)xxx-xxxx format
 						if (itemNumberString.length() == 10) {
 							formattedNumber = "(" + itemNumberString.substring(0, 3) + ")"
 									+ itemNumberString.substring(3, 6) + "-"
@@ -75,9 +81,6 @@ public class DataManager {
 						} else {
 							formattedNumber = itemNumberString;    
 						}
-//						Locale locale = Locale.getDefault();
-//						PhoneNumberUtils.getFormatTypeForLocale(locale);
-//						String formattedNumber = PhoneNumberUtils.formatNumber(itemNumberString);
 						//Log.i(TAG, "Formatted number = " + formattedNumber);
 						String itemID = eachItem.getObjectId().toString();
 						HashMap<String, String> objectMap = new HashMap<String, String>();
@@ -111,6 +114,38 @@ public class DataManager {
 			}
 		}); 
 	} //queryParseForItems close
+	
+	static void updateSyncDates() {
+		final Date current = new Date();
+		//Query and update Parse date
+		ParseQuery<ParseObject> updateQuery = ParseQuery.getQuery("lastSynced");
+		updateQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+			
+			@Override
+			public void done(ParseObject syncObject, ParseException e) {
+				if (e == null) {
+					syncObject.put("lastSyncDate", current);
+					syncObject.saveInBackground(new SaveCallback() {
+						
+						@Override
+						public void done(ParseException arg0) {
+							if (arg0 == null) {
+								Log.i(TAG, "Date saved");
+							} else {
+								Log.i(TAG, "Error");
+							}
+							
+						}
+					}); //saveInBackground close	
+				}
+			}
+		}); //getFirstInBackground close
+		//Update shared prefs date
+		Editor editor = MainActivity.sharedPreferences.edit();
+    	editor.putLong("lastSyncMillis", current.getTime());
+    	editor.commit();
+		
+	} //updateSyncDates close
 	
 	/**
 	 * Delete item from list once confirmed with alert dialog.
