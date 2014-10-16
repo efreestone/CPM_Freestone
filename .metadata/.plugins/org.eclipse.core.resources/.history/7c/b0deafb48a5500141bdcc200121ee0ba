@@ -83,7 +83,7 @@ public class NewItemActivity extends Activity {
 		saveButton.setOnClickListener(new OnClickListener() {   
 			
 			@Override   
-			public void onClick(View arg0) { 
+			public void onClick(View arg0) {
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
 				//Remove formatting () & - from number before parseLong
@@ -99,7 +99,7 @@ public class NewItemActivity extends Activity {
 					String bothFieldsReq = "Both fields are required to save a contact";
 					inputErrorAlert(bothFieldsReq);
 				//Make sure formatted number is 13 long "(xxx)xxx-xxxx" and doesn't start with 0 or 1
-				} else if (numberEnteredString.length() != 13 || firstInt <= 1) { 
+				} else if (numberEnteredString.length() != 13 && firstInt != 0) { 
 					//Create alert message string and show error alert
 					String phoneValidate = "Phone number must be 10 digits and first number can not be 0 or 1";
 					inputErrorAlert(phoneValidate);
