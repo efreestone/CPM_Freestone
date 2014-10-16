@@ -117,7 +117,7 @@ public class MainActivity extends Activity {
         	parseArrayList.clear();
     		DataManager.queryParseForItems();
 			
-		}  
+		}
         
         
         //Parse initialized in ParseInitialization

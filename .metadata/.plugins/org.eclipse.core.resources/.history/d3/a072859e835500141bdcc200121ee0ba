@@ -184,7 +184,6 @@ public class DataManager {
 										listAdapter.notifyDataSetChanged();
 										//itemListView.setEnabled(true);
 										MainActivity.myActionMode.finish(); 
-										updateSyncDates();
 									} else {
 										Toast.makeText(MainActivity.myContext,"An error occurred, please try again.", Toast.LENGTH_LONG).show();
 									}

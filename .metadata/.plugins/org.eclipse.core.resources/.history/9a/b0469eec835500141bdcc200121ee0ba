@@ -89,15 +89,13 @@ public class NewItemActivity extends Activity {
 				//Remove formatting () & - from number before parseLong
 				String numberNoFormat = numberEnteredString.replaceAll("[^0-9]", "");
 				
-				Log.i(TAG, "numberNoFormat 0 = " + numberNoFormat.charAt(0)); 
-				
 				//Check that both fields contain data
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
 					//Create alert message string and show error alert
 					String bothFieldsReq = "Both fields are required to save a contact";
 					inputErrorAlert(bothFieldsReq);
 				//Make sure formatted number is 13 long "(xxx)xxx-xxxx" and doesn't start with 0 or 1
-				} else if (numberEnteredString.length() != 13 && numberNoFormat.charAt(1) - 0 != 1 && numberNoFormat.charAt(0) - 0 != 0) { 
+				} else if (numberEnteredString.length() != 13 && numberEnteredString.charAt(1) > 1) {
 					//Create alert message string and show error alert
 					String phoneValidate = "Phone number must be 10 digits and first number can not be 0 or 1";
 					inputErrorAlert(phoneValidate);
@@ -125,7 +123,7 @@ public class NewItemActivity extends Activity {
 									newItemBackIntent.putExtra("newItem",
 											nameEntered);
 									setResult(RESULT_OK, newItemBackIntent);
-									//DataManager.updateSyncDates();
+									DataManager.updateSyncDates();
 									finish();
 								} else {
 									Toast.makeText(getApplicationContext(), "An error occured, please try again",
@@ -133,10 +131,8 @@ public class NewItemActivity extends Activity {
 								} 
 							}
 						}); // saveInBackground close
-					} else {  
-						//Intent had data so this is an edit 
-						//Log.i(TAG, "itemName = " + itemName);
-						//Query Parse to grab item being edited
+					} else { //Intent had data so this is an edit
+						Log.i(TAG, "itemName = " + itemName);
 						ParseQuery<ParseObject> editQuery = ParseQuery.getQuery("newItem");
 						editQuery.getInBackground(itemID, new GetCallback<ParseObject>() {
 							
@@ -147,7 +143,7 @@ public class NewItemActivity extends Activity {
 									editObject.put("Number", numberEnteredLong);
 									editObject.saveInBackground(new SaveCallback() {
 										
-										@Override 
+										@Override
 										public void done(ParseException arg0) { 
 											if (arg0 == null) {
 												Toast.makeText(getApplicationContext(), "Edited Item Saved!", 
@@ -156,7 +152,7 @@ public class NewItemActivity extends Activity {
 												newItemBackIntent.putExtra("newItem",
 														nameEntered);
 												setResult(RESULT_OK, newItemBackIntent); 
-												//DataManager.updateSyncDates();
+												DataManager.updateSyncDates();
 												finish();
 											} else {
 												Toast.makeText(getApplicationContext(), "An error occured, please try again",
@@ -187,11 +183,4 @@ public class NewItemActivity extends Activity {
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();
 	} //noConnectionAlert close
-	
-	//Finish activity in onPause to stop potentially try to save new item with no network.
-	@Override
-	protected void onPause() {
-		finish();
-		super.onPause();
-	}
 }

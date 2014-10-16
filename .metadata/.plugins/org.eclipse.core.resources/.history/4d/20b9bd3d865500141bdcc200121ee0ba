@@ -61,7 +61,7 @@ public class DataManager {
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
-					updateSyncDates();
+//					updateSyncDates();
 					//Pin/cache all objects for offline
 					ParseObject.pinAllInBackground(newItemList);
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");

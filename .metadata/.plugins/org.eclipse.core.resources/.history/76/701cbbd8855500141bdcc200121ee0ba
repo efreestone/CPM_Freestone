@@ -74,7 +74,7 @@ public class MainActivity extends Activity {
 	static SharedPreferences sharedPreferences;
 	Date syncDateFromParse;
 	long syncDateInMillis;
-	Date sharedPrefsSyncDate; 
+	Date sharedPrefsSyncDate;
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -113,12 +113,8 @@ public class MainActivity extends Activity {
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
-        if (timerTask == null) {
-        	parseArrayList.clear();
-    		DataManager.queryParseForItems();
-			
-		}  
-        
+        parseArrayList.clear();
+		DataManager.queryParseForItems();
         
         //Parse initialized in ParseInitialization
         ParseACL.setDefaultACL(new ParseACL(), true);   

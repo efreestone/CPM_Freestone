@@ -113,12 +113,8 @@ public class MainActivity extends Activity {
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
-        if (timerTask == null) {
-        	parseArrayList.clear();
-    		DataManager.queryParseForItems();
-			
-		}  
-        
+        parseArrayList.clear();
+		DataManager.queryParseForItems();
         
         //Parse initialized in ParseInitialization
         ParseACL.setDefaultACL(new ParseACL(), true);   

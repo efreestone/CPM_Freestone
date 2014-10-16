@@ -97,7 +97,7 @@ public class NewItemActivity extends Activity {
 					String bothFieldsReq = "Both fields are required to save a contact";
 					inputErrorAlert(bothFieldsReq);
 				//Make sure formatted number is 13 long "(xxx)xxx-xxxx" and doesn't start with 0 or 1
-				} else if (numberEnteredString.length() != 13 && numberNoFormat.charAt(1) - 0 != 1 && numberNoFormat.charAt(0) - 0 != 0) { 
+				} else if ([numberEnteredString.length() != 13] && [numberNoFormat.charAt(1) - 0 != 1] && [numberNoFormat.charAt(0) - 0] != 0) { 
 					//Create alert message string and show error alert
 					String phoneValidate = "Phone number must be 10 digits and first number can not be 0 or 1";
 					inputErrorAlert(phoneValidate);
