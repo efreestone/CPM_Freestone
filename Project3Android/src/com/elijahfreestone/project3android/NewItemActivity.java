@@ -12,6 +12,9 @@
 
 package com.elijahfreestone.project3android;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -66,9 +69,9 @@ public class NewItemActivity extends Activity {
 		//Format phone number as it is being entered
 		numberEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 		
-		saveButton = (Button) findViewById(R.id.saveButton); 
+		saveButton = (Button) findViewById(R.id.saveButton);  
 		
-		Intent editIntent = this.getIntent(); 
+		Intent editIntent = this.getIntent();   
 		if (editIntent.getExtras() != null) {
 			Log.i(TAG, "editIntent good");
 			itemName = editIntent.getStringExtra("itemName");
@@ -91,16 +94,14 @@ public class NewItemActivity extends Activity {
 				
 				//Check that both fields contain data
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
+					//Create alert message string and show error alert
 					String bothFieldsReq = "Both fields are required to save a contact";
 					inputErrorAlert(bothFieldsReq);
-					Toast.makeText(getApplicationContext(), "Both fields are required to save a contact",
-							Toast.LENGTH_LONG).show(); 
 				//Make sure formatted number is 13 long "(xxx)xxx-xxxx" and doesn't start with 0 or 1
 				} else if (numberEnteredString.length() != 13 && numberEnteredString.charAt(1) > 1) {
+					//Create alert message string and show error alert
 					String phoneValidate = "Phone number must be 10 digits and first number can not be 0 or 1";
 					inputErrorAlert(phoneValidate);
-					Toast.makeText(getApplicationContext(), "Phone number must be 10 digits, first number can not be 0 or 1",
-							Toast.LENGTH_LONG).show(); 
 				} else {
 					//Grab long from number string
 					numberEnteredLong = Long.parseLong(numberNoFormat);
@@ -109,6 +110,23 @@ public class NewItemActivity extends Activity {
 					if (itemName.equalsIgnoreCase("none")) {
 						Log.i(TAG, "Save clicked");
 						Log.i(TAG, "Name: " + nameEntered + "\nNumber: " + numberEnteredLong);
+						
+						ParseObject lastSynced = new ParseObject("lastSynced");
+//						SimpleDateFormat curFormater = new SimpleDateFormat("dd/MM/yyyy"); 
+//						Date dateObj = curFormater.format(new Date());
+						Date current = new Date();
+						lastSynced.put("lastSyncDate", current);
+						lastSynced.saveInBackground(new SaveCallback() {
+							
+							@Override
+							public void done(ParseException arg0) {
+								if (arg0 == null) {
+									Log.i(TAG, "Date saved");
+								} else {
+									Log.i(TAG, "Error");
+								}
+							}
+						});
 
 						// Save new item to Parse. Default ACL is set in MainActivity
 						ParseObject newItem = new ParseObject("newItem");

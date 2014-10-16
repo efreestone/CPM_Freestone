@@ -8,4 +8,4 @@ logcat.view.colsize.TID=46
 logcat.view.colsize.Tag=101
 logcat.view.colsize.Text=545
 logcat.view.colsize.Time=140
-logcat.view.filters.list=name\: 'MainActivity', tag\: 'MainActivity', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'Login', tag\: 'Login', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'AndroidRuntime', tag\: 'AndroidRuntime', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'NewItem', tag\: 'NewItem', text\: '', pid\: '', app\: '', level\: 'verbose', 
+logcat.view.filters.list=name\: 'MainActivity', tag\: 'MainActivity', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'Login', tag\: 'Login', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'AndroidRuntime', tag\: 'AndroidRuntime', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'NewItem', tag\: 'NewItem', text\: '', pid\: '', app\: '', level\: 'verbose', name\: 'DataManager', tag\: 'DataManager', text\: '', pid\: '', app\: '', level\: 'verbose', 

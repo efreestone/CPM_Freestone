@@ -13,6 +13,7 @@
 package com.elijahfreestone.project3android;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -40,8 +41,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.parse.GetCallback;
 import com.parse.ParseACL;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * The Class MainActivity.
@@ -138,6 +144,35 @@ public class MainActivity extends Activity {
 		
     } //onCreate close 
     
+    void lastSyncDate() {
+    	ParseQuery<ParseObject> syncQuery = ParseQuery.getQuery("lastSynced");
+    	syncQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+			
+			@Override
+			public void done(ParseObject syncObject, ParseException err) {
+				if (err == null) {
+					Date syncDate = syncObject.getDate("lastSyncDate");
+					Log.i(TAG, "Date: " + syncDate);
+					Date current = new Date();
+					syncObject.put("lastSyncDate", current);
+					//syncObject.put("lastSyncDate", syncDate);
+					syncObject.saveInBackground(new SaveCallback() {
+						
+						@Override
+						public void done(ParseException arg0) {
+							if (arg0 == null) {
+								Log.i(TAG, "Date saved");
+							} else {
+								Log.i(TAG, "Error");
+							}
+							
+						}
+					});
+				} 
+			}
+		});
+    }
+    
     //Create and start timer to polling Parse, called in onResume
 	void createPollingTimer() {
 		// Create timer to poll Parse every 20 sec
@@ -153,6 +188,7 @@ public class MainActivity extends Activity {
 							// Query Parse to get items list for user and display
 							parseArrayList.clear();
 							DataManager.queryParseForItems();
+							lastSyncDate(); 
 							Log.i(TAG, "timer query");
 						} else {
 							Log.i(TAG, "No connection!!");
@@ -297,7 +333,7 @@ public class MainActivity extends Activity {
 				DataManager.deleteItem(selectedObject);
 				break; 
 			default:
-				break;
+				break; 
 			}
             return false;
         }
