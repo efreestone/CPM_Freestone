@@ -191,8 +191,7 @@ public class LoginAndSignupActivity extends Activity {
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog.setMessage("A network connection is required to sign in or create an account. "
-				+ "Please check your network connection and try again");
+		alertDialog.setMessage("A network connection is required to sign in. Please check your network connection and try again");
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();

@@ -65,13 +65,8 @@ public class LoginAndSignupActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if (ConnectionManager.connectionStatus(myContext)) {
-					//Connection exists, attempt login 
-					onLoginClicked();
-				} else {
-					//No network, show error alert
-					noConnectionAlert();
-				}
+				onLoginClicked();
+				 
 			}
 		});  //setOnClickListener close
 		
@@ -80,13 +75,8 @@ public class LoginAndSignupActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if (ConnectionManager.connectionStatus(myContext)) {
-					//Connection exists, attempt sign up
-					onSignupClicked();
-				} else {
-					//No network, show error alert
-					noConnectionAlert();
-				}
+				onSignupClicked();
+				
 			}
 		}); //setOnClickListener close
 		
@@ -107,7 +97,7 @@ public class LoginAndSignupActivity extends Activity {
 			public void done(ParseUser user, ParseException error) {
 				if (user != null) {
 					Log.i(TAG, usernameEntered + "logged in");
-					//Login successful, dismiss view
+					//Toast.makeText(getApplicationContext(), "Login Successful", Toast.LENGTH_LONG).show();
 					Intent loggedIntent = new Intent(LoginAndSignupActivity.this, MainActivity.class);
 					startActivity(loggedIntent);
 					finish(); 
@@ -120,10 +110,11 @@ public class LoginAndSignupActivity extends Activity {
 						failedMessage = " please enter a password";
 					} 
 					
-					//Create alert message and show
 					String loginFailed = "Login failed, ";
 					String failedAlert = loginFailed + failedMessage;
 					errorAlert(failedAlert);
+//					Toast.makeText(getApplicationContext(), "Login failed, " + failedMessage,
+//                            Toast.LENGTH_LONG).show();
 				}
 			}
 		}); //logInInBackground close
@@ -142,6 +133,8 @@ public class LoginAndSignupActivity extends Activity {
 		if (usernameEntered.equals("") || passwordEntered.equals("")) {
 			String bothFields = "Both fields are required to sign up";
 			errorAlert(bothFields);
+//			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
+//					Toast.LENGTH_LONG).show();
 		} else {
 			// Create new user and save to Parse with entered info
 			ParseUser newUser = new ParseUser();
@@ -152,13 +145,15 @@ public class LoginAndSignupActivity extends Activity {
 				@Override
 				public void done(ParseException error) {
 					if (error == null) {
-						// Show a simple Toast message upon successful registration
+						// Show a simple Toast message upon successful
+						// registration
 						Toast.makeText(getApplicationContext(), "Signup successful!",
 								Toast.LENGTH_LONG).show();
-						//Autolog the new user
 						onLoginClicked();
 					} else {
 						String signupError = "An error occurred, please try again.";
+//						Toast.makeText(getApplicationContext(), "An error occurred, please try again.",
+//								Toast.LENGTH_LONG).show();
 						errorAlert(signupError);
 					}
 				}
@@ -168,7 +163,7 @@ public class LoginAndSignupActivity extends Activity {
 	} // onSignupClicked
 	
 	/*
-	 * Custom method to show error alert
+	 * Custom method to show no connection alert
 	 */
 	public static void errorAlert(String alertMessage) {
 		// Create alert dialog for no connection
@@ -177,22 +172,6 @@ public class LoginAndSignupActivity extends Activity {
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
 		alertDialog.setMessage(alertMessage);
-		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
-				(DialogInterface.OnClickListener) null);
-		alertDialog.show();
-	} //errorAlert close
-	
-	/*
-	 * Custom method to show no connection alert
-	 */
-	public static void noConnectionAlert() {
-		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
-		alertDialog.setTitle(R.string.noConnectionTitle);
-		// Set alert message. setMessage only has a charSequence
-		// version so getString must be used.
-		alertDialog.setMessage("A network connection is required to sign in or create an account. "
-				+ "Please check your network connection and try again");
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();

@@ -65,13 +65,8 @@ public class LoginAndSignupActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				if (ConnectionManager.connectionStatus(myContext)) {
-					//Connection exists, attempt login 
-					onLoginClicked();
-				} else {
-					//No network, show error alert
-					noConnectionAlert();
-				}
+				onLoginClicked();
+				 
 			}
 		});  //setOnClickListener close
 		
@@ -87,6 +82,8 @@ public class LoginAndSignupActivity extends Activity {
 					//No network, show error alert
 					noConnectionAlert();
 				}
+				
+				
 			}
 		}); //setOnClickListener close
 		
@@ -187,12 +184,12 @@ public class LoginAndSignupActivity extends Activity {
 	 */
 	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(
+				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog.setMessage("A network connection is required to sign in or create an account. "
-				+ "Please check your network connection and try again");
+		alertDialog.setMessage("A network connection is required to sign in. Please check your network connection and try again");
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();
