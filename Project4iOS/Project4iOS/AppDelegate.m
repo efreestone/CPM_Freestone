@@ -12,6 +12,8 @@
 //
 
 #import "AppDelegate.h"
+#import "CustomTableViewController.h"
+#import <Parse/Parse.h>
 
 @interface AppDelegate ()
 
@@ -21,7 +23,16 @@
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-    // Override point for customization after application launch.
+    //Set up Parse credentials
+    [Parse setApplicationId:@"SAUIZr14D78N6VQVjYfu6KJmNzALl1YE4BCvcq8S"
+                  clientKey:@"TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4"];
+    
+    //Instantiate my main view controller, which subclasses PFQueryTableViewController
+    CustomTableViewController *tableViewController = [[CustomTableViewController alloc] init];
+    self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
+    [self.window makeKeyAndVisible];
+    
     return YES;
 }
 
