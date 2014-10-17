@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <TextView
+        android:id="@+id/nameHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="9"
+        android:paddingLeft="5dp"
+        android:text="@string/nameHeader"
+        android:textColor="#8e8e8e"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/numberHeader"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="11"
+        android:textSize="20sp"
+        android:text="@string/numberHeader"
+        android:textColor="#8e8e8e"
+        android:textStyle="bold"
+        android:paddingLeft="5dp" />
+
+</LinearLayout>

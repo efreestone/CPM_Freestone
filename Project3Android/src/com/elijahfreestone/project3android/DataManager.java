@@ -1,0 +1,262 @@
+/*
+ * @author	Elijah Freestone 
+ *
+ * Project	Project3Android
+ * 
+ * @class 	CPM term 1410
+ * 
+ * Package	com.elijahfreestone.project3android
+ * 
+ * Date		Oct 14, 2014
+ */
+
+package com.elijahfreestone.project3android;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences.Editor;
+import android.util.Log;
+import android.widget.BaseAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
+
+import com.parse.DeleteCallback;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.SaveCallback;
+
+/**
+ * The Class DataManager contains most Parse object related code.
+ * Creating and editing items is handled in NewItemActivity
+ */
+public class DataManager {
+	static String TAG = "DataManager";
+	Context myContext = MainActivity.myContext;
+	static BaseAdapter listAdapter;
+	static String parseClassName = "newItem";
+	
+	/**
+	 * Query parse for items and display.
+	 */
+	static void queryParseForItems() {
+		//Show progress wheel
+		((Activity)MainActivity.myContext).setProgressBarIndeterminateVisibility(true);
+		
+		// Query Parse for items and parse into arraylist
+		ParseQuery<ParseObject> query = ParseQuery.getQuery(parseClassName);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> newItemList, ParseException e) {
+				if (e == null) {
+					updateSyncDates();
+					//Pin/cache all objects for offline use
+					ParseObject.pinAllInBackground(newItemList);
+					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
+					//Log.i(TAG, newItemList.toString());
+					//Split list into separate Parse Objects
+					for (ParseObject eachItem : newItemList) {  
+						
+						String itemName = eachItem.getString("Name");  
+						long itemNumber = eachItem.getLong("Number");
+						String itemNumberString = "" + itemNumber; 
+						String formattedNumber;
+						//Manually format phone number to get (xxx)xxx-xxxx format
+						if (itemNumberString.length() == 10) {
+							formattedNumber = "(" + itemNumberString.substring(0, 3) + ")"
+									+ itemNumberString.substring(3, 6) + "-"
+									+ itemNumberString.substring(6, 10);
+						} else {
+							formattedNumber = itemNumberString;    
+						}
+						//Log.i(TAG, "Formatted number = " + formattedNumber);
+						String itemID = eachItem.getObjectId().toString();
+						HashMap<String, String> objectMap = new HashMap<String, String>();
+						objectMap.put("itemName", itemName);
+						objectMap.put("itemNumber", formattedNumber);
+						objectMap.put("itemID", itemID); 
+					
+						MainActivity.parseArrayList.add(objectMap);    
+						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
+					} 
+					//Log.i(TAG, parseArrayList.toString());
+					listAdapter = new SimpleAdapter(
+							MainActivity.myContext, MainActivity.parseArrayList,
+							R.layout.listview_row, new String[] { "itemName",
+									"itemNumber" }, new int[] { R.id.nameTextView,
+									R.id.numberTextView });
+					MainActivity.itemListView.setAdapter(listAdapter);
+				} else { 
+					Log.e(TAG, "Error: " + e.getMessage().toString()); 
+				}
+				
+				//Add no contacts notice if there aren't any contacts for the user
+				if (MainActivity.parseArrayList.size() == 0) {
+					MainActivity.noItemsNotice.setText("No contacts have been added. Please select the plus button to add a contact.");
+				} else {
+					MainActivity.noItemsNotice.setText("");
+				}
+				
+				//Hide progress wheel
+				((Activity)MainActivity.myContext).setProgressBarIndeterminateVisibility(false);
+			}
+		}); 
+	} //queryParseForItems close
+	
+	static void updateSyncDates() {
+		final Date current = new Date();
+		//Query and update Parse date
+		ParseQuery<ParseObject> updateQuery = ParseQuery.getQuery("lastSynced");
+		updateQuery.getFirstInBackground(new GetCallback<ParseObject>() {
+			
+			@Override
+			public void done(ParseObject syncObject, ParseException e) {
+				if (e == null) {
+					syncObject.put("lastSyncDate", current);
+					syncObject.saveInBackground(new SaveCallback() {
+						
+						@Override
+						public void done(ParseException arg0) {
+							if (arg0 == null) {
+								Log.i(TAG, "Date saved");
+							} else {
+								Log.i(TAG, "Error");
+							}
+							
+						}
+					}); //saveInBackground close	
+				}
+			}
+		}); //getFirstInBackground close
+		//Update shared prefs date
+		Editor editor = MainActivity.sharedPreferences.edit();
+    	editor.putLong("lastSyncMillis", current.getTime());
+    	editor.commit();
+		
+	} //updateSyncDates close
+	
+	/**
+	 * Delete item from list once confirmed with alert dialog.
+	 *
+	 * @param positionSelected the position selected
+	 */
+    static void deleteItem(int positionSelected) {
+    	//Pass position to Final var -1 to account for 0 based
+    	final int deleteItemPosition = positionSelected - 1;
+    	//Create dialog to confirm delete
+    	AlertDialog.Builder deleteDialog = new AlertDialog.Builder(MainActivity.myContext);
+    	deleteDialog.setTitle("Delete Item?");
+    	deleteDialog.setMessage("Are you sure you want to delete this item?");
+    	deleteDialog.setPositiveButton("YES", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Query parse for item
+				ParseQuery<ParseObject> deleteQuery = ParseQuery.getQuery(parseClassName);
+				//Remove item from listview
+				deleteQuery.findInBackground(new FindCallback<ParseObject>() {
+
+					@Override
+					public void done(List<ParseObject> itemsList, ParseException e) {
+						if (e == null) {
+							//Delete item from parse
+							itemsList.get(deleteItemPosition).deleteInBackground(new DeleteCallback() {
+
+								@Override
+								public void done(ParseException arg0) {
+									if (arg0 == null) {
+										Toast.makeText(MainActivity.myContext,"Item Successfully Deleted!", Toast.LENGTH_LONG).show();
+										//Clear item arraylist and repop listview
+										MainActivity.parseArrayList.clear();
+										queryParseForItems();
+										listAdapter.notifyDataSetChanged();
+										//itemListView.setEnabled(true);
+										MainActivity.myActionMode.finish(); 
+										updateSyncDates();
+									} else {
+										Toast.makeText(MainActivity.myContext,"An error occurred, please try again.", Toast.LENGTH_LONG).show();
+									}
+								}
+							}); //deleteInBackground close
+						}
+					}
+				}); //findInBackground close
+			}
+		});
+    	//Cancel button
+    	deleteDialog.setNegativeButton("NO", new OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				Log.i(TAG, "Delete Canceled");
+			}
+		});  
+    	deleteDialog.show();
+    } //deleteItem close
+    
+    //Used in offline mode to display objects saved to the device.
+    static void queryLocalDatastore() {
+    	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
+    	localQuery.fromLocalDatastore();
+    	localQuery.orderByAscending("createdAt");
+    	localQuery.findInBackground(new FindCallback<ParseObject>() {
+
+			@Override
+			public void done(List<ParseObject> localItemsList, ParseException e) {
+				if (e == null) {
+					for (ParseObject eachItem : localItemsList) { 
+						
+						
+						String itemName = eachItem.getString("Name");  
+						long itemNumber = eachItem.getLong("Number");
+						String itemNumberString = "" + itemNumber; 
+						String formattedNumber;
+						//Manually format phone number to get (xxx)xxx-xxxx format
+						if (itemNumberString.length() == 10) {
+							formattedNumber = "(" + itemNumberString.substring(0, 3) + ")"
+									+ itemNumberString.substring(3, 6) + "-"
+									+ itemNumberString.substring(6, 10);
+						} else {
+							formattedNumber = itemNumberString;    
+						}
+						
+						String itemID = eachItem.getObjectId().toString();
+						HashMap<String, String> objectMap = new HashMap<String, String>();
+						objectMap.put("itemName", itemName);
+						objectMap.put("itemNumber", formattedNumber);
+						objectMap.put("itemID", itemID); 
+					
+						MainActivity.parseArrayList.add(objectMap);    
+						//Log.i(TAG, "Name: " + itemName + ", Number: " + itemNumber + " ID: " + itemID);
+					} 
+					//Log.i(TAG, parseArrayList.toString());
+					listAdapter = new SimpleAdapter(
+							MainActivity.myContext, MainActivity.parseArrayList,
+							R.layout.listview_row, new String[] { "itemName",
+									"itemNumber" }, new int[] { R.id.nameTextView,
+									R.id.numberTextView });
+					MainActivity.itemListView.setAdapter(listAdapter);
+				} else { 
+					Log.e(TAG, "Error: " + e.getMessage().toString()); 
+				} //if/else close	
+				
+				// Add no contacts notice if there aren't any contacts for the user on the device
+				if (MainActivity.parseArrayList.size() == 0) {
+					MainActivity.noItemsNotice
+							.setText("No contacts saved and no network connection. Please check your network connection and try again");
+				} else {  
+					MainActivity.noItemsNotice.setText("");
+				}
+			}
+		});
+    } //queryLocalDatastore close
+
+}
