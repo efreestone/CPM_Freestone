@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-<fullyQualifiedTypeName name="android.widget.Button"/>
-<fullyQualifiedTypeName name="android.view.View.OnClickListener"/>
-<fullyQualifiedTypeName name="java.lang.Integer"/>
-<fullyQualifiedTypeName name="android.R.menu"/>
-<fullyQualifiedTypeName name="com.elijahfreestone.project1android.R.layout"/>
-<fullyQualifiedTypeName name="android.support.v4.widget.SearchViewCompatIcs.MySearchView"/>
 <fullyQualifiedTypeName name="java.util.ArrayList"/>
 <fullyQualifiedTypeName name="android.widget.ListAdapter"/>
 <fullyQualifiedTypeName name="android.widget.SimpleAdapter"/>
@@ -34,7 +28,6 @@
 <fullyQualifiedTypeName name="android.R.color"/>
 <fullyQualifiedTypeName name="java.util.HashMap"/>
 <fullyQualifiedTypeName name="android.content.Intent"/>
-<fullyQualifiedTypeName name="android.util.Log"/>
 <fullyQualifiedTypeName name="android.os.Handler"/>
 <fullyQualifiedTypeName name="java.util.Timer"/>
 <fullyQualifiedTypeName name="java.util.TimerTask"/>
@@ -43,21 +36,28 @@
 <fullyQualifiedTypeName name="android.content.DialogInterface"/>
 <fullyQualifiedTypeName name="com.elijahfreestone.project3android.R.string"/>
 <fullyQualifiedTypeName name="com.parse.FindCallback"/>
-<fullyQualifiedTypeName name="com.elijahfreestone.project3android.DataManager"/>
 <fullyQualifiedTypeName name="com.parse.Parse"/>
-<fullyQualifiedTypeName name="com.elijahfreestone.project3android.MainActivity"/>
 <fullyQualifiedTypeName name="android.app.Application"/>
-<fullyQualifiedTypeName name="com.elijahfreestone.project3android.ConnectionManager"/>
 <fullyQualifiedTypeName name="android.telephony.PhoneNumberFormattingTextWatcher"/>
 <fullyQualifiedTypeName name="java.lang.Boolean"/>
-<fullyQualifiedTypeName name="android.content.Context"/>
 <fullyQualifiedTypeName name="java.util.Locale"/>
 <fullyQualifiedTypeName name="android.telephony.PhoneNumberUtils"/>
-<fullyQualifiedTypeName name="java.lang.String"/>
 <fullyQualifiedTypeName name="com.parse.ParseObject"/>
 <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
 <fullyQualifiedTypeName name="com.parse.ParseQuery"/>
+<fullyQualifiedTypeName name="android.util.Log"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences"/>
+<fullyQualifiedTypeName name="android.preference.PreferenceManager"/>
+<fullyQualifiedTypeName name="android.content.SharedPreferences.Editor"/>
 <fullyQualifiedTypeName name="java.util.Date"/>
-<fullyQualifiedTypeName name="com.parse.SaveCallback"/>
 <fullyQualifiedTypeName name="com.parse.GetCallback"/>
+<fullyQualifiedTypeName name="com.parse.SaveCallback"/>
+<fullyQualifiedTypeName name="com.elijahfreestone.project3android.MainActivity"/>
+<fullyQualifiedTypeName name="java.lang.Character"/>
+<fullyQualifiedTypeName name="com.elijahfreestone.project3android.DataManager"/>
+<fullyQualifiedTypeName name="com.elijahfreestone.project3android.LoginAndSignupActivity"/>
+<fullyQualifiedTypeName name="android.content.Context"/>
+<fullyQualifiedTypeName name="android.support.v4.widget.SearchViewCompatIcs.MySearchView"/>
+<fullyQualifiedTypeName name="java.lang.String"/>
+<fullyQualifiedTypeName name="com.elijahfreestone.project3android.ConnectionManager"/>
 </qualifiedTypeNameHistroy>

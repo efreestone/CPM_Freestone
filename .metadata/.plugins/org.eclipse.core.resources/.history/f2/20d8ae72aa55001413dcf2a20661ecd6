@@ -330,6 +330,9 @@ public class MainActivity extends Activity {
     	createPollingTimer();
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
+    		//parseArrayList.clear();
+    		//listAdapter.notifyDataSetInvalidated();
+			//DataManager.queryParseForItems();
     		if (timerTask != null) {
     			timerTask.cancel();
 			}

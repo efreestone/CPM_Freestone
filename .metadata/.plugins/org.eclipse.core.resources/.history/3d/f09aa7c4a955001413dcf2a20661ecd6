@@ -147,6 +147,7 @@ public class MainActivity extends Activity {
 				
 				if (ConnectionManager.connectionStatus(myContext)) {
 					myActionMode = MainActivity.this.startActionMode(new ActionBarCallBack());
+					//viewSelected.setSelected(true);
 					//Manually set selected color for list item. Is cleared in CAB destroy
 					viewSelected.setBackgroundColor(myContext.getResources().getColor(android.R.color.holo_blue_light)); 
 				} else {
@@ -221,8 +222,9 @@ public class MainActivity extends Activity {
 					public void run() {
 						//Recheck network connection and stop query if false
 						if (ConnectionManager.connectionStatus(myContext)) {
-							//Compare local date with Parse date and trigger Parse query to get items list  
-							//for user and display if dates do not match
+							// Query Parse to get items list for user and display
+							//parseArrayList.clear();
+							//DataManager.queryParseForItems();
 							lastSyncDate(); 
 							Log.i(TAG, "timer query");
 						} else {
@@ -330,12 +332,15 @@ public class MainActivity extends Activity {
     	createPollingTimer();
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
-    		if (timerTask != null) {
-    			timerTask.cancel();
-			}
+    		//parseArrayList.clear();
+    		//listAdapter.notifyDataSetInvalidated();
+			//DataManager.queryParseForItems();
+//    		if (timerTask != null) {
+//    			timerTask.cancel();
+//			}
 			//Null out timerTask. This retriggers polling timer and refreshes list in onResume
 			//Simply calling queryParseForItems here causes list duplication until the next poll
-			timerTask = null; 
+			//timerTask = null;
 			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);

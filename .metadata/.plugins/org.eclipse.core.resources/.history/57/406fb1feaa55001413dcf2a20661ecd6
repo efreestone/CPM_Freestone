@@ -68,12 +68,12 @@ public class NewItemActivity extends Activity {
 		
 		saveButton = (Button) findViewById(R.id.saveButton);  
 		
-		//Grab intent extras if editing
 		Intent editIntent = this.getIntent();   
 		if (editIntent.getExtras() != null) {
 			Log.i(TAG, "editIntent good");
 			itemName = editIntent.getStringExtra("itemName");
 			nameEditText.setText(itemName);
+			
 			String itemNumber = editIntent.getStringExtra("itemNumber");
 			numberEditText.setText(itemNumber);
 			

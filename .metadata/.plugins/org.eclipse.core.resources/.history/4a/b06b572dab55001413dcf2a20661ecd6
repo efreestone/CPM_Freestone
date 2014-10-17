@@ -35,6 +35,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.SaveCallback;
 
+// TODO: Auto-generated Javadoc
 /**
  * The Class DataManager contains most Parse object related code.
  * Creating and editing items is handled in NewItemActivity
@@ -44,6 +45,7 @@ public class DataManager {
 	Context myContext = MainActivity.myContext;
 	static BaseAdapter listAdapter;
 	static String parseClassName = "newItem";
+	//static ArrayList<HashMap<String, String>> parseArrayList;
 	
 	/**
 	 * Query parse for items and display.
@@ -52,13 +54,15 @@ public class DataManager {
 		//Show progress wheel
 		((Activity)MainActivity.myContext).setProgressBarIndeterminateVisibility(true);
 		
+		//parseArrayList = MainActivity.parseArrayList;
+		
 		// Query Parse for items and parse into arraylist
 		ParseQuery<ParseObject> query = ParseQuery.getQuery(parseClassName);
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
 					updateSyncDates();
-					//Pin/cache all objects for offline use
+					//Pin/cache all objects for offline
 					ParseObject.pinAllInBackground(newItemList);
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
 					//Log.i(TAG, newItemList.toString());
@@ -202,7 +206,6 @@ public class DataManager {
     	deleteDialog.show();
     } //deleteItem close
     
-    //Used in offline mode to display objects saved to the device.
     static void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();

@@ -58,7 +58,7 @@ public class DataManager {
 			public void done(List<ParseObject> newItemList, ParseException e) {
 				if (e == null) {
 					updateSyncDates();
-					//Pin/cache all objects for offline use
+					//Pin/cache all objects for offline
 					ParseObject.pinAllInBackground(newItemList);
 					Log.i(TAG, "Retrieved " + newItemList.size() + " items");
 					//Log.i(TAG, newItemList.toString());
@@ -202,7 +202,6 @@ public class DataManager {
     	deleteDialog.show();
     } //deleteItem close
     
-    //Used in offline mode to display objects saved to the device.
     static void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();

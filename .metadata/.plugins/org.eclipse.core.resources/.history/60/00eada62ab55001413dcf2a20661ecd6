@@ -202,7 +202,6 @@ public class DataManager {
     	deleteDialog.show();
     } //deleteItem close
     
-    //Used in offline mode to display objects saved to the device.
     static void queryLocalDatastore() {
     	ParseQuery<ParseObject> localQuery = ParseQuery.getQuery(parseClassName);
     	localQuery.fromLocalDatastore();
