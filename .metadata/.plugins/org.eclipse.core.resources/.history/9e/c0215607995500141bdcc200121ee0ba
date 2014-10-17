@@ -38,11 +38,11 @@ public class LoginAndSignupActivity extends Activity {
 	String TAG = "LoginAndSignupActivity";
 	EditText usernameEditText;
 	EditText passwordEditText;
-	String usernameEntered; 
+	String usernameEntered;
 	String passwordEntered;
 	Button loginButton;
 	Button signupButton; 
-	static Context myContext;
+	Context myContext;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -131,10 +131,8 @@ public class LoginAndSignupActivity extends Activity {
 
 		//Check if username or password are blank
 		if (usernameEntered.equals("") || passwordEntered.equals("")) {
-			String bothFields = "Both fields are required to sign up";
-			errorAlert(bothFields);
-//			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
-//					Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
+					Toast.LENGTH_LONG).show();
 		} else {
 			// Create new user and save to Parse with entered info
 			ParseUser newUser = new ParseUser();
@@ -167,7 +165,7 @@ public class LoginAndSignupActivity extends Activity {
 	 */
 	public static void errorAlert(String alertMessage) {
 		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
+		AlertDialog alertDialog = new AlertDialog.Builder().create();
 		alertDialog.setTitle(R.string.errorTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.

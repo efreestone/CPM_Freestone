@@ -131,10 +131,8 @@ public class LoginAndSignupActivity extends Activity {
 
 		//Check if username or password are blank
 		if (usernameEntered.equals("") || passwordEntered.equals("")) {
-			String bothFields = "Both fields are required to sign up";
-			errorAlert(bothFields);
-//			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
-//					Toast.LENGTH_LONG).show();
+			Toast.makeText(getApplicationContext(), "Both fields are required to sign up", 
+					Toast.LENGTH_LONG).show();
 		} else {
 			// Create new user and save to Parse with entered info
 			ParseUser newUser = new ParseUser();

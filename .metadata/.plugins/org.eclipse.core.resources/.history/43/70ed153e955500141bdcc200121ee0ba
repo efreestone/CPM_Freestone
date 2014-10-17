@@ -82,7 +82,7 @@ public class NewItemActivity extends Activity {
 		
 		saveButton.setOnClickListener(new OnClickListener() {   
 			
-			@Override    
+			@Override   
 			public void onClick(View arg0) { 
 				nameEntered = nameEditText.getText().toString();
 				numberEnteredString = numberEditText.getText().toString();
@@ -93,7 +93,7 @@ public class NewItemActivity extends Activity {
 				
 				Log.i(TAG, "numberNoFormat 0 = " + numberNoFormat.charAt(0)); 
 				
-				//Check that both fields contain data 
+				//Check that both fields contain data
 				if (nameEntered.equals("") || numberEnteredString.equals("")) {
 					//Create alert message string and show error alert
 					String bothFieldsReq = "Both fields are required to save a contact";

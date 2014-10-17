@@ -113,6 +113,13 @@ public class MainActivity extends Activity {
         
         parseArrayList = new ArrayList<HashMap<String, String>>();
         
+//        if (timerTask == null) {
+//        	parseArrayList.clear();
+//    		DataManager.queryParseForItems();
+//			
+//		}    
+        
+        
         //Parse initialized in ParseInitialization
         ParseACL.setDefaultACL(new ParseACL(), true);   
         
@@ -197,7 +204,7 @@ public class MainActivity extends Activity {
 						}
 					}); //saveInBackground close
 				}
-				//Compare dates and sync if they don't match
+				
 				if (syncDateFromParse.equals(sharedPrefsSyncDate)) {
 		    		Log.i(TAG, "Dates are the same");
 				} else {
@@ -256,7 +263,7 @@ public class MainActivity extends Activity {
 			}  
 		}
     	super.onResume();
-    } //onResume close 
+    } //onResume close
 
     /* (non-Javadoc)
      * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)

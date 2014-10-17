@@ -197,7 +197,7 @@ public class MainActivity extends Activity {
 						}
 					}); //saveInBackground close
 				}
-				//Compare dates and sync if they don't match
+				
 				if (syncDateFromParse.equals(sharedPrefsSyncDate)) {
 		    		Log.i(TAG, "Dates are the same");
 				} else {
