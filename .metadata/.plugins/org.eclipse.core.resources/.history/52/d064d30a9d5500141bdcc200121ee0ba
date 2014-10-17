@@ -88,11 +88,10 @@ public class NewItemActivity extends Activity {
 				numberEnteredString = numberEditText.getText().toString();
 				if (ConnectionManager.connectionStatus(myContext)) {
 					//Validate fields and save item
-					saveItemToParse();
 				} else {
-					//Alert user of no connection
-					noConnectionAlert();
+					
 				}
+				
 			} 
 		}); //setOnClickListener close
 	} //onCreate close 
@@ -202,24 +201,23 @@ public class NewItemActivity extends Activity {
 	/*
 	 * Custom method to show no connection alert
 	 */
-	public static void noConnectionAlert() {
+	public static void noConnectionAlert(String alertMessage) {
 		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(
+				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
-		alertDialog
-				.setMessage("No Network detected so the contact was not saved. "
-						+ "Please check your connection and try again");
+		alertDialog.setMessage(alertMessage);
 		alertDialog.setButton(DialogInterface.BUTTON_POSITIVE, "OK",
 				(DialogInterface.OnClickListener) null);
 		alertDialog.show();
-	} // noConnectionAlert close
+	} //noConnectionAlert close
 	
 	//Finish activity in onPause to stop potentially try to save new item with no network.
-//	@Override
-//	protected void onPause() {
-//		finish();
-//		super.onPause();
-//	}
+	@Override
+	protected void onPause() {
+		finish();
+		super.onPause();
+	}
 }

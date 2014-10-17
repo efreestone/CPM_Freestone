@@ -217,24 +217,13 @@ public class DataManager {
 				if (e == null) {
 					for (ParseObject eachItem : localItemsList) { 
 						
-						
-						String itemName = eachItem.getString("Name");  
+						String itemName = eachItem.getString("Name"); 
 						long itemNumber = eachItem.getLong("Number");
-						String itemNumberString = "" + itemNumber; 
-						String formattedNumber;
-						//Manually format phone number to get (xxx)xxx-xxxx format
-						if (itemNumberString.length() == 10) {
-							formattedNumber = "(" + itemNumberString.substring(0, 3) + ")"
-									+ itemNumberString.substring(3, 6) + "-"
-									+ itemNumberString.substring(6, 10);
-						} else {
-							formattedNumber = itemNumberString;    
-						}
-						
+						String itemNumberString = "" + itemNumber;
 						String itemID = eachItem.getObjectId().toString();
 						HashMap<String, String> objectMap = new HashMap<String, String>();
 						objectMap.put("itemName", itemName);
-						objectMap.put("itemNumber", formattedNumber);
+						objectMap.put("itemNumber", itemNumberString);
 						objectMap.put("itemID", itemID); 
 					
 						MainActivity.parseArrayList.add(objectMap);    

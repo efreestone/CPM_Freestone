@@ -204,7 +204,8 @@ public class NewItemActivity extends Activity {
 	 */
 	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(
+				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.

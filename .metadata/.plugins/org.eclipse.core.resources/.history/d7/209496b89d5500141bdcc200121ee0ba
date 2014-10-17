@@ -344,7 +344,7 @@ public class MainActivity extends Activity {
 			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
-    } //onActivityResult close 
+    } //onActivityResult close
     
     /**
      * The Class ActionBarCallBack handles contextual action bar for edit and delete of items.

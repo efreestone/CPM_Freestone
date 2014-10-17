@@ -332,9 +332,9 @@ public class MainActivity extends Activity {
     	createPollingTimer();
     	if (resultCode == RESULT_OK && requestCode == 0) {
     		Log.i(TAG, "Result Code OK");
-    		//parseArrayList.clear();
+    		parseArrayList.clear();
     		//listAdapter.notifyDataSetInvalidated();
-			//DataManager.queryParseForItems();
+			DataManager.queryParseForItems();
 //    		if (timerTask != null) {
 //    			timerTask.cancel();
 //			}
@@ -344,7 +344,7 @@ public class MainActivity extends Activity {
 			DataManager.listAdapter.notifyDataSetChanged();
 		}
     	//super.onActivityResult(requestCode, resultCode, newItemBackIntent);
-    } //onActivityResult close 
+    } //onActivityResult close
     
     /**
      * The Class ActionBarCallBack handles contextual action bar for edit and delete of items.

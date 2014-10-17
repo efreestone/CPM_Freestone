@@ -93,6 +93,7 @@ public class NewItemActivity extends Activity {
 					//Alert user of no connection
 					noConnectionAlert();
 				}
+				
 			} 
 		}); //setOnClickListener close
 	} //onCreate close 
@@ -204,7 +205,8 @@ public class NewItemActivity extends Activity {
 	 */
 	public static void noConnectionAlert() {
 		// Create alert dialog for no connection
-		AlertDialog alertDialog = new AlertDialog.Builder(myContext).create();
+		AlertDialog alertDialog = new AlertDialog.Builder(
+				MainActivity.myContext).create();
 		alertDialog.setTitle(R.string.noConnectionTitle);
 		// Set alert message. setMessage only has a charSequence
 		// version so getString must be used.
@@ -217,9 +219,9 @@ public class NewItemActivity extends Activity {
 	} // noConnectionAlert close
 	
 	//Finish activity in onPause to stop potentially try to save new item with no network.
-//	@Override
-//	protected void onPause() {
-//		finish();
-//		super.onPause();
-//	}
+	@Override
+	protected void onPause() {
+		finish();
+		super.onPause();
+	}
 }
