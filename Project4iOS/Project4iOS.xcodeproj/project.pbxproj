@@ -500,7 +500,7 @@
 				);
 				INFOPLIST_FILE = Project4iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Project4iOS;
 			};
 			name = Debug;
 		};
@@ -514,7 +514,7 @@
 				);
 				INFOPLIST_FILE = Project4iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Project4iOS;
 			};
 			name = Release;
 		};
@@ -532,7 +532,7 @@
 				);
 				INFOPLIST_FILE = Project4iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Project4iOSTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Project4iOS.app/Project4iOS";
 			};
 			name = Debug;
@@ -547,7 +547,7 @@
 				);
 				INFOPLIST_FILE = Project4iOSTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = Project4iOSTests;
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Project4iOS.app/Project4iOS";
 			};
 			name = Release;
@@ -571,6 +571,7 @@
 				B80CAF2C19F1C85600716169 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		B80CAF2D19F1C85600716169 /* Build configuration list for PBXNativeTarget "Project4iOSTests" */ = {
 			isa = XCConfigurationList;
@@ -579,6 +580,7 @@
 				B80CAF2F19F1C85600716169 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

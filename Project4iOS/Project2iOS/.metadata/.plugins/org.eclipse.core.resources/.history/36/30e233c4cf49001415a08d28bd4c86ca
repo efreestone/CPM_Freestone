@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:padding="20dp" >
+ 
+    <EditText
+        android:id="@+id/usernameEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/usernameTitleText"
+        android:paddingBottom="50dp"
+        android:inputType="text" />
+ 
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/usernameEditText"
+        android:hint="@string/passwordTitleText"
+        android:inputType="textPassword" />
+ 
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/passwordEditText"
+        android:text="@string/loginButtonText" />
+ 
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginButton"
+        android:text="@string/signupButtonText" />
+ 
+</RelativeLayout>
