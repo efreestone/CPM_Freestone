@@ -23,8 +23,7 @@
 //Synthesize for getters/setters
 @synthesize fieldsBackground;
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     //Check device type and set background accordingly
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
         [self.logInView setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"loginBackground-568h.png"]]];
@@ -55,7 +54,7 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-}
+} //viewDidLoad close
 
 //Set frames for overide items (login field, etc)
 - (void)viewDidLayoutSubviews {
@@ -77,7 +76,7 @@
         [self.fieldsBackground setFrame:CGRectMake(258.0f, 410.0f, 250.0f, 100.0f)];
         [self.logInView.passwordForgottenButton setFrame:CGRectMake(240.0f, 435.0f, 20.0f, 50.0f)];
     }
-}
+} //viewDidLayoutSubviews close
 
 - (void)didReceiveMemoryWarning
 {

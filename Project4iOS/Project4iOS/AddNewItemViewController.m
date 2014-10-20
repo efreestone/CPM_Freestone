@@ -27,9 +27,9 @@
 
 - (void)viewDidLoad {
     //Create and add done button
-    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemDone
-                                                                                target:self
-                                                                                action:@selector(saveNewItem:)];
+    UIBarButtonItem *doneButton = [[UIBarButtonItem alloc]
+                                   initWithBarButtonSystemItem:UIBarButtonSystemItemDone
+                                   target:self action:@selector(saveNewItem:)];
     
     self.navigationItem.rightBarButtonItem = doneButton;
     
@@ -37,7 +37,7 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
-}
+} //viewDidLoad close
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -76,7 +76,7 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     
-}
+} //saveNewItem close
 
 - (IBAction)formatPhoneNumberAsEntered:(id)sender {
     numberEntered = numberTextField.text;
@@ -113,7 +113,7 @@
         
         numberTextField.text = formattedNumber;
     }
-}
+} //formatPhoneNumberAsEntered close
 
 @end
 

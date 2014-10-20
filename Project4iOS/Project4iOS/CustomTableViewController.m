@@ -21,6 +21,7 @@
 
 @interface CustomTableViewController () {
     UILabel *noticeLabel;
+    NSString *formattedPhoneNumber;
 }
 
 @end
@@ -79,7 +80,7 @@
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-}
+} //viewDidLoad close
 
 - (void)viewDidAppear:(BOOL)animated {
     //Check if user already logged in, present login view if not
@@ -111,7 +112,7 @@
         //Reload objects from parse
         [self loadObjects];
     }
-}
+} //isUserLoggedIn close
 
 //Log user out. Hooked/triggered by logout button
 -(IBAction)onLogOut:(id)sender {
@@ -146,7 +147,7 @@
         self.pullToRefreshEnabled = YES;
     }
     return self;
-}
+} //initWithStyle close
 
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
@@ -161,11 +162,25 @@
     if (self.objects.count == 0) {
         NSLog(@"Object Count = 0");
     }
+    
+    //Grab number from parse to format
+    NSNumber *phoneNumber = [object objectForKey:@"Number"];
+    [self formatPhoneNumber:phoneNumber];
     // Configure the cell
     customCell.nameCellLabel.text = [NSString stringWithFormat:@"    %@", [object objectForKey:@"Name"]];
-    customCell.numberCellLabel.text = [NSString stringWithFormat:@"%@", [object objectForKey:@"Number"]];
+    customCell.numberCellLabel.text = [NSString stringWithFormat:@"%@", formattedPhoneNumber];
     
     return customCell;
+} //cellForRowAtIndexPath close
+
+-(void)formatPhoneNumber:(NSNumber *)phoneNumber {
+    NSString *numberString = [phoneNumber stringValue];
+    NSMutableString *mutableNumberString = [NSMutableString stringWithString:numberString];
+    [mutableNumberString insertString:@"(" atIndex:0];
+    [mutableNumberString insertString:@")" atIndex:4];
+    [mutableNumberString insertString:@"-" atIndex:8];
+    NSLog(@"Phone: %@", mutableNumberString);
+    formattedPhoneNumber = mutableNumberString;
 }
 
 //Override query to set cache policy an change sort
@@ -179,7 +194,7 @@
     //Set sort
     [newItemQuery orderByAscending:@"createdAt"];
     return newItemQuery;
-}
+} //queryForTable close
 
 //Override did load to hide/display notice label
 -(void)objectsDidLoad:(NSError *)error {
@@ -210,7 +225,7 @@
             [self loadObjects];
         }];
     }
-}
+} //commitEditingStyle close
 
 #pragma mark - PFLogInViewControllerDelegate
 
@@ -222,7 +237,7 @@
     }
     [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     return NO; // Interrupt login process
-}
+} //logInViewController close
 
 // Sent to the delegate when a PFUser is logged in.
 - (void)logInViewController:(PFLogInViewController *)logInController didLogInUser:(PFUser *)user {
@@ -258,7 +273,7 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     return informationComplete;
-}
+} //signUpViewController close
 
 // Sent to the delegate when a PFUser is signed up.
 - (void)signUpViewController:(PFSignUpViewController *)signUpController didSignUpUser:(PFUser *)user {
@@ -291,14 +306,14 @@
         NSLog(@"Internet Connection Exists");
         [self isUserLoggedIn];
     }
-}
+} //checkConnection close
 
 //Method to create and show alert view if there is no internet connectivity
 -(void)noConnectionAlert {
     UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"No Connection!" message:@"There is no Internet Connection. Please turn on WiFi and tap Retry." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     //Show alert
     [connectionAlert show];
-}
+} //noConnectionAlert close
 
 @end
 

@@ -51,7 +51,7 @@
     [self.signUpView.emailField setTextColor:[UIColor colorWithRed:0.361 green:0.29 blue:0.337 alpha:1]]; /*#5c4a56*/
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-}
+} //viewDidLoad close
 
 //Set frames for overide items (login field, etc)
 - (void)viewDidLayoutSubviews {
@@ -71,7 +71,7 @@
         [self.signUpView.emailField setFrame:CGRectMake(260.0f, 508.0f, 250.0f, 50.0f)];
         [self.fieldsBackground setFrame:CGRectMake(258.0f, 410.0f, 250.0f, 150.0f)];
     }
-}
+} //viewDidLayoutSubviews close
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
