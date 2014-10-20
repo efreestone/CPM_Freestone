@@ -33,6 +33,8 @@
     
     self.navigationItem.rightBarButtonItem = doneButton;
     
+//    [numberTextField addTarget:self action:@selector(textFieldDidChange:changeCharInRange:replaceString:) forControlEvents:UIControlEventValueChanged];
+    
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 }
@@ -49,8 +51,10 @@
     numberEntered = numberTextField.text;
     
     if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
+        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+        
         //Cast number string to integer
-        NSInteger numberEnteredInt = [numberEntered integerValue];
+        NSInteger numberEnteredInt = [pureNumbers integerValue];
         
         PFObject *newItem = [PFObject objectWithClassName:@"newItem"];
         newItem[@"Name"] = nameEntered;
@@ -72,6 +76,43 @@
         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     
+}
+
+- (IBAction)formatPhoneNumberAsEntered:(id)sender {
+    numberEntered = numberTextField.text;
+    if (numberEntered.length != 0) {
+        //Create mutable string with digit chat set to be manipulated and displayed as number entered
+        NSMutableString *formattedNumber = [NSMutableString stringWithString:[[numberTextField.text componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""]];
+        
+        //Check for zero or one as first number entered
+        if (formattedNumber.length == 1 && [formattedNumber hasPrefix:@"0"]) {
+            NSLog(@"Zero");
+        }
+        if (formattedNumber.length == 1 && [formattedNumber hasPrefix:@"1"]) {
+            NSLog(@"One");
+        }
+        
+        //Formatting in (xxx)xxx-xxxx with no space after )
+        if (formattedNumber.length > 1) {
+            [formattedNumber insertString:@"(" atIndex:0];
+        }
+        if (formattedNumber.length > 4)
+            //Change to index 5 and add space after ) for (xxx) xxx-xxxx
+            [formattedNumber insertString:@")" atIndex:4];
+        
+        if (formattedNumber.length > 8)
+            //Change to index 9 for (xxx) xxx-xxxx
+            [formattedNumber insertString:@"-" atIndex:8];
+        
+        //Stop number input at 10 digits
+        if (formattedNumber.length > 13) {
+            formattedNumber = [NSMutableString stringWithString:[formattedNumber substringToIndex:13]];
+            //numberEntered = text;
+            NSLog(@"Number over 10 digits");
+        }
+        
+        numberTextField.text = formattedNumber;
+    }
 }
 
 @end
