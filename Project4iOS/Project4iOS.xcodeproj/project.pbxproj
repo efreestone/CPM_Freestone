@@ -45,6 +45,7 @@
 		B80CAF7119F1CF4300716169 /* loginBackground~iPad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = B80CAF6719F1CF4300716169 /* loginBackground~iPad@2x.png */; };
 		B80CAF7219F1CF4300716169 /* LoginFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = B80CAF6819F1CF4300716169 /* LoginFieldBG.png */; };
 		B80CAF7319F1CF4300716169 /* SignUpFieldBG.png in Resources */ = {isa = PBXBuildFile; fileRef = B80CAF6919F1CF4300716169 /* SignUpFieldBG.png */; };
+		B8C59C2519F495A00080D1F8 /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = B8C59C2419F495A00080D1F8 /* Reachability.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,8 @@
 		B80CAF6719F1CF4300716169 /* loginBackground~iPad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "loginBackground~iPad@2x.png"; sourceTree = "<group>"; };
 		B80CAF6819F1CF4300716169 /* LoginFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LoginFieldBG.png; sourceTree = "<group>"; };
 		B80CAF6919F1CF4300716169 /* SignUpFieldBG.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SignUpFieldBG.png; sourceTree = "<group>"; };
+		B8C59C2319F495A00080D1F8 /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		B8C59C2419F495A00080D1F8 /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -163,6 +166,7 @@
 		B80CAF0919F1C85600716169 /* Project4iOS */ = {
 			isa = PBXGroup;
 			children = (
+				B8C59C2219F495A00080D1F8 /* Reachability */,
 				B80CAF5F19F1CF4300716169 /* images */,
 				B80CAF0E19F1C85600716169 /* AppDelegate.h */,
 				B80CAF0F19F1C85600716169 /* AppDelegate.m */,
@@ -251,6 +255,15 @@
 			);
 			path = images;
 			sourceTree = "<group>";
+		};
+		B8C59C2219F495A00080D1F8 /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				B8C59C2319F495A00080D1F8 /* Reachability.h */,
+				B8C59C2419F495A00080D1F8 /* Reachability.m */,
+			);
+			path = Reachability;
+			sourceTree = SOURCE_ROOT;
 		};
 /* End PBXGroup section */
 
@@ -366,6 +379,7 @@
 			files = (
 				B80CAF3F19F1CCC200716169 /* AddNewItemViewController.m in Sources */,
 				B80CAF4419F1CD8300716169 /* CustomTableViewCell.m in Sources */,
+				B8C59C2519F495A00080D1F8 /* Reachability.m in Sources */,
 				B80CAF3C19F1CC6800716169 /* CustomPFSignUpViewController.m in Sources */,
 				B80CAF1319F1C85600716169 /* CustomTableViewController.m in Sources */,
 				B80CAF3919F1CC0F00716169 /* CustomPFLoginViewController.m in Sources */,
@@ -499,6 +513,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Project4iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Project4iOS;
 			};
@@ -513,6 +528,7 @@
 					"$(PROJECT_DIR)",
 				);
 				INFOPLIST_FILE = Project4iOS/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 7.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_NAME = Project4iOS;
 			};

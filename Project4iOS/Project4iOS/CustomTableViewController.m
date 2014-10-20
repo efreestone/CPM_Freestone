@@ -16,6 +16,8 @@
 #import "CustomPFSignUpViewController.h"
 #import "AddNewItemViewController.h"
 #import "CustomTableViewCell.h"
+//Import Apple Reachability
+#import "Reachability.h"
 
 @interface CustomTableViewController () {
     UILabel *noticeLabel;
@@ -81,7 +83,8 @@
 
 - (void)viewDidAppear:(BOOL)animated {
     //Check if user already logged in, present login view if not
-    [self isUserLoggedIn];
+    //[self isUserLoggedIn];
+    [self checkConnection];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -270,6 +273,31 @@
 // Sent to the delegate when the sign up screen is dismissed.
 - (void)signUpViewControllerDidCancelSignUp:(PFSignUpViewController *)signUpController {
     NSLog(@"User dismissed the signUpViewController");
+}
+
+#pragma mark - Connection Management
+
+//Custom method to check internet connection. Moves on to check login if exists
+-(void)checkConnection {
+    //Check connectivity before sending twitter request. Modified/refactored from Apple example
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus currentNetworkStatus = [networkReachability currentReachabilityStatus];
+    //If connection failed
+    if (currentNetworkStatus == NotReachable) {
+        NSLog(@"No Connection!");
+        //Show no connection alert
+        [self noConnectionAlert];
+    } else {
+        NSLog(@"Internet Connection Exists");
+        [self isUserLoggedIn];
+    }
+}
+
+//Method to create and show alert view if there is no internet connectivity
+-(void)noConnectionAlert {
+    UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"No Connection!" message:@"There is no Internet Connection. Please turn on WiFi and tap Retry." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+    //Show alert
+    [connectionAlert show];
 }
 
 @end
