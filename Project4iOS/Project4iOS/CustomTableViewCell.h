@@ -13,9 +13,29 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol CustomSwipeCellDelegate <NSObject>
+- (void)deleteButtonActionForItemText:(NSString *)itemText;
+- (void)editButtonTwoActionForItemText:(NSString *)itemText;
+@end
+
 @interface CustomTableViewCell : UITableViewCell
+
+@property (nonatomic, strong) NSString *itemText;
+
+@property (strong, nonatomic) IBOutlet UIButton *deleteButton;
+@property (strong, nonatomic) IBOutlet UIButton *editButton;
+@property (strong, nonatomic) IBOutlet UIView *myContentView;
 
 @property (strong, nonatomic) IBOutlet UILabel *nameCellLabel;
 @property (strong, nonatomic) IBOutlet UILabel *numberCellLabel;
+
+@property (nonatomic, weak) id <CustomSwipeCellDelegate> delegate;
+
+//Properties for swipe
+@property (nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
+@property (nonatomic, assign) CGPoint panStartPoint;
+@property (nonatomic, assign) CGFloat startingRightLayoutConstraintConstant;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *contentViewRightConstraint;
+@property (nonatomic, weak) IBOutlet NSLayoutConstraint *contentViewLeftConstraint;
 
 @end

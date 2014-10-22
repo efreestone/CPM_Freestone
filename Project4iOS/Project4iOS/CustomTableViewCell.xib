@@ -3,6 +3,7 @@
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -14,25 +15,60 @@
                 <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MGD-Gu-2FV">
-                        <rect key="frame" x="0.0" y="-3" width="163" height="49"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UUJ-eI-1le">
-                        <rect key="frame" x="164" y="-1" width="155" height="46"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                        <nil key="highlightedColor"/>
-                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FL9-Qc-vrR">
+                        <rect key="frame" x="252" y="0.0" width="60" height="44"/>
+                        <state key="normal" title="Delete">
+                            <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="buttonClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="VrC-JZ-pXy"/>
+                        </connections>
+                    </button>
+                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TZM-GV-c0E">
+                        <rect key="frame" x="184" y="0.0" width="60" height="44"/>
+                        <state key="normal" title="Edit">
+                            <color key="titleColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                        </state>
+                        <connections>
+                            <action selector="buttonClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zGg-Vp-8N7"/>
+                        </connections>
+                    </button>
+                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s4x-Ur-kDv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ad-Dv-PVA">
+                                <rect key="frame" x="0.0" y="-3" width="163" height="49"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Number" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zTO-cO-4Rf">
+                                <rect key="frame" x="165" y="-1" width="155" height="46"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="s4x-Ur-kDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="06h-tB-TQ4"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="s4x-Ur-kDv" secondAttribute="trailing" id="Ku9-Pc-AQf"/>
+                </constraints>
             </tableViewCellContentView>
             <connections>
-                <outlet property="nameCellLabel" destination="MGD-Gu-2FV" id="t8e-z0-YQX"/>
-                <outlet property="numberCellLabel" destination="UUJ-eI-1le" id="7Jo-Jt-ora"/>
+                <outlet property="contentViewLeftConstraint" destination="06h-tB-TQ4" id="3Cc-Sn-gVi"/>
+                <outlet property="contentViewRightConstraint" destination="Ku9-Pc-AQf" id="AtC-Iv-sba"/>
+                <outlet property="deleteButton" destination="FL9-Qc-vrR" id="t0X-hc-qTa"/>
+                <outlet property="editButton" destination="TZM-GV-c0E" id="7vx-Tg-J7u"/>
+                <outlet property="myContentView" destination="s4x-Ur-kDv" id="raJ-79-m1t"/>
+                <outlet property="nameCellLabel" destination="2ad-Dv-PVA" id="WnL-1y-81N"/>
+                <outlet property="numberCellLabel" destination="zTO-cO-4Rf" id="vww-dK-vTr"/>
             </connections>
-            <point key="canvasLocation" x="565" y="410"/>
+            <point key="canvasLocation" x="565" y="404.5"/>
         </tableViewCell>
     </objects>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">

@@ -19,9 +19,10 @@
 //Import Apple Reachability
 #import "Reachability.h"
 
-@interface CustomTableViewController () {
+@interface CustomTableViewController () <CustomSwipeCellDelegate> {
     UILabel *noticeLabel;
     NSString *formattedPhoneNumber;
+    NSString *parseClassName;
 }
 
 @end
@@ -32,7 +33,7 @@
     //Register custom cell nib
     [self.tableView registerNib:[UINib nibWithNibName:@"CustomTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Cell"];
     //self.tableView.estimatedRowHeight = 89;
-    self.tableView.rowHeight = 45;
+    //self.tableView.rowHeight = 45;
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
@@ -131,33 +132,61 @@
 
 #pragma mark - PFQueryTableViewController
 
-//Init tableview and set params
-- (id)initWithStyle:(UITableViewStyle)style
-{
-    self = [super initWithStyle:style];
+//Use initWithCoder instead of initWithStyle to use my own stroyboard.
+//This was not working in project 2 because parseClassName wasn't being set properly
+- (id)initWithCoder:(NSCoder *)aCoder {
+    self = [super initWithCoder:aCoder];
     if (self) {
-        // Custom the table
+        // Customize the table
         // The className to query on
         self.parseClassName = @"newItem";
+        
         // The key of the PFObject to display in the label of the default cell style
         self.textKey = @"text";
-        // The title for this table in the Navigation Controller.
-        self.title = @"My Contacts";
+        
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
+        
+        // Whether the built-in pagination is enabled
+        //self.paginationEnabled = NO;
+        
+        // The number of objects to show per page
+        //self.objectsPerPage = 25;
     }
     return self;
-} //initWithStyle close
+}
+
+////Init tableview and set params
+//- (id)initWithStyle:(UITableViewStyle)style
+//{
+//    self = [super initWithStyle:style];
+//    if (self) {
+//        // Custom the table
+//        // The className to query on
+//        self.parseClassName = @"newItem";
+//        // The key of the PFObject to display in the label of the default cell style
+//        self.textKey = @"text";
+//        // The title for this table in the Navigation Controller.
+//        self.title = @"My Contacts";
+//        // Whether the built-in pull-to-refresh is enabled
+//        self.pullToRefreshEnabled = YES;
+//    }
+//    return self;
+//} //initWithStyle close
 
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     //NSLog(@"cellForRow");
     static NSString *cellId = @"Cell";
     CustomTableViewCell *customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
+    
+    //SwipeableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
+    
     if (customCell == nil) {
         //Allocate custom cell
         customCell = [[CustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
+    customCell.delegate = self;
     
     if (self.objects.count == 0) {
         NSLog(@"Object Count = 0");
@@ -165,6 +194,7 @@
     
     //Grab number from parse to format
     NSNumber *phoneNumber = [object objectForKey:@"Number"];
+    //Pass NSNumber to formatting method.
     [self formatPhoneNumber:phoneNumber];
     // Configure the cell
     customCell.nameCellLabel.text = [NSString stringWithFormat:@"    %@", [object objectForKey:@"Name"]];
@@ -173,6 +203,7 @@
     return customCell;
 } //cellForRowAtIndexPath close
 
+//Custom method to reform phone number in (xxx)xxx-xxxx format.
 -(void)formatPhoneNumber:(NSNumber *)phoneNumber {
     NSString *numberString = [phoneNumber stringValue];
     NSMutableString *mutableNumberString = [NSMutableString stringWithString:numberString];
@@ -185,6 +216,11 @@
 
 //Override query to set cache policy an change sort
 - (PFQuery *)queryForTable {
+    //Make sure parseClassName is set
+    //This is why using my storyboard wasn't working in project 2.
+    if (!self.parseClassName) {
+        self.parseClassName = @"newItem";
+    }
     PFQuery *newItemQuery = [PFQuery queryWithClassName:self.parseClassName];
     
     //Set cache policy to network only
@@ -215,6 +251,15 @@
     
 }
 
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
+    // Return NO if you do not want the specified item to be editable.
+    return NO;
+}
+
+//- (void)tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
+//    [tableView setEditing:YES animated:YES];
+//}
+
 //Built in function to check editing style (-=delete, +=add)
 - (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
     if (editingStyle == UITableViewCellEditingStyleDelete) {
@@ -224,6 +269,8 @@
             //Reload objects for user
             [self loadObjects];
         }];
+    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        NSLog(@"Edit");
     }
 } //commitEditingStyle close
 
@@ -314,6 +361,16 @@
     //Show alert
     [connectionAlert show];
 } //noConnectionAlert close
+
+#pragma mark - CustomSwipeCellDelegate
+
+- (void)deleteButtonActionForItemText:(NSString *)itemText {
+    NSLog(@"In the delegate, Clicked delete for %@", itemText);
+}
+
+- (void)editButtonTwoActionForItemText:(NSString *)itemText {
+    NSLog(@"In the delegate, Clicked edit for %@", itemText);
+}
 
 @end
 
