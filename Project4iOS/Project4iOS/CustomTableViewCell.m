@@ -22,7 +22,7 @@ static CGFloat const myBounceValue = 20.0f;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
-    //[self.deleteButton setBackgroundColor:[UIColor redColor]];
+    [self.deleteButton setBackgroundColor:[UIColor redColor]];
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panContentCell:)];
     self.panRecognizer.delegate = self;
     [self.myContentView addGestureRecognizer:self.panRecognizer];
@@ -54,31 +54,51 @@ static CGFloat const myBounceValue = 20.0f;
 }
 
 //Calculate slide distance of top view based on total widths of buttons
-- (CGFloat)buttonTotalWidth {
+- (CGFloat)totalWidthOfButtons {
     return CGRectGetWidth(self.frame) - CGRectGetMinX(self.editButton.frame);
 }
 
 //Snap cell closed
 - (void)resetConstraintToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)endEditing {
-    //TODO: Build.
+    //TODO: Notify delegate.
+    
+    if (self.startingRightLayoutConstraintConstant == 0 &&
+        self.contentViewRightConstraint.constant == 0) {
+        //Already all the way closed, no bounce necessary
+        return;
+    }
+    
+    //Animate cell bounce closed
+    self.contentViewRightConstraint.constant = -myBounceValue;
+    self.contentViewLeftConstraint.constant = myBounceValue;
+    
+    [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
+        //Snap cell closed
+        self.contentViewRightConstraint.constant = 0;
+        self.contentViewLeftConstraint.constant = 0;
+        //Resetcontraints to clear animations
+        [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
+            self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
+        }];
+    }];
 }
 
 //Snap cell open
 - (void)setShowButtonsConstraints:(BOOL)animated notifyDelegateDidOpen:(BOOL)notifyDelegate {
     //TODO: Notify delegate.
     //If trying to slide left but cell already open, reset constant to catch point
-    if (self.startingRightLayoutConstraintConstant == [self buttonTotalWidth] &&
-        self.contentViewRightConstraint.constant == [self buttonTotalWidth]) {
+    if (self.startingRightLayoutConstraintConstant == [self totalWidthOfButtons] &&
+        self.contentViewRightConstraint.constant == [self totalWidthOfButtons]) {
         return;
     }
     //Animate bounce of cell past and back to catch point
-    self.contentViewLeftConstraint.constant = -[self buttonTotalWidth] - myBounceValue;
-    self.contentViewRightConstraint.constant = [self buttonTotalWidth] + myBounceValue;
+    self.contentViewLeftConstraint.constant = -[self totalWidthOfButtons] - myBounceValue;
+    self.contentViewRightConstraint.constant = [self totalWidthOfButtons] + myBounceValue;
     
     [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
         //Snap cell to catch point
-        self.contentViewLeftConstraint.constant = -[self buttonTotalWidth];
-        self.contentViewRightConstraint.constant = [self buttonTotalWidth];
+        self.contentViewLeftConstraint.constant = -[self totalWidthOfButtons];
+        self.contentViewRightConstraint.constant = [self totalWidthOfButtons];
         
         [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
             //Reset contraints to clear animations
@@ -119,9 +139,9 @@ static CGFloat const myBounceValue = 20.0f;
                     }
                 } else {
                     //Panning right to left, opening cell
-                    CGFloat constant = MIN(-deltaX, [self buttonTotalWidth]);
+                    CGFloat constant = MIN(-deltaX, [self totalWidthOfButtons]);
                     //Open cell to catch point calculated in buttonTotalWidth
-                    if (constant == [self buttonTotalWidth]) {
+                    if (constant == [self totalWidthOfButtons]) {
                         [self setShowButtonsConstraints:YES notifyDelegateDidOpen:NO];
                     } else { //set right constant if not opened to catch point
                         self.contentViewRightConstraint.constant = constant;
@@ -141,9 +161,9 @@ static CGFloat const myBounceValue = 20.0f;
                     }
                 } else {
                     //Panning right to left
-                    CGFloat constant = MIN(adjustment, [self buttonTotalWidth]);
+                    CGFloat constant = MIN(adjustment, [self totalWidthOfButtons]);
                     //Cell is open to the catch point
-                    if (constant == [self buttonTotalWidth]) {
+                    if (constant == [self totalWidthOfButtons]) {
                         [self setShowButtonsConstraints:YES notifyDelegateDidOpen:NO];
                     } else { //not fully open, set constant
                         self.contentViewRightConstraint.constant = constant;
@@ -163,7 +183,7 @@ static CGFloat const myBounceValue = 20.0f;
         default:
             break;
     }
-}
+} //panContentCell close
 
 //Create animation for snapping of cell opening, also based on raywenderlich tutorial
 - (void)updateConstraintsIfNeeded:(BOOL)animated completion:(void (^)(BOOL finished))completion {

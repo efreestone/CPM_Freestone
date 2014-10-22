@@ -35,7 +35,7 @@
                             <action selector="buttonClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zGg-Vp-8N7"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s4x-Ur-kDv">
+                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s4x-Ur-kDv">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ad-Dv-PVA">
@@ -55,8 +55,10 @@
                     </view>
                 </subviews>
                 <constraints>
-                    <constraint firstItem="s4x-Ur-kDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="06h-tB-TQ4"/>
-                    <constraint firstAttribute="trailingMargin" secondItem="s4x-Ur-kDv" secondAttribute="trailing" id="Ku9-Pc-AQf"/>
+                    <constraint firstItem="s4x-Ur-kDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="06h-tB-TQ4"/>
+                    <constraint firstItem="s4x-Ur-kDv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="JnW-Tr-rBa"/>
+                    <constraint firstAttribute="trailing" secondItem="s4x-Ur-kDv" secondAttribute="trailing" id="Ku9-Pc-AQf"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="s4x-Ur-kDv" secondAttribute="bottom" constant="-8" id="nY3-2A-AvG"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

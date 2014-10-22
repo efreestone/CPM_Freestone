@@ -147,9 +147,11 @@
         // Whether the built-in pull-to-refresh is enabled
         self.pullToRefreshEnabled = YES;
         
+        // The title for this table in the Navigation Controller.
+        self.title = @"My Contacts";
+        
         // Whether the built-in pagination is enabled
         //self.paginationEnabled = NO;
-        
         // The number of objects to show per page
         //self.objectsPerPage = 25;
     }
