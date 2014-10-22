@@ -66,22 +66,22 @@ static CGFloat const myBounceValue = 20.0f;
 //Snap cell open
 - (void)setShowButtonsConstraints:(BOOL)animated notifyDelegateDidOpen:(BOOL)notifyDelegate {
     //TODO: Notify delegate.
-    //1
+    //If trying to slide left but cell already open, reset constant to catch point
     if (self.startingRightLayoutConstraintConstant == [self buttonTotalWidth] &&
         self.contentViewRightConstraint.constant == [self buttonTotalWidth]) {
         return;
     }
-    //2
+    //Animate bounce of cell past and back to catch point
     self.contentViewLeftConstraint.constant = -[self buttonTotalWidth] - myBounceValue;
     self.contentViewRightConstraint.constant = [self buttonTotalWidth] + myBounceValue;
     
     [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-        //3
+        //Snap cell to catch point
         self.contentViewLeftConstraint.constant = -[self buttonTotalWidth];
         self.contentViewRightConstraint.constant = [self buttonTotalWidth];
         
         [self updateConstraintsIfNeeded:animated completion:^(BOOL finished) {
-            //4
+            //Reset contraints to clear animations
             self.startingRightLayoutConstraintConstant = self.contentViewRightConstraint.constant;
         }];
     }];
