@@ -23,7 +23,7 @@
 }
 
 //Synthesize for getters/setters
-@synthesize nameTextField, numberTextField;
+@synthesize nameTextField, numberTextField, objectID, passedName, passedNumber;
 
 - (void)viewDidLoad {
     //Create and add done button
@@ -32,6 +32,14 @@
                                    target:self action:@selector(saveNewItem:)];
     
     self.navigationItem.rightBarButtonItem = doneButton;
+    
+    //Check objectID. Editing if not nil
+    if (objectID != nil) {
+        //Set text fields to passed items and format phone number
+        nameTextField.text = passedName;
+        numberTextField.text = passedNumber;
+        [self formatPhoneNumberAsEntered:self];
+    }
     
 //    [numberTextField addTarget:self action:@selector(textFieldDidChange:changeCharInRange:replaceString:) forControlEvents:UIControlEventValueChanged];
     
@@ -50,17 +58,23 @@
     nameEntered = nameTextField.text;
     numberEntered = numberTextField.text;
     
+    if (objectID != nil) {
+        NSLog(@"object ID: %@", objectID);
+    } else {
+        NSLog(@"object ID nil");
+    }
+    
     if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
-        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
-//        NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
-//        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""]; 
-//        NSLog(@"pureNumber: %@", pureNumbers);
+        //NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+        NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
+        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""]; 
+        //NSLog(@"pureNumber: %@", pureNumbers);
         
-        //Cast number string to integer
+        //Cast number string to long long to stop from hitting int max with "larger" phone numbers
         long long numberEnteredInt = [pureNumbers longLongValue];
-        NSLog(@"numberEnteredInt %li", (long)numberEnteredInt);
+        //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
         
-        PFObject *newItem = [PFObject objectWithClassName:@"newItem"];
+        PFObject *newItem = [PFObject objectWithClassName:@"newItem"]; 
         newItem[@"Name"] = nameEntered;
         newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
         [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {

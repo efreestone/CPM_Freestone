@@ -71,6 +71,7 @@ static CGFloat const myBounceValue = 20.0f;
         [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
     } else if (sender == self.editButton) {
         [self.delegate editButtonTwoActionForCell];
+        [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
     } else {
         NSLog(@"Clicked unknown button!");
     }

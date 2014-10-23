@@ -37,6 +37,7 @@
     //Register custom cell nib
     [self.tableView registerNib:[UINib nibWithNibName:@"CustomTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Cell"];
     //self.tableView.estimatedRowHeight = 89;
+    //Set tableview height to stop autolayout from resizing cells. Also stops ambiguous constraints warning
     self.tableView.rowHeight = 44;
     
     //Create list for cells being edited
@@ -64,6 +65,7 @@
     [tableHeader addSubview:nameLabel];
     [tableHeader addSubview:numberLabel];
     [self.tableView setTableHeaderView:tableHeader];
+    //Stop highlighting of selected rows. Doesn't work from storyboard in this case for some reason
     self.tableView.allowsSelection = NO;
     
     //Override to remove extra seperator lines after the last cell, no lines appear if no objects exist
@@ -82,6 +84,8 @@
                                                                                action:@selector(addNewItem:)];
     
     self.navigationItem.rightBarButtonItem = addButton;
+    
+    self.title = @"My Contacts";
     
     //Set default ACL to be read/write of current user only
     PFACL *defaultACL = [PFACL ACL];
@@ -383,7 +387,14 @@
 }
 
 - (void)editButtonTwoActionForCell {
-    NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
+    //NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
+    PFObject *objectToEdit = [self.objects objectAtIndex:itemIndexInteger];
+    AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
+    
+    addNewViewController.passedName = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Name"]];
+    addNewViewController.passedNumber = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Number"]];
+    addNewViewController.objectID = [NSString stringWithFormat:@"%@", objectToEdit.objectId];
+    [self.navigationController pushViewController:addNewViewController animated:true];
 }
 
 //Get open cells
