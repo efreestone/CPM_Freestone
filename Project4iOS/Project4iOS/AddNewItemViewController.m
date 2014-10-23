@@ -20,6 +20,7 @@
 @implementation AddNewItemViewController {
     NSString *nameEntered;
     NSString *numberEntered;
+    NSString *parseClassName;
 }
 
 //Synthesize for getters/setters
@@ -41,6 +42,8 @@
         [self formatPhoneNumberAsEntered:self];
     }
     
+    parseClassName = @"newItem";
+    
 //    [numberTextField addTarget:self action:@selector(textFieldDidChange:changeCharInRange:replaceString:) forControlEvents:UIControlEventValueChanged];
     
     [super viewDidLoad];
@@ -58,12 +61,7 @@
     nameEntered = nameTextField.text;
     numberEntered = numberTextField.text;
     
-    if (objectID != nil) {
-        NSLog(@"object ID: %@", objectID);
-    } else {
-        NSLog(@"object ID nil");
-    }
-    
+    //Make sure both fields are filled in
     if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
         //NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
         NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
@@ -74,20 +72,42 @@
         long long numberEnteredInt = [pureNumbers longLongValue];
         //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
         
-        PFObject *newItem = [PFObject objectWithClassName:@"newItem"]; 
-        newItem[@"Name"] = nameEntered;
-        newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
-        [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            if (succeeded) {
-                NSLog(@"New item saved.");
-                //Dismiss add item view
-                [self.navigationController popViewControllerAnimated:true];
-            } else {
-                NSLog(@"%@", error);
-                //Error alert
-                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
-            }
-        }];
+        //If objectID is not nil, object is being edited so query and update
+        if (objectID != nil) {
+            PFQuery *editQuery = [PFQuery queryWithClassName:parseClassName];
+            [editQuery getObjectInBackgroundWithId:objectID block:^(PFObject *editObject, NSError *error) {
+                editObject[@"Name"] = nameEntered;
+                editObject[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+                [editObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                    if (succeeded) {
+                        NSLog(@"Edited item saved.");
+                        //Dismiss add item view
+                        [self.navigationController popViewControllerAnimated:true];
+                    } else {
+                        NSLog(@"%@", error);
+                        //Error alert
+                        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+                    }
+                }];
+            }];
+        //Not editing, create new object to save
+        } else {
+            PFObject *newItem = [PFObject objectWithClassName:parseClassName];
+            newItem[@"Name"] = nameEntered;
+            newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+            [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                if (succeeded) {
+                    NSLog(@"New item saved.");
+                    //Dismiss add item view
+                    [self.navigationController popViewControllerAnimated:true];
+                } else {
+                    NSLog(@"%@", error);
+                    //Error alert
+                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+                }
+            }];
+        }
+    //Fields missing data
     } else {
         NSLog(@"Fields blank");
         //Alert the user of missing fields
