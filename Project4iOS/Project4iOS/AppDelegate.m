@@ -15,7 +15,9 @@
 #import "CustomTableViewController.h"
 #import <Parse/Parse.h>
 
-@interface AppDelegate ()
+@interface AppDelegate () {
+    CustomTableViewController *tableViewController;
+}
 
 @end
 
@@ -28,7 +30,7 @@
                   clientKey:@"TCdRBe56XyyV2ra4BBOzfafYsy8dWImtCGlZTWu4"];
     
     //Instantiate my main view controller, which subclasses PFQueryTableViewController
-    CustomTableViewController *tableViewController = [[CustomTableViewController alloc] init];
+    tableViewController = [[CustomTableViewController alloc] init];
     self.window = [[UIWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:tableViewController];
     [self.window makeKeyAndVisible];
@@ -48,6 +50,13 @@
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    //Check network when app is relaunched
+    if (![tableViewController checkConnection]) {
+        //Create message and show no connection alert
+        NSString *noConnectionMessage = @"No network connection. Only contacts saved on your device will be available to view.";
+        [tableViewController noConnectionAlert:noConnectionMessage];
+    }
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {

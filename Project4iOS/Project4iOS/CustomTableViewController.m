@@ -25,6 +25,8 @@
     NSString *parseClassName;
     NSIndexPath *itemIndexPath;
     NSUInteger itemIndexInteger;
+    NSString *noConnectionMessage;
+    NSString *editDeleteAlertMessage;
 }
 
 @property (nonatomic, strong) NSMutableSet *cellsCurrentlyEditing;
@@ -39,6 +41,9 @@
     //self.tableView.estimatedRowHeight = 89;
     //Set tableview height to stop autolayout from resizing cells. Also stops ambiguous constraints warning
     self.tableView.rowHeight = 44;
+    
+    noConnectionMessage = @"No network connection. Only contacts saved on your device will be available to view.";
+    editDeleteAlertMessage = @"Contacts can not be added, edited, or deleted without a network connection.";
     
     //Create list for cells being edited
     self.cellsCurrentlyEditing = [NSMutableSet new];
@@ -103,7 +108,9 @@
 - (void)viewDidAppear:(BOOL)animated {
     //Check if user already logged in, present login view if not
     //[self isUserLoggedIn];
-    [self checkConnection];
+    if (![self checkConnection]) {
+        [self noConnectionAlert:noConnectionMessage];
+    };
 }
 
 - (void)didReceiveMemoryWarning {
@@ -143,8 +150,13 @@
 //Push add item view controller. Hooked/triggered by plus button
 -(IBAction)addNewItem:(id)sender {
     NSLog(@"plus clicked");
-    AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
-    [self.navigationController pushViewController:addNewViewController animated:true];
+    if ([self checkConnection]) {
+        AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
+        [self.navigationController pushViewController:addNewViewController animated:true];
+    } else {
+        //Show no connection alert
+        [self noConnectionAlert:editDeleteAlertMessage];
+    }
 }
 
 #pragma mark - PFQueryTableViewController
@@ -233,7 +245,7 @@
     
     //Set cache policy to network only
     if ([self.objects count] == 0) {
-        newItemQuery.cachePolicy = kPFCachePolicyNetworkOnly;
+        newItemQuery.cachePolicy = kPFCachePolicyNetworkElseCache;
     }
     //Set sort
     [newItemQuery orderByAscending:@"createdAt"];
@@ -263,27 +275,6 @@
     // Return NO if you do not want the specified item to be editable.
     return NO;
 }
-
-//- (void)tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-//    //[tableView setEditing:YES animated:YES];
-//    itemIndexPath = indexPath;
-//    itemIndexInteger = indexPath.row;
-//    NSLog(@"index int: %lu", (unsigned long)itemIndexInteger);
-//}
-
-//Built in function to check editing style (-=delete, +=add)
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        //Grab object to delete and delete in background
-        PFObject *objectToDelete = [self.objects objectAtIndex:indexPath.row];
-        [objectToDelete deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-            //Reload objects for user
-            [self loadObjects];
-        }];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        NSLog(@"Edit");
-    }
-} //commitEditingStyle close
 
 #pragma mark - PFLogInViewControllerDelegate
 
@@ -351,24 +342,29 @@
 #pragma mark - Connection Management
 
 //Custom method to check internet connection. Moves on to check login if exists
--(void)checkConnection {
+-(BOOL)checkConnection { 
+    BOOL connectionExists;
     //Check connectivity before sending twitter request. Modified/refactored from Apple example
     Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
     NetworkStatus currentNetworkStatus = [networkReachability currentReachabilityStatus];
     //If connection failed
     if (currentNetworkStatus == NotReachable) {
+        connectionExists = NO;
         NSLog(@"No Connection!");
-        //Show no connection alert
-        [self noConnectionAlert];
+        //Create alert message string and show alert.
+        
+//        [self noConnectionAlert:noConnectionMessage];
     } else {
+        connectionExists = YES;
         NSLog(@"Internet Connection Exists");
         [self isUserLoggedIn];
     }
+    return connectionExists;
 } //checkConnection close
 
 //Method to create and show alert view if there is no internet connectivity
--(void)noConnectionAlert {
-    UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"No Connection!" message:@"There is no Internet Connection. Please turn on WiFi and tap Retry." delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
+-(void)noConnectionAlert:(NSString *)alertMessage {
+    UIAlertView *connectionAlert = [[UIAlertView alloc] initWithTitle:@"No Connection!" message:alertMessage delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil];
     //Show alert
     [connectionAlert show];
 } //noConnectionAlert close
@@ -376,25 +372,35 @@
 #pragma mark - CustomSwipeCellDelegate
 
 - (void)deleteButtonActionForCell {
-    //NSLog(@"In the delegate, Clicked delete for %lu", (unsigned long)itemIndexInteger);
-    //Grab object to delete and delete in background
-    PFObject *objectToDelete = [self.objects objectAtIndex:itemIndexInteger];
-    NSLog(@"Name: %@", objectToDelete);
-    [objectToDelete deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-        //Reload objects for user
-        [self loadObjects];
-    }];
+    if ([self checkConnection]) {
+        //NSLog(@"In the delegate, Clicked delete for %lu", (unsigned long)itemIndexInteger);
+        //Grab object to delete and delete in background
+        PFObject *objectToDelete = [self.objects objectAtIndex:itemIndexInteger];
+        NSLog(@"Name: %@", objectToDelete);
+        [objectToDelete deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            //Reload objects for user
+            [self loadObjects];
+        }];
+    } else {
+        //Show no connection alert
+        [self noConnectionAlert:editDeleteAlertMessage];
+    }
 }
 
 - (void)editButtonTwoActionForCell {
-    //NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
-    PFObject *objectToEdit = [self.objects objectAtIndex:itemIndexInteger];
-    AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
-    
-    addNewViewController.passedName = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Name"]];
-    addNewViewController.passedNumber = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Number"]];
-    addNewViewController.objectID = [NSString stringWithFormat:@"%@", objectToEdit.objectId];
-    [self.navigationController pushViewController:addNewViewController animated:true];
+    if ([self checkConnection]) {
+        //NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
+        PFObject *objectToEdit = [self.objects objectAtIndex:itemIndexInteger];
+        AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
+        
+        addNewViewController.passedName = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Name"]];
+        addNewViewController.passedNumber = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Number"]];
+        addNewViewController.objectID = [NSString stringWithFormat:@"%@", objectToEdit.objectId];
+        [self.navigationController pushViewController:addNewViewController animated:true];
+    } else {
+        //Show no connection alert
+        [self noConnectionAlert:editDeleteAlertMessage];
+    }
 }
 
 //Get open cells

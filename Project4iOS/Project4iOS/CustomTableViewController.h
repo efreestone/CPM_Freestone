@@ -17,7 +17,8 @@
 @interface CustomTableViewController : PFQueryTableViewController <PFLogInViewControllerDelegate, PFSignUpViewControllerDelegate>
 
 -(IBAction)onLogOut:(id)sender;
-
+-(BOOL)checkConnection;
+-(void)noConnectionAlert:(NSString *)alertMessage;
 
 @end
 
