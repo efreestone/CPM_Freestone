@@ -3,7 +3,6 @@
     <dependencies>
         <deployment defaultVersion="1792" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6238"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -16,9 +15,9 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FL9-Qc-vrR">
-                        <rect key="frame" x="252" y="0.0" width="60" height="44"/>
+                        <rect key="frame" x="250" y="0.0" width="70" height="44"/>
                         <state key="normal" title="Delete">
-                            <color key="titleColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
@@ -26,17 +25,17 @@
                         </connections>
                     </button>
                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TZM-GV-c0E">
-                        <rect key="frame" x="184" y="0.0" width="60" height="44"/>
+                        <rect key="frame" x="180" y="0.0" width="70" height="44"/>
                         <state key="normal" title="Edit">
-                            <color key="titleColor" red="0.0" green="1" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                            <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                         </state>
                         <connections>
                             <action selector="buttonClicked:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="zGg-Vp-8N7"/>
                         </connections>
                     </button>
-                    <view contentMode="scaleToFill" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s4x-Ur-kDv">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="46"/>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s4x-Ur-kDv">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2ad-Dv-PVA">
                                 <rect key="frame" x="0.0" y="-3" width="163" height="49"/>
@@ -52,13 +51,16 @@
                             </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" none="YES" notEnabled="YES"/>
+                        </accessibility>
                     </view>
                 </subviews>
                 <constraints>
                     <constraint firstItem="s4x-Ur-kDv" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="06h-tB-TQ4"/>
                     <constraint firstItem="s4x-Ur-kDv" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="JnW-Tr-rBa"/>
                     <constraint firstAttribute="trailing" secondItem="s4x-Ur-kDv" secondAttribute="trailing" id="Ku9-Pc-AQf"/>
-                    <constraint firstAttribute="bottomMargin" secondItem="s4x-Ur-kDv" secondAttribute="bottom" constant="-8" id="nY3-2A-AvG"/>
+                    <constraint firstAttribute="bottom" secondItem="s4x-Ur-kDv" secondAttribute="bottom" id="nY3-2A-AvG"/>
                 </constraints>
             </tableViewCellContentView>
             <connections>

@@ -52,13 +52,17 @@
     
     if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
         NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+//        NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
+//        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""]; 
+//        NSLog(@"pureNumber: %@", pureNumbers);
         
         //Cast number string to integer
-        NSInteger numberEnteredInt = [pureNumbers integerValue];
+        long long numberEnteredInt = [pureNumbers longLongValue];
+        NSLog(@"numberEnteredInt %li", (long)numberEnteredInt);
         
         PFObject *newItem = [PFObject objectWithClassName:@"newItem"];
         newItem[@"Name"] = nameEntered;
-        newItem[@"Number"] = [NSNumber numberWithInteger:numberEnteredInt];
+        newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
         [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
             if (succeeded) {
                 NSLog(@"New item saved.");

@@ -12,6 +12,12 @@
 //
 
 #import "CustomTableViewCell.h"
+#import "CustomPFLoginViewController.h"
+
+@interface CustomTableViewCell ()
+    
+
+@end
 
 static CGFloat const myBounceValue = 20.0f;
 
@@ -22,7 +28,10 @@ static CGFloat const myBounceValue = 20.0f;
 
 - (void)awakeFromNib {
     [super awakeFromNib];
+    //Set button background colors
     [self.deleteButton setBackgroundColor:[UIColor redColor]];
+    [self.editButton setBackgroundColor:[UIColor greenColor]];
+    //Set pan gesture recognizer and delegate
     self.panRecognizer = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(panContentCell:)];
     self.panRecognizer.delegate = self;
     [self.myContentView addGestureRecognizer:self.panRecognizer];
@@ -43,25 +52,42 @@ static CGFloat const myBounceValue = 20.0f;
     // Configure the view for the selected state
 }
 
+//Allow delegate to change cell state
+- (void)openCell {
+    [self setShowButtonsConstraints:NO notifyDelegateDidOpen:NO];
+}
+
+//Make sure cell is reclosed before being recycled
+- (void)prepareCellForReuse {
+    [super prepareForReuse];
+    [self resetConstraintToZero:NO notifyDelegateDidClose:NO];
+}
+
+//Action for edit and delete buttons
 - (IBAction)buttonClicked:(id)sender {
     if (sender == self.deleteButton) {
-        [self.delegate deleteButtonActionForItemText:self.itemText];
+        //Notify the delegate. This fires methods to delete the item selected.
+        [self.delegate deleteButtonActionForCell];
+        [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
     } else if (sender == self.editButton) {
-        [self.delegate editButtonTwoActionForItemText:self.itemText];
+        [self.delegate editButtonTwoActionForCell];
     } else {
         NSLog(@"Clicked unknown button!");
     }
-}
+} 
 
 //Calculate slide distance of top view based on total widths of buttons
 - (CGFloat)totalWidthOfButtons {
     return CGRectGetWidth(self.frame) - CGRectGetMinX(self.editButton.frame);
 }
 
-//Snap cell closed
+//Snap cell closed with bounce
 - (void)resetConstraintToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)endEditing {
-    //TODO: Notify delegate.
-    
+    //Notify delegate
+    if (endEditing) {
+        [self.delegate cellDidClose:self];
+    }
+    //Check if cell is closed
     if (self.startingRightLayoutConstraintConstant == 0 &&
         self.contentViewRightConstraint.constant == 0) {
         //Already all the way closed, no bounce necessary
@@ -83,9 +109,13 @@ static CGFloat const myBounceValue = 20.0f;
     }];
 }
 
-//Snap cell open
+//Snap cell open with bounce
 - (void)setShowButtonsConstraints:(BOOL)animated notifyDelegateDidOpen:(BOOL)notifyDelegate {
-    //TODO: Notify delegate.
+    //Notify delegate.
+    if (notifyDelegate) {
+        [self.delegate cellDidOpen:self];
+    }
+    
     //If trying to slide left but cell already open, reset constant to catch point
     if (self.startingRightLayoutConstraintConstant == [self totalWidthOfButtons] &&
         self.contentViewRightConstraint.constant == [self totalWidthOfButtons]) {
@@ -175,10 +205,37 @@ static CGFloat const myBounceValue = 20.0f;
         }
             break;
         case UIGestureRecognizerStateEnded:
-            NSLog(@"Pan Ended");
+            //Check if cell is open or closed
+            if (self.startingRightLayoutConstraintConstant == 0) {
+                //Cell was opening, slide rest of the way if half way through delete
+                CGFloat halfOfDelete = CGRectGetWidth(self.deleteButton.frame) / 2;
+                if (self.contentViewRightConstraint.constant >= halfOfDelete) {
+                    //Open cell all the way to catch point
+                    [self setShowButtonsConstraints:YES notifyDelegateDidOpen:YES];
+                } else {
+                    //Re-close
+                    [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
+                }
+            } else {
+                //Cell was closing, slide rest of way if half way through edit
+                CGFloat deletePlusHalfOfEdit = CGRectGetWidth(self.deleteButton.frame) + (CGRectGetWidth(self.editButton.frame) / 2);
+                if (self.contentViewRightConstraint.constant >= deletePlusHalfOfEdit) {
+                    //Re-open all the way
+                    [self setShowButtonsConstraints:YES notifyDelegateDidOpen:YES];
+                } else {
+                    //Snap cell closed
+                    [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
+                }
+            }
             break;
         case UIGestureRecognizerStateCancelled:
-            NSLog(@"Pan Cancelled");
+            if (self.startingRightLayoutConstraintConstant == 0) {
+                //Cell was closed - reset everything to 0
+                [self resetConstraintToZero:YES notifyDelegateDidClose:YES];
+            } else {
+                //Cell was open - reset to the open state
+                [self setShowButtonsConstraints:YES notifyDelegateDidOpen:YES];
+            }
             break;
         default:
             break;
@@ -197,6 +254,13 @@ static CGFloat const myBounceValue = 20.0f;
     } completion:completion];
 }
 
+#pragma mark - UIGestureRecognizerDelegate
 
+//Fix potential scroll gesture interferance issues while using pan gesture recognizer
+//Tells the gesture recognizers that they can both work at the same time. Also from raywenderlich.com tut
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
+    return YES;
+}
 
 @end

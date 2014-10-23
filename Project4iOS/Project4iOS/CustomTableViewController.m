@@ -23,7 +23,11 @@
     UILabel *noticeLabel;
     NSString *formattedPhoneNumber;
     NSString *parseClassName;
+    NSIndexPath *itemIndexPath;
+    NSUInteger itemIndexInteger;
 }
+
+@property (nonatomic, strong) NSMutableSet *cellsCurrentlyEditing;
 
 @end
 
@@ -33,7 +37,10 @@
     //Register custom cell nib
     [self.tableView registerNib:[UINib nibWithNibName:@"CustomTableViewCell" bundle:[NSBundle mainBundle]] forCellReuseIdentifier:@"Cell"];
     //self.tableView.estimatedRowHeight = 89;
-    //self.tableView.rowHeight = 45;
+    self.tableView.rowHeight = 44;
+    
+    //Create list for cells being edited
+    self.cellsCurrentlyEditing = [NSMutableSet new];
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
@@ -57,6 +64,7 @@
     [tableHeader addSubview:nameLabel];
     [tableHeader addSubview:numberLabel];
     [self.tableView setTableHeaderView:tableHeader];
+    self.tableView.allowsSelection = NO;
     
     //Override to remove extra seperator lines after the last cell, no lines appear if no objects exist
     [self.tableView setTableFooterView:[[UIView alloc] initWithFrame:CGRectMake(0,0,0,0)]];
@@ -78,6 +86,11 @@
     //Set default ACL to be read/write of current user only
     PFACL *defaultACL = [PFACL ACL];
     [PFACL setDefaultACL:defaultACL withAccessForCurrentUser:YES];
+    
+    if ([self.tableView respondsToSelector:@selector(separatorInset)]) {
+        [self.tableView setSeparatorInset:UIEdgeInsetsZero];
+    }
+
     
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
@@ -158,24 +171,6 @@
     return self;
 }
 
-////Init tableview and set params
-//- (id)initWithStyle:(UITableViewStyle)style
-//{
-//    self = [super initWithStyle:style];
-//    if (self) {
-//        // Custom the table
-//        // The className to query on
-//        self.parseClassName = @"newItem";
-//        // The key of the PFObject to display in the label of the default cell style
-//        self.textKey = @"text";
-//        // The title for this table in the Navigation Controller.
-//        self.title = @"My Contacts";
-//        // Whether the built-in pull-to-refresh is enabled
-//        self.pullToRefreshEnabled = YES;
-//    }
-//    return self;
-//} //initWithStyle close
-
 //Set up cells and apply objects from Parse
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     //NSLog(@"cellForRow");
@@ -189,6 +184,10 @@
         customCell = [[CustomTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellId];
     }
     customCell.delegate = self;
+    
+    if ([self.cellsCurrentlyEditing containsObject:indexPath]) {
+        [customCell openCell];
+    }
     
     if (self.objects.count == 0) {
         NSLog(@"Object Count = 0");
@@ -209,10 +208,13 @@
 -(void)formatPhoneNumber:(NSNumber *)phoneNumber {
     NSString *numberString = [phoneNumber stringValue];
     NSMutableString *mutableNumberString = [NSMutableString stringWithString:numberString];
-    [mutableNumberString insertString:@"(" atIndex:0];
-    [mutableNumberString insertString:@")" atIndex:4];
-    [mutableNumberString insertString:@"-" atIndex:8];
-    NSLog(@"Phone: %@", mutableNumberString);
+    if (mutableNumberString.length == 10) {
+        [mutableNumberString insertString:@"(" atIndex:0];
+        [mutableNumberString insertString:@")" atIndex:4];
+        [mutableNumberString insertString:@"-" atIndex:8];
+    }
+    
+    //NSLog(@"Phone: %@", mutableNumberString);
     formattedPhoneNumber = mutableNumberString;
 }
 
@@ -245,7 +247,7 @@
     }
     [super objectsDidLoad:error];
 }
-
+ 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     // Return the number of rows in the section.
@@ -259,7 +261,10 @@
 }
 
 //- (void)tableView: (UITableView *)tableView didSelectRowAtIndexPath: (NSIndexPath *)indexPath {
-//    [tableView setEditing:YES animated:YES];
+//    //[tableView setEditing:YES animated:YES];
+//    itemIndexPath = indexPath;
+//    itemIndexInteger = indexPath.row;
+//    NSLog(@"index int: %lu", (unsigned long)itemIndexInteger);
 //}
 
 //Built in function to check editing style (-=delete, +=add)
@@ -366,12 +371,31 @@
 
 #pragma mark - CustomSwipeCellDelegate
 
-- (void)deleteButtonActionForItemText:(NSString *)itemText {
-    NSLog(@"In the delegate, Clicked delete for %@", itemText);
+- (void)deleteButtonActionForCell {
+    //NSLog(@"In the delegate, Clicked delete for %lu", (unsigned long)itemIndexInteger);
+    //Grab object to delete and delete in background
+    PFObject *objectToDelete = [self.objects objectAtIndex:itemIndexInteger];
+    NSLog(@"Name: %@", objectToDelete);
+    [objectToDelete deleteInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+        //Reload objects for user
+        [self loadObjects];
+    }];
 }
 
-- (void)editButtonTwoActionForItemText:(NSString *)itemText {
-    NSLog(@"In the delegate, Clicked edit for %@", itemText);
+- (void)editButtonTwoActionForCell {
+    NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
+}
+
+//Get open cells
+- (void)cellDidOpen:(UITableViewCell *)cell {
+    NSIndexPath *currentEditingIndexPath = [self.tableView indexPathForCell:cell];
+    [self.cellsCurrentlyEditing addObject:currentEditingIndexPath];
+    //Pass index path of cell
+    itemIndexInteger = currentEditingIndexPath.row;
+}
+
+- (void)cellDidClose:(UITableViewCell *)cell {
+    [self.cellsCurrentlyEditing removeObject:[self.tableView indexPathForCell:cell]];
 }
 
 @end

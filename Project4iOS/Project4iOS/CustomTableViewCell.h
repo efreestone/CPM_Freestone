@@ -14,8 +14,10 @@
 #import <UIKit/UIKit.h>
 
 @protocol CustomSwipeCellDelegate <NSObject>
-- (void)deleteButtonActionForItemText:(NSString *)itemText;
-- (void)editButtonTwoActionForItemText:(NSString *)itemText;
+- (void)deleteButtonActionForCell;
+- (void)editButtonTwoActionForCell;
+- (void)cellDidOpen:(UITableViewCell *)cell;
+- (void)cellDidClose:(UITableViewCell *)cell;
 @end
 
 @interface CustomTableViewCell : UITableViewCell
@@ -30,6 +32,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *numberCellLabel;
 
 @property (nonatomic, weak) id <CustomSwipeCellDelegate> delegate;
+- (void)openCell;
 
 //Properties for swipe
 @property (nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
