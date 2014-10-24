@@ -1,0 +1,68 @@
+/*
+ * @author	Elijah Freestone 
+ *
+ * Project	Project1Android
+ * 
+ * @class 	CPM term 1410
+ * 
+ * Package	com.elijahfreestone.project1android
+ * 
+ * Date		Sep 29, 2014
+ */
+
+package com.elijahfreestone.project1android;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.EditText;
+
+public class LoginAndSignupActivity extends Activity {
+	EditText usernameEditText;
+	EditText passwordEditText;
+	String usernameEntered;
+	String passwordEntered;
+	Button loginButton;
+	Button signupButton;
+	
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		// TODO Auto-generated method stub
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.activity_login);
+		
+		//Grab EditTexts and buttons
+		usernameEditText = (EditText) findViewById(R.id.usernameEditText);
+		passwordEditText = (EditText) findViewById(R.id.passwordEditText);
+		loginButton = (Button) findViewById(R.id.loginButton);
+		signupButton = (Button) findViewById(R.id.signupButton);
+		
+		//Login button clicked
+		loginButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				//Retrieve input username and password
+				usernameEntered = usernameEditText.getText().toString();
+				passwordEntered = passwordEditText.getText().toString();
+				
+			}
+		});
+		
+		//Signup button clicked
+		signupButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+	} //onCreate close
+	
+		
+
+}

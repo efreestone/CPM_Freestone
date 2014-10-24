@@ -1,0 +1,7 @@
+package com.elijahfreestone.project3android;
+
+import android.app.Application;
+
+public class ParseInitialization extends Application {
+
+}
