@@ -12,6 +12,7 @@
 //
 
 #import "AddNewItemViewController.h"
+#import "Reachability.h"
 
 @interface AddNewItemViewController ()
 
@@ -44,8 +45,6 @@
     
     parseClassName = @"newItem";
     
-//    [numberTextField addTarget:self action:@selector(textFieldDidChange:changeCharInRange:replaceString:) forControlEvents:UIControlEventValueChanged];
-    
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
 } //viewDidLoad close
@@ -61,26 +60,44 @@
     nameEntered = nameTextField.text;
     numberEntered = numberTextField.text;
     
-    //Make sure both fields are filled in
-    if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
-        //NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
-        NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
-        NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""]; 
-        //NSLog(@"pureNumber: %@", pureNumbers);
-        
-        //Cast number string to long long to stop from hitting int max with "larger" phone numbers
-        long long numberEnteredInt = [pureNumbers longLongValue];
-        //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
-        
-        //If objectID is not nil, object is being edited so query and update
-        if (objectID != nil) {
-            PFQuery *editQuery = [PFQuery queryWithClassName:parseClassName];
-            [editQuery getObjectInBackgroundWithId:objectID block:^(PFObject *editObject, NSError *error) {
-                editObject[@"Name"] = nameEntered;
-                editObject[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
-                [editObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+    if ([self checkConnection]) {
+        //Make sure both fields are filled in
+        if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
+            //NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
+            NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
+            NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
+            //NSLog(@"pureNumber: %@", pureNumbers);
+            
+            //Cast number string to long long to stop from hitting int max with "larger" phone numbers
+            long long numberEnteredInt = [pureNumbers longLongValue];
+            //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
+            
+            //If objectID is not nil, object is being edited so query and update
+            if (objectID != nil) {
+                PFQuery *editQuery = [PFQuery queryWithClassName:parseClassName];
+                [editQuery getObjectInBackgroundWithId:objectID block:^(PFObject *editObject, NSError *error) {
+                    editObject[@"Name"] = nameEntered;
+                    editObject[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+                    [editObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                        if (succeeded) {
+                            NSLog(@"Edited item saved.");
+                            //Dismiss add item view
+                            [self.navigationController popViewControllerAnimated:true];
+                        } else {
+                            NSLog(@"%@", error);
+                            //Error alert
+                            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+                        }
+                    }];
+                }];
+            //Not editing, create new object to save
+            } else {
+                PFObject *newItem = [PFObject objectWithClassName:parseClassName];
+                newItem[@"Name"] = nameEntered;
+                newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+                [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                     if (succeeded) {
-                        NSLog(@"Edited item saved.");
+                        NSLog(@"New item saved.");
                         //Dismiss add item view
                         [self.navigationController popViewControllerAnimated:true];
                     } else {
@@ -89,29 +106,17 @@
                         [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
                     }
                 }];
-            }];
-        //Not editing, create new object to save
+            }
+        //Fields missing data
         } else {
-            PFObject *newItem = [PFObject objectWithClassName:parseClassName];
-            newItem[@"Name"] = nameEntered;
-            newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
-            [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                if (succeeded) {
-                    NSLog(@"New item saved.");
-                    //Dismiss add item view
-                    [self.navigationController popViewControllerAnimated:true];
-                } else {
-                    NSLog(@"%@", error);
-                    //Error alert
-                    [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
-                }
-            }];
+            NSLog(@"Fields blank");
+            //Alert the user of missing fields
+            [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
         }
-    //Fields missing data
+    //No connection
     } else {
-        NSLog(@"Fields blank");
-        //Alert the user of missing fields
-        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Missing Information", nil) message:NSLocalizedString(@"All fields are required! Please fill out both fields and try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+        //Create and show no connection alert
+        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"No Connection!", nil) message:NSLocalizedString(@"No Network detected so the contact was not saved. Please check your connection and try again", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
     }
     
 } //saveNewItem close
@@ -152,6 +157,24 @@
         numberTextField.text = formattedNumber;
     }
 } //formatPhoneNumberAsEntered close
+
+//Custom method to check internet connection. Moves on to check login if exists
+//After some strange behaviour accessing the version on main view controller, I simple duplicated the method here.
+-(BOOL)checkConnection {
+    BOOL connectionExists;
+    //Check connectivity before sending twitter request. Modified/refactored from Apple example
+    Reachability *networkReachability = [Reachability reachabilityForInternetConnection];
+    NetworkStatus currentNetworkStatus = [networkReachability currentReachabilityStatus];
+    //If connection failed
+    if (currentNetworkStatus == NotReachable) {
+        connectionExists = NO;
+        NSLog(@"No Connection!");
+    } else {
+        connectionExists = YES;
+        NSLog(@"Internet Connection Exists");
+    }
+    return connectionExists;
+} //checkConnection close
 
 @end
 
