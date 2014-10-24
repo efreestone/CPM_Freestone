@@ -27,6 +27,7 @@
     NSUInteger itemIndexInteger;
     NSString *noConnectionMessage;
     NSString *editDeleteAlertMessage;
+    NSTimer *pollTimer;
 }
 
 @property (nonatomic, strong) NSMutableSet *cellsCurrentlyEditing;
@@ -136,6 +137,8 @@
         NSLog(@"User auto-logged in");
         //Reload objects from parse
         [self loadObjects];
+        //Start poll timer set to 20 sec
+        [[NSRunLoop mainRunLoop] addTimer:self.createTimer forMode:NSRunLoopCommonModes];
     }
 } //isUserLoggedIn close
 
@@ -373,6 +376,23 @@
     }
     return connectionExists;
 } //checkConnection close
+
+//Create timer to poll Parse every 20 sec
+-(NSTimer *)createTimer {
+    if (!pollTimer) {
+        pollTimer = [NSTimer timerWithTimeInterval:20.0 target:self selector:@selector(onTimerTick:) userInfo:nil repeats:YES];
+    }
+    return pollTimer;
+}
+
+//Call queryParse with poll timer
+-(void)onTimerTick:(NSTimer*)timer {
+    if ([self checkConnection]) {
+        [self queryForTable];
+    }
+    
+    NSLog(@"Start Poll Timer");
+}
 
 //Method to create and show alert view if there is no internet connectivity
 -(void)noConnectionAlert:(NSString *)alertMessage {
