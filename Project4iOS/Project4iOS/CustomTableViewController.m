@@ -28,6 +28,7 @@
     NSString *noConnectionMessage;
     NSString *editDeleteAlertMessage;
     NSTimer *pollTimer;
+    CustomTableViewCell *customCell;
 }
 
 @property (nonatomic, strong) NSMutableSet *cellsCurrentlyEditing;
@@ -111,7 +112,7 @@
     //[self isUserLoggedIn];
     if (![self checkConnection]) {
         [self noConnectionAlert:noConnectionMessage];
-    };
+    }
 }
 
 - (void)didReceiveMemoryWarning {
@@ -194,7 +195,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath object:(PFObject *)object {
     //NSLog(@"cellForRow");
     static NSString *cellId = @"Cell";
-    CustomTableViewCell *customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
+    customCell = (CustomTableViewCell *) [tableView dequeueReusableCellWithIdentifier:cellId];
     
     //SwipeableCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
     
@@ -403,8 +404,10 @@
 
 #pragma mark - CustomSwipeCellDelegate
 
+//Delete object from parse. Fired from delete button under swipeable cell
 - (void)deleteButtonActionForCell {
     if ([self checkConnection]) {
+        //[customCell resetConstraintToZero:YES notifyDelegateDidClose:YES];
         //NSLog(@"In the delegate, Clicked delete for %lu", (unsigned long)itemIndexInteger);
         //Grab object to delete and delete in background
         PFObject *objectToDelete = [self.objects objectAtIndex:itemIndexInteger];
@@ -413,14 +416,23 @@
             //Reload objects for user
             [self loadObjects];
         }];
+        
+//        NSLog(@"Cells: %@", self.cellsCurrentlyEditing);
+//        
+//        for (NSIndexPath *cellIndexPath in self.cellsCurrentlyEditing) {
+//            NSLog(@"Index: %@", cellIndexPath);
+//        }
+        
     } else {
         //Show no connection alert
         [self noConnectionAlert:editDeleteAlertMessage];
     }
 }
 
+//Edit object. Fired from edit button under swipeable cell
 - (void)editButtonTwoActionForCell {
     if ([self checkConnection]) {
+        //[customCell resetConstraintToZero:YES notifyDelegateDidClose:YES];
         //NSLog(@"In the delegate, Clicked edit for %lu", (unsigned long)itemIndexInteger);
         PFObject *objectToEdit = [self.objects objectAtIndex:itemIndexInteger];
         AddNewItemViewController *addNewViewController = [[AddNewItemViewController alloc] init];
@@ -429,6 +441,14 @@
         addNewViewController.passedNumber = [NSString stringWithFormat:@"%@", [objectToEdit objectForKey:@"Number"]];
         addNewViewController.objectID = [NSString stringWithFormat:@"%@", objectToEdit.objectId];
         [self.navigationController pushViewController:addNewViewController animated:true];
+        
+        //NSLog(@"Cells: %@", self.cellsCurrentlyEditing);
+        
+//        for (NSIndexPath *cellIndexPath in self.cellsCurrentlyEditing) {
+//            [customCell resetConstraintToZero:YES notifyDelegateDidClose:NO];
+//            NSLog(@"Index: %@", cellIndexPath);
+//        }
+        
     } else {
         //Show no connection alert
         [self noConnectionAlert:editDeleteAlertMessage];

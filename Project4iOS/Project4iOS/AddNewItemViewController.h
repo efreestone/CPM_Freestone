@@ -17,6 +17,7 @@
 
 @property (strong, nonatomic) IBOutlet UITextField *nameTextField;
 @property (strong, nonatomic) IBOutlet UITextField *numberTextField;
+@property (strong, nonatomic) IBOutlet UILabel *errorLabel;
 @property (strong, nonatomic) NSString *objectID;
 @property (strong, nonatomic) NSString *passedName;
 @property (strong, nonatomic) NSString *passedNumber;

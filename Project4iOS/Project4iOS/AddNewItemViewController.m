@@ -25,7 +25,7 @@
 }
 
 //Synthesize for getters/setters
-@synthesize nameTextField, numberTextField, objectID, passedName, passedNumber;
+@synthesize nameTextField, numberTextField, errorLabel, objectID, passedName, passedNumber;
 
 - (void)viewDidLoad {
     //Create and add done button
@@ -63,24 +63,41 @@
     if ([self checkConnection]) {
         //Make sure both fields are filled in
         if (![nameEntered isEqualToString:@""] && ![numberEntered isEqualToString:@""]) {
-            //NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:[[NSCharacterSet decimalDigitCharacterSet] invertedSet]] componentsJoinedByString:@""];
             NSMutableCharacterSet *charSet = [NSMutableCharacterSet characterSetWithCharactersInString:@"()-"];
             NSString *pureNumbers = [[numberEntered componentsSeparatedByCharactersInSet:charSet] componentsJoinedByString:@""];
             //NSLog(@"pureNumber: %@", pureNumbers);
             
-            //Cast number string to long long to stop from hitting int max with "larger" phone numbers
-            long long numberEnteredInt = [pureNumbers longLongValue];
-            //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
-            
-            //If objectID is not nil, object is being edited so query and update
-            if (objectID != nil) {
-                PFQuery *editQuery = [PFQuery queryWithClassName:parseClassName];
-                [editQuery getObjectInBackgroundWithId:objectID block:^(PFObject *editObject, NSError *error) {
-                    editObject[@"Name"] = nameEntered;
-                    editObject[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
-                    [editObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+            if (pureNumbers.length == 10) {
+                //Cast number string to long long to stop from hitting int max with "larger" phone numbers
+                long long numberEnteredInt = [pureNumbers longLongValue];
+                //NSLog(@"numberEnteredInt %lli", (long long)numberEnteredInt);
+                
+                //If objectID is not nil, object is being edited so query and update
+                if (objectID != nil) {
+                    PFQuery *editQuery = [PFQuery queryWithClassName:parseClassName];
+                    [editQuery getObjectInBackgroundWithId:objectID block:^(PFObject *editObject, NSError *error) {
+                        editObject[@"Name"] = nameEntered;
+                        editObject[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+                        [editObject saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
+                            if (succeeded) {
+                                NSLog(@"Edited item saved.");
+                                //Dismiss add item view
+                                [self.navigationController popViewControllerAnimated:true];
+                            } else {
+                                NSLog(@"%@", error);
+                                //Error alert
+                                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
+                            }
+                        }];
+                    }];
+                    //Not editing, create new object to save
+                } else {
+                    PFObject *newItem = [PFObject objectWithClassName:parseClassName];
+                    newItem[@"Name"] = nameEntered;
+                    newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
+                    [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
                         if (succeeded) {
-                            NSLog(@"Edited item saved.");
+                            NSLog(@"New item saved.");
                             //Dismiss add item view
                             [self.navigationController popViewControllerAnimated:true];
                         } else {
@@ -89,24 +106,13 @@
                             [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
                         }
                     }];
-                }];
-            //Not editing, create new object to save
+                }
+            //number is less than 10 digits
             } else {
-                PFObject *newItem = [PFObject objectWithClassName:parseClassName];
-                newItem[@"Name"] = nameEntered;
-                newItem[@"Number"] = [NSNumber numberWithLongLong:numberEnteredInt];
-                [newItem saveInBackgroundWithBlock:^(BOOL succeeded, NSError *error) {
-                    if (succeeded) {
-                        NSLog(@"New item saved.");
-                        //Dismiss add item view
-                        [self.navigationController popViewControllerAnimated:true];
-                    } else {
-                        NSLog(@"%@", error);
-                        //Error alert
-                        [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"An error occured trying to save. Please try again.", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
-                    }
-                }];
+                //Alert the user
+                [[[UIAlertView alloc] initWithTitle:NSLocalizedString(@"Error", nil) message:NSLocalizedString(@"Phone number must be 10 digits and first number can not be 0 or 1", nil) delegate:nil cancelButtonTitle:NSLocalizedString(@"OK", nil) otherButtonTitles:nil] show];
             }
+            
         //Fields missing data
         } else {
             NSLog(@"Fields blank");
@@ -130,14 +136,21 @@
         //Check for zero or one as first number entered
         if (formattedNumber.length == 1 && [formattedNumber hasPrefix:@"0"]) {
             NSLog(@"Zero");
+            formattedNumber = nil;
+            errorLabel.text = @"Number can not start with 0 or 1";
+            errorLabel.textColor = [UIColor redColor];
         }
         if (formattedNumber.length == 1 && [formattedNumber hasPrefix:@"1"]) {
             NSLog(@"One");
+            formattedNumber = nil;
+            errorLabel.text = @"Number can not start with 0 or 1";
+            errorLabel.textColor = [UIColor redColor];
         }
         
         //Formatting in (xxx)xxx-xxxx with no space after )
         if (formattedNumber.length > 1) {
             [formattedNumber insertString:@"(" atIndex:0];
+            errorLabel.text = @"";
         }
         if (formattedNumber.length > 4)
             //Change to index 5 and add space after ) for (xxx) xxx-xxxx

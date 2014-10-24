@@ -33,6 +33,7 @@
 
 @property (nonatomic, weak) id <CustomSwipeCellDelegate> delegate;
 - (void)openCell;
+- (void)resetConstraintToZero:(BOOL)animated notifyDelegateDidClose:(BOOL)endEditing;
 
 //Properties for swipe
 @property (nonatomic, strong) UIPanGestureRecognizer *panRecognizer;
