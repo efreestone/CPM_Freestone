@@ -31,7 +31,7 @@
     CustomTableViewCell *customCell;
 }
 
-@property (nonatomic, strong) NSMutableSet *cellsCurrentlyEditing;
+@property (nonatomic, strong) NSMutableArray *cellsCurrentlyEditing;
 
 @end
 
@@ -48,7 +48,7 @@
     editDeleteAlertMessage = @"Contacts can not be added, edited, or deleted without a network connection.";
     
     //Create list for cells being edited
-    self.cellsCurrentlyEditing = [NSMutableSet new];
+    self.cellsCurrentlyEditing = [NSMutableArray new];
     
     float viewWidth = self.view.frame.size.width;
     //Create notice label to display if no items exist for the user.
@@ -200,9 +200,10 @@
     }
     customCell.delegate = self;
     
-    if ([self.cellsCurrentlyEditing containsObject:indexPath]) {
-        [customCell openCell];
-    }
+//    if ([self.cellsCurrentlyEditing containsObject:indexPath]) {
+//        [customCell openCell];
+//        NSLog(@"Contains indexPath");
+//    }
     
     if (self.objects.count == 0) {
         NSLog(@"Object Count = 0");
@@ -432,14 +433,29 @@
 }
 
 //Get open cells
-- (void)cellDidOpen:(UITableViewCell *)cell {
+- (void)cellDidOpen:(CustomTableViewCell *)cell {
     NSIndexPath *currentEditingIndexPath = [self.tableView indexPathForCell:cell];
+    NSLog(@"Current Index: %@", currentEditingIndexPath);
     [self.cellsCurrentlyEditing addObject:currentEditingIndexPath];
     //Pass index path of cell
     itemIndexInteger = currentEditingIndexPath.row;
+    
+    //Check if more than 1 cell is open, close first opened if more than 1
+    //open a cell and open another, the first is closed automatically
+    if (self.cellsCurrentlyEditing.count >= 2) {
+        //NSLog(@"intPath: %ld", (long)intPath);
+        NSIndexPath *firstCellIndex = [self.cellsCurrentlyEditing firstObject];
+        //NSLog(@"firstCellIndex: %@", firstCellIndex);
+        CustomTableViewCell *firstCellOpen = (CustomTableViewCell *)[self.tableView cellForRowAtIndexPath:firstCellIndex];
+        [firstCellOpen resetConstraintToZero:YES notifyDelegateDidClose:NO];
+        [self.cellsCurrentlyEditing removeObject:[self.tableView indexPathForCell:firstCellOpen]];
+        firstCellOpen = nil;
+        firstCellIndex = nil;
+    }
+    
 }
 
-- (void)cellDidClose:(UITableViewCell *)cell {
+- (void)cellDidClose:(CustomTableViewCell *)cell {
     [self.cellsCurrentlyEditing removeObject:[self.tableView indexPathForCell:cell]];
 }
 
